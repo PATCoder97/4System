@@ -50,7 +50,9 @@ namespace Winform4System
                         return;
                     }
 
-                    IMainMenuService menuService = new DemoMainMenuService();
+                    IMainMenuService menuService = new EfMainMenuService(
+                        new EfMainMenuRepository(new ConnectionStringProvider()),
+                        loginForm.Session.AccountId);
                     Application.Run(new MainForm(menuService, logger, loginForm.Session));
                 }
             }

@@ -22,7 +22,7 @@
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\IMainMenuService.cs" />
-    <Compile Include="Services\DemoMainMenuService.cs" />
+    <Compile Include="Services\EfMainMenuService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

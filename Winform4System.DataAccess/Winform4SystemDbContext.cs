@@ -24,12 +24,16 @@ namespace Winform4System.DataAccess
         public DbSet<SecurityGroup> SecurityGroups { get; set; }
         public DbSet<GroupRole> GroupRoles { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<ApplicationFunction> ApplicationFunctions { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserGroup>().HasKey(item => new { item.UserId, item.GroupId });
             modelBuilder.Entity<GroupRole>().HasKey(item => new { item.GroupId, item.RoleId });
+            modelBuilder.Entity<RolePermission>().HasKey(item => new { item.RoleId, item.PermissionId });
             base.OnModelCreating(modelBuilder);
         }
     }

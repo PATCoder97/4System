@@ -21,14 +21,20 @@
   <ItemGroup>
     <Compile Include="Configuration\ConnectionStringProvider.cs" />
     <Compile Include="Entities\AuditLog.cs" />
+    <Compile Include="Entities\ApplicationFunction.cs" />
     <Compile Include="Entities\Department.cs" />
     <Compile Include="Entities\EmployeeProfile.cs" />
     <Compile Include="Entities\GroupRole.cs" />
+    <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\RolePermission.cs" />
     <Compile Include="Entities\SecurityGroup.cs" />
     <Compile Include="Entities\UserAccount.cs" />
     <Compile Include="Entities\UserGroup.cs" />
     <Compile Include="Models\UserAccountRecord.cs" />
+    <Compile Include="Models\MainMenuItemRecord.cs" />
+    <Compile Include="Repositories\EfMainMenuRepository.cs" />
+    <Compile Include="Repositories\IMainMenuRepository.cs" />
     <Compile Include="Repositories\IUserAccountRepository.cs" />
     <Compile Include="Repositories\EfUserAccountRepository.cs" />
     <Compile Include="Winform4SystemDbContext.cs" />
@@ -40,6 +46,9 @@
     </None>
     <None Include="..\Database\Scripts\002_seed_core_authorization.sql">
       <Link>Database\Scripts\002_seed_core_authorization.sql</Link>
+    </None>
+    <None Include="..\Database\Scripts\003_main_menu_cards.sql">
+      <Link>Database\Scripts\003_main_menu_cards.sql</Link>
     </None>
     <None Include="..\Database\README.md">
       <Link>Database\README.md</Link>
