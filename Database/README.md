@@ -35,7 +35,7 @@ Use `dbo.vw_auth_UserEffectivePermission` to inspect where a user receives a per
 .\Database\Tools\New-LocalUser.ps1 -LoginName ADMIN -SystemAdministrator
 ```
 
-Bỏ `-SystemAdministrator` để tạo tài khoản thuộc nhóm `STANDARD_USERS`. Mật khẩu phải có ít nhất 12 ký tự. Sau khi có module quản lý người dùng, việc tạo tài khoản và đổi mật khẩu nên được thực hiện trên giao diện đó thay vì dùng công cụ bootstrap.
+Bỏ `-SystemAdministrator` để tạo tài khoản thuộc nhóm `STANDARD_USERS`. Mật khẩu phải có ít nhất 8 ký tự. Sau khi có module quản lý người dùng, việc tạo tài khoản và đổi mật khẩu nên được thực hiện trên giao diện đó thay vì dùng công cụ bootstrap.
 
 ## Local connection string
 

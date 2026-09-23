@@ -6,10 +6,14 @@ param(
 
     [switch]$SystemAdministrator,
 
-    [string]$ConnectionConfig = (Join-Path $PSScriptRoot '..\..\Winform4System\connectionStrings.local.config')
+    [string]$ConnectionConfig
 )
 
 $ErrorActionPreference = 'Stop'
+
+if ([string]::IsNullOrWhiteSpace($ConnectionConfig)) {
+    $ConnectionConfig = Join-Path $PSScriptRoot '..\..\Winform4System\connectionStrings.local.config'
+}
 
 function ConvertFrom-SecureValue {
     param([Security.SecureString]$Value)
@@ -67,8 +71,8 @@ $password = ConvertFrom-SecureValue $securePassword
 $confirmation = ConvertFrom-SecureValue $secureConfirmation
 
 try {
-    if ($password.Length -lt 12) {
-        throw 'Mật khẩu phải có ít nhất 12 ký tự.'
+    if ($password.Length -lt 8) {
+        throw 'Mật khẩu phải có ít nhất 8 ký tự.'
     }
     if ($password -cne $confirmation) {
         throw 'Hai lần nhập mật khẩu không trùng khớp.'

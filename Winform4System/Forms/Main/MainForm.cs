@@ -22,11 +22,6 @@ namespace Winform4System.Forms.Main
         private readonly UserSession _session;
         private readonly Dictionary<TileItem, MenuItemDefinition> _menuByTile = new Dictionary<TileItem, MenuItemDefinition>();
 
-        public MainForm()
-            : this(new DemoMainMenuService(), new FileAppLogger(), UserSession.CreateDemo())
-        {
-        }
-
         public MainForm(IMainMenuService menuService, IAppLogger logger, UserSession session)
         {
             _menuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
