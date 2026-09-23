@@ -29,7 +29,7 @@ namespace Winform4System.Forms.Login
             {
                 XtraMessageBox.Show(
                     "請輸入帳號。",
-                    "登入提示",
+                    ApplicationMetadata.DisplayName,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 txtUserId.Focus();

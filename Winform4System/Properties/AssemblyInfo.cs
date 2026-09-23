@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Winform4System")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("軋鋼部系統")]
+[assembly: AssemblyDescription("軋鋼部系統")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Winform4System")]
+[assembly: AssemblyProduct("軋鋼部系統")]
 [assembly: AssemblyCopyright("Copyright ©  2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

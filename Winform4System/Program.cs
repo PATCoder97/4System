@@ -56,7 +56,7 @@ namespace Winform4System
                 logger.Error("Program", "Application failed to start.", exception);
                 XtraMessageBox.Show(
                     "無法啟動應用程式，詳細資訊已記錄於 Logs 資料夾。",
-                    "Winform4System",
+                    ApplicationMetadata.DisplayName,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
@@ -67,7 +67,7 @@ namespace Winform4System
             logger.Error("UI", "Unhandled UI exception.", exception);
             XtraMessageBox.Show(
                 "系統發生錯誤，詳細資訊已記錄於 Logs 資料夾。",
-                "Winform4System",
+                ApplicationMetadata.DisplayName,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
         }

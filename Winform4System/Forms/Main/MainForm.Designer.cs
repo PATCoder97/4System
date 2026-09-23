@@ -62,7 +62,7 @@ namespace Winform4System.Forms.Main
             this.lblAppName.Name = "lblAppName";
             this.lblAppName.Size = new System.Drawing.Size(350, 72);
             this.lblAppName.TabIndex = 0;
-            this.lblAppName.Text = "軋鋼部系統";
+            this.lblAppName.Text = global::Winform4System.ApplicationMetadata.DisplayName;
             // 
             // lblGreeting
             // 
@@ -152,10 +152,11 @@ namespace Winform4System.Forms.Main
             this.ClientSize = new System.Drawing.Size(1360, 768);
             this.Controls.Add(this.tileMain);
             this.Controls.Add(this.headerPanel);
+            this.IconOptions.Icon = global::Winform4System.Properties.Resources.AppIcon;
             this.MinimumSize = new System.Drawing.Size(1024, 640);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Winform4System - 綜合管理系統";
+            this.Text = global::Winform4System.ApplicationMetadata.DisplayName;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.headerPanel)).EndInit();

@@ -92,5 +92,17 @@ namespace Winform4System.Properties
             }
         }
 
+        /// <summary>
+        ///   Looks up the application icon for the rolling mill system.
+        /// </summary>
+        internal static global::System.Drawing.Icon AppIcon
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("AppIcon", resourceCulture);
+                return ((global::System.Drawing.Icon)(obj));
+            }
+        }
+
     }
 }

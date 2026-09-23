@@ -115,7 +115,7 @@ namespace Winform4System.Forms.Main
             _logger.Info(nameof(MainForm), $"Menu selected: {definition.Code} - {definition.Title}");
             XtraMessageBox.Show(
                 $"「{definition.Title}」功能已完成介面配置。\n\n業務功能將於下一階段連接。",
-                "Winform4System",
+                ApplicationMetadata.DisplayName,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }
@@ -124,7 +124,7 @@ namespace Winform4System.Forms.Main
         {
             XtraMessageBox.Show(
                 $"{_session.DisplayName}\n使用者代碼：{_session.UserId}\n部門：{_session.Department}\n狀態：{_session.Role}",
-                "使用者資訊",
+                ApplicationMetadata.DisplayName,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }
@@ -146,7 +146,7 @@ namespace Winform4System.Forms.Main
         {
             DialogResult result = XtraMessageBox.Show(
                 "確定要登出系統嗎？",
-                "Winform4System",
+                ApplicationMetadata.DisplayName,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 

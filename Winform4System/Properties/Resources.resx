@@ -120,4 +120,7 @@
   <data name="LoginBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\Images\login-background.png;System.Drawing.Bitmap, System.Drawing</value>
   </data>
+  <data name="AppIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Icons\app-icon.ico;System.Drawing.Icon, System.Drawing</value>
+  </data>
 </root>

@@ -120,7 +120,7 @@ namespace Winform4System.Forms.Login
             this.lblApplicationName.Name = "lblApplicationName";
             this.lblApplicationName.Size = new System.Drawing.Size(443, 56);
             this.lblApplicationName.TabIndex = 4;
-            this.lblApplicationName.Text = "軋鋼部系統";
+            this.lblApplicationName.Text = global::Winform4System.ApplicationMetadata.DisplayName;
             // 
             // lblVersion
             // 
@@ -157,13 +157,14 @@ namespace Winform4System.Forms.Login
             this.Controls.Add(this.txtPassword);
             this.FormBorderEffect = DevExpress.XtraEditors.FormBorderEffect.Shadow;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.IconOptions.Icon = global::Winform4System.Properties.Resources.AppIcon;
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(750, 450);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(750, 450);
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "軋鋼部系統 - 使用者登入";
+            this.Text = global::Winform4System.ApplicationMetadata.LoginWindowTitle;
             this.Shown += new System.EventHandler(this.LoginForm_Shown);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LoginForm_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.LoginForm_MouseMove);
