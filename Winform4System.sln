@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winform4System.DataAccess",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winform4System.Logging", "Winform4System.Logging\Winform4System.Logging.csproj", "{FA4985DA-837B-4851-B29F-95B014FE7498}"
 EndProject
+Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "Winform4System.Installer", "Installer\Winform4System.Installer.aiproj", "{6A7E703A-7FE6-436B-89A8-9DB823618041}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,8 @@ Global
 		{FA4985DA-837B-4851-B29F-95B014FE7498}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA4985DA-837B-4851-B29F-95B014FE7498}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA4985DA-837B-4851-B29F-95B014FE7498}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A7E703A-7FE6-436B-89A8-9DB823618041}.Debug|Any CPU.ActiveCfg = DefaultBuild
+		{6A7E703A-7FE6-436B-89A8-9DB823618041}.Release|Any CPU.ActiveCfg = DefaultBuild
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
