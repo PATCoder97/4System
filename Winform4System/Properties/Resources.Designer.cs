@@ -79,5 +79,18 @@ namespace Winform4System.Properties
                 return ((global::System.Drawing.Bitmap)(obj));
             }
         }
+
+        /// <summary>
+        ///   Looks up the watercolor background for the login screen.
+        /// </summary>
+        internal static global::System.Drawing.Bitmap LoginBackground
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("LoginBackground", resourceCulture);
+                return ((global::System.Drawing.Bitmap)(obj));
+            }
+        }
+
     }
 }

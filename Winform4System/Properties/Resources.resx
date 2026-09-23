@@ -117,4 +117,7 @@
   <data name="MainBackgroundRollingMill" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Assets\Images\main-background-rolling-mill-v1.png;System.Drawing.Bitmap, System.Drawing</value>
   </data>
+  <data name="LoginBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Images\login-background-rolling-mill-v2.png;System.Drawing.Bitmap, System.Drawing</value>
+  </data>
 </root>

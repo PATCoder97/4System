@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Winform4System.Business.Services;
 using Winform4System.Core.Models;
+using Winform4System.Forms.Login;
 using Winform4System.Forms.Main;
 using Winform4System.Logging;
 
@@ -36,9 +37,19 @@ namespace Winform4System
 
             try
             {
-                IMainMenuService menuService = new DemoMainMenuService();
-                UserSession session = UserSession.CreateDemo();
-                Application.Run(new MainForm(menuService, logger, session));
+                using (var loginForm = new LoginForm(logger))
+                {
+                    if (loginForm.ShowDialog() != DialogResult.OK)
+                    {
+                        logger.Info("Program", "Login canceled. Application closing.");
+                        return;
+                    }
+
+                    IMainMenuService menuService = new DemoMainMenuService();
+                    UserSession session = UserSession.CreateDemo();
+                    session.UserId = loginForm.UserId;
+                    Application.Run(new MainForm(menuService, logger, session));
+                }
             }
             catch (Exception exception)
             {
