@@ -1,0 +1,62 @@
+﻿using DevExpress.LookAndFeel;
+using DevExpress.Skins;
+using DevExpress.UserSkins;
+using DevExpress.XtraEditors;
+using System;
+using System.Threading;
+using System.Windows.Forms;
+using Winform4System.Business.Services;
+using Winform4System.Core.Models;
+using Winform4System.Forms.Main;
+using Winform4System.Logging;
+
+namespace Winform4System
+{
+    internal static class Program
+    {
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            BonusSkins.Register();
+            UserLookAndFeel.Default.SetSkinStyle("WXI");
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            IAppLogger logger = new FileAppLogger();
+            Application.ThreadException += (sender, args) => HandleUiException(logger, args.Exception);
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+                logger.Error("UnhandledException", "Unhandled application exception.", args.ExceptionObject as Exception);
+
+            logger.Info("Program", "Application starting.");
+
+            try
+            {
+                IMainMenuService menuService = new DemoMainMenuService();
+                UserSession session = UserSession.CreateDemo();
+                Application.Run(new MainForm(menuService, logger, session));
+            }
+            catch (Exception exception)
+            {
+                logger.Error("Program", "Application failed to start.", exception);
+                XtraMessageBox.Show(
+                    "Không thể khởi động ứng dụng. Chi tiết đã được ghi trong thư mục Logs.",
+                    "Winform4System",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private static void HandleUiException(IAppLogger logger, Exception exception)
+        {
+            logger.Error("UI", "Unhandled UI exception.", exception);
+            XtraMessageBox.Show(
+                "Đã xảy ra lỗi. Chi tiết đã được ghi trong thư mục Logs.",
+                "Winform4System",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
+    }
+}

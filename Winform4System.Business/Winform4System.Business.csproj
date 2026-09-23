@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{16B197FA-AB11-428C-AD48-C818BE0EBB6F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Winform4System.Business</RootNamespace>
+    <AssemblyName>Winform4System.Business</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><OutputPath>bin\Debug\</OutputPath><DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Optimize>true</Optimize><DebugType>pdbonly</DebugType><OutputPath>bin\Release\</OutputPath><DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup><Reference Include="System" /><Reference Include="System.Core" /><Reference Include="System.Drawing" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\IMainMenuService.cs" />
+    <Compile Include="Services\DemoMainMenuService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Winform4System.Core\Winform4System.Core.csproj">
+      <Project>{DFE30F37-6945-4CB3-A243-958BA7886A35}</Project><Name>Winform4System.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Winform4System.DataAccess\Winform4System.DataAccess.csproj">
+      <Project>{768B40CC-C94B-4EFA-BBFA-E0592E2C4864}</Project><Name>Winform4System.DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
