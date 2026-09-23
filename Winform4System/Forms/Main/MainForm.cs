@@ -35,7 +35,7 @@ namespace Winform4System.Forms.Main
 
         private void InitializeDashboard()
         {
-            lblWelcome.Text = $"Xin chào, {_session.DisplayName}";
+            lblWelcome.Text = $"您好，{_session.DisplayName}";
             lblSession.Text = $"{_session.UserId}  •  {_session.Department}  •  {_session.Role}";
 
             IReadOnlyList<MenuItemDefinition> menuItems = _menuService.GetMenuItems();
@@ -48,7 +48,7 @@ namespace Winform4System.Forms.Main
                 tileMain.Groups.Add(group);
             }
 
-            lblStatus.Text = $"Sẵn sàng  •  {menuItems.Count} chức năng  •  {DateTime.Now:dd/MM/yyyy HH:mm}";
+            lblStatus.Text = $"系統就緒  •  共 {menuItems.Count} 項功能  •  {DateTime.Now:yyyy/MM/dd HH:mm}";
             _logger.Info(nameof(MainForm), "Main dashboard initialized.");
         }
 
@@ -97,7 +97,7 @@ namespace Winform4System.Forms.Main
 
             _logger.Info(nameof(MainForm), $"Menu selected: {definition.Code} - {definition.Title}");
             XtraMessageBox.Show(
-                $"Chức năng “{definition.Title}” đã được chuẩn bị vị trí.\n\nPhần nghiệp vụ sẽ được kết nối ở giai đoạn tiếp theo.",
+                $"「{definition.Title}」功能已完成介面配置。\n\n業務功能將於下一階段連接。",
                 "Winform4System",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
@@ -106,8 +106,8 @@ namespace Winform4System.Forms.Main
         private void btnUser_Click(object sender, EventArgs e)
         {
             XtraMessageBox.Show(
-                $"{_session.DisplayName}\nMã người dùng: {_session.UserId}\nĐơn vị: {_session.Department}\nTrạng thái: {_session.Role}",
-                "Thông tin người dùng",
+                $"{_session.DisplayName}\n使用者代碼：{_session.UserId}\n部門：{_session.Department}\n狀態：{_session.Role}",
+                "使用者資訊",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }

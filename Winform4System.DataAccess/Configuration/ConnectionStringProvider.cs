@@ -9,7 +9,7 @@ namespace Winform4System.DataAccess.Configuration
         {
             ConnectionStringSettings setting = ConfigurationManager.ConnectionStrings[name];
             if (setting == null || string.IsNullOrWhiteSpace(setting.ConnectionString))
-                throw new InvalidOperationException($"Không tìm thấy connection string '{name}' trong App.config.");
+                throw new InvalidOperationException($"在 App.config 中找不到連線字串「{name}」。");
 
             return setting.ConnectionString;
         }

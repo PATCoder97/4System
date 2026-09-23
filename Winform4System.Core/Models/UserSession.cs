@@ -12,9 +12,9 @@ namespace Winform4System.Core.Models
             return new UserSession
             {
                 UserId = "DEMO001",
-                DisplayName = "Người dùng demo",
-                Department = "Phòng hệ thống",
-                Role = "Chưa kết nối đăng nhập"
+                DisplayName = "示範使用者",
+                Department = "系統管理部",
+                Role = "尚未連接登入服務"
             };
         }
     }

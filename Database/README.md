@@ -5,6 +5,8 @@ Run scripts in numeric order against a new SQL Server database:
 1. `001_core_identity_and_authorization.sql`
 2. `002_seed_core_authorization.sql`
 
+The SQL files are UTF-8. If a PowerShell runner is used, read them explicitly with `Get-Content -Encoding UTF8` so Traditional Chinese seed values are not corrupted.
+
 The scripts create the foundation only; no real employee or administrator account is seeded.
 
 ## Authorization model

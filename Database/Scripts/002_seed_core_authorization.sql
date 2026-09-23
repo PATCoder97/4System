@@ -7,12 +7,12 @@ BEGIN TRY
 
     MERGE dbo.app_Function AS target
     USING (VALUES
-        ('MAIN',              NULL,       N'Trang chủ',             NULL,                           10),
-        ('SYSTEM',            NULL,       N'Quản trị hệ thống',     NULL,                           90),
-        ('SYSTEM.USER',       'SYSTEM',   N'Quản lý người dùng',    'UserManagementForm',           10),
-        ('SYSTEM.GROUP',      'SYSTEM',   N'Nhóm bảo mật',          'SecurityGroupManagementForm',  20),
-        ('SYSTEM.ROLE',       'SYSTEM',   N'Vai trò và quyền',      'RoleManagementForm',           30),
-        ('SYSTEM.FUNCTION',   'SYSTEM',   N'Danh mục chức năng',    'FunctionManagementForm',       40)
+        ('MAIN',              NULL,       N'主頁',           NULL,                           10),
+        ('SYSTEM',            NULL,       N'系統管理',       NULL,                           90),
+        ('SYSTEM.USER',       'SYSTEM',   N'使用者管理',     'UserManagementForm',           10),
+        ('SYSTEM.GROUP',      'SYSTEM',   N'安全性群組',     'SecurityGroupManagementForm',  20),
+        ('SYSTEM.ROLE',       'SYSTEM',   N'角色與權限',     'RoleManagementForm',           30),
+        ('SYSTEM.FUNCTION',   'SYSTEM',   N'功能清單',       'FunctionManagementForm',       40)
     ) AS source(FunctionCode, ParentCode, DisplayName, NavigationTarget, SortOrder)
     ON target.FunctionCode = source.FunctionCode
     WHEN MATCHED THEN UPDATE SET
@@ -40,16 +40,16 @@ BEGIN TRY
     (
         SELECT f.FunctionId, seed.ActionCode, seed.PermissionCode, seed.DisplayName
         FROM (VALUES
-            ('MAIN',            'ACCESS', 'MAIN.ACCESS',            N'Truy cập trang chủ'),
-            ('SYSTEM',          'ACCESS', 'SYSTEM.ACCESS',          N'Truy cập quản trị hệ thống'),
-            ('SYSTEM.USER',     'VIEW',   'SYSTEM.USER.VIEW',       N'Xem người dùng'),
-            ('SYSTEM.USER',     'ADMIN',  'SYSTEM.USER.ADMIN',      N'Quản trị người dùng'),
-            ('SYSTEM.GROUP',    'VIEW',   'SYSTEM.GROUP.VIEW',      N'Xem nhóm bảo mật'),
-            ('SYSTEM.GROUP',    'ADMIN',  'SYSTEM.GROUP.ADMIN',     N'Quản trị nhóm bảo mật'),
-            ('SYSTEM.ROLE',     'VIEW',   'SYSTEM.ROLE.VIEW',       N'Xem vai trò và quyền'),
-            ('SYSTEM.ROLE',     'ADMIN',  'SYSTEM.ROLE.ADMIN',      N'Quản trị vai trò và quyền'),
-            ('SYSTEM.FUNCTION', 'VIEW',   'SYSTEM.FUNCTION.VIEW',   N'Xem danh mục chức năng'),
-            ('SYSTEM.FUNCTION', 'ADMIN',  'SYSTEM.FUNCTION.ADMIN',  N'Quản trị danh mục chức năng')
+            ('MAIN',            'ACCESS', 'MAIN.ACCESS',            N'存取主頁'),
+            ('SYSTEM',          'ACCESS', 'SYSTEM.ACCESS',          N'存取系統管理'),
+            ('SYSTEM.USER',     'VIEW',   'SYSTEM.USER.VIEW',       N'檢視使用者'),
+            ('SYSTEM.USER',     'ADMIN',  'SYSTEM.USER.ADMIN',      N'管理使用者'),
+            ('SYSTEM.GROUP',    'VIEW',   'SYSTEM.GROUP.VIEW',      N'檢視安全性群組'),
+            ('SYSTEM.GROUP',    'ADMIN',  'SYSTEM.GROUP.ADMIN',     N'管理安全性群組'),
+            ('SYSTEM.ROLE',     'VIEW',   'SYSTEM.ROLE.VIEW',       N'檢視角色與權限'),
+            ('SYSTEM.ROLE',     'ADMIN',  'SYSTEM.ROLE.ADMIN',      N'管理角色與權限'),
+            ('SYSTEM.FUNCTION', 'VIEW',   'SYSTEM.FUNCTION.VIEW',   N'檢視功能清單'),
+            ('SYSTEM.FUNCTION', 'ADMIN',  'SYSTEM.FUNCTION.ADMIN',  N'管理功能清單')
         ) AS seed(FunctionCode, ActionCode, PermissionCode, DisplayName)
         INNER JOIN dbo.app_Function AS f ON f.FunctionCode = seed.FunctionCode
     ) AS source
@@ -63,8 +63,8 @@ BEGIN TRY
 
     MERGE dbo.auth_Role AS target
     USING (VALUES
-        ('STANDARD_USER', N'Người dùng tiêu chuẩn', N'Quyền cơ bản để đăng nhập và mở trang chủ', 1),
-        ('SECURITY_ADMIN', N'Quản trị bảo mật', N'Quản lý người dùng, nhóm, vai trò và quyền', 1)
+        ('STANDARD_USER', N'標準使用者', N'登入及開啟主頁的基本權限', 1),
+        ('SECURITY_ADMIN', N'安全性管理員', N'管理使用者、群組、角色與權限', 1)
     ) AS source(RoleCode, RoleName, Description, IsSystemRole)
     ON target.RoleCode = source.RoleCode
     WHEN MATCHED THEN UPDATE SET
@@ -77,8 +77,8 @@ BEGIN TRY
 
     MERGE dbo.auth_SecurityGroup AS target
     USING (VALUES
-        ('STANDARD_USERS', N'Người dùng tiêu chuẩn', N'Nhóm mặc định của người dùng hệ thống', 1),
-        ('SYSTEM_ADMINISTRATORS', N'Quản trị viên hệ thống', N'Nhóm có toàn quyền quản trị bảo mật', 1)
+        ('STANDARD_USERS', N'標準使用者', N'系統使用者的預設群組', 1),
+        ('SYSTEM_ADMINISTRATORS', N'系統管理員', N'擁有完整安全性管理權限的群組', 1)
     ) AS source(GroupCode, GroupName, Description, IsSystemGroup)
     ON target.GroupCode = source.GroupCode
     WHEN MATCHED THEN UPDATE SET

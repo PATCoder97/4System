@@ -42,7 +42,7 @@ namespace Winform4System
             {
                 logger.Error("Program", "Application failed to start.", exception);
                 XtraMessageBox.Show(
-                    "Không thể khởi động ứng dụng. Chi tiết đã được ghi trong thư mục Logs.",
+                    "無法啟動應用程式，詳細資訊已記錄於 Logs 資料夾。",
                     "Winform4System",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -53,7 +53,7 @@ namespace Winform4System
         {
             logger.Error("UI", "Unhandled UI exception.", exception);
             XtraMessageBox.Show(
-                "Đã xảy ra lỗi. Chi tiết đã được ghi trong thư mục Logs.",
+                "系統發生錯誤，詳細資訊已記錄於 Logs 資料夾。",
                 "Winform4System",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);

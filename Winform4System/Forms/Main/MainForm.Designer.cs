@@ -80,7 +80,7 @@ namespace Winform4System.Forms.Main
             this.lblWelcome.Name = "lblWelcome";
             this.lblWelcome.Size = new System.Drawing.Size(430, 25);
             this.lblWelcome.TabIndex = 1;
-            this.lblWelcome.Text = "Xin chào";
+            this.lblWelcome.Text = "您好";
             //
             // lblSession
             //
@@ -96,7 +96,7 @@ namespace Winform4System.Forms.Main
             this.lblSession.Name = "lblSession";
             this.lblSession.Size = new System.Drawing.Size(522, 22);
             this.lblSession.TabIndex = 2;
-            this.lblSession.Text = "Thông tin phiên đăng nhập";
+            this.lblSession.Text = "登入資訊";
             //
             // btnUser
             //
@@ -107,7 +107,7 @@ namespace Winform4System.Forms.Main
             this.btnUser.Name = "btnUser";
             this.btnUser.Size = new System.Drawing.Size(92, 42);
             this.btnUser.TabIndex = 3;
-            this.btnUser.Text = "Tài khoản";
+            this.btnUser.Text = "帳戶";
             this.btnUser.Click += new System.EventHandler(this.btnUser_Click);
             //
             // btnExit
@@ -119,7 +119,7 @@ namespace Winform4System.Forms.Main
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(64, 42);
             this.btnExit.TabIndex = 4;
-            this.btnExit.Text = "Thoát";
+            this.btnExit.Text = "離開";
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             //
             // tileMain
@@ -161,7 +161,7 @@ namespace Winform4System.Forms.Main
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(45, 15);
             this.lblStatus.TabIndex = 0;
-            this.lblStatus.Text = "Sẵn sàng";
+            this.lblStatus.Text = "系統就緒";
             //
             // MainForm
             //
@@ -174,7 +174,7 @@ namespace Winform4System.Forms.Main
             this.MinimumSize = new System.Drawing.Size(1024, 640);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Winform4System - Hệ thống quản lý";
+            this.Text = "Winform4System - 綜合管理系統";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.headerPanel)).EndInit();

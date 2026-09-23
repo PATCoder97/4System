@@ -456,10 +456,10 @@ BEGIN
     );
 
     IF @GroupId IS NULL
-        THROW 51001, 'Security group does not exist or is inactive.', 1;
+        THROW 51001, N'安全性群組不存在或已停用。', 1;
 
     IF NOT EXISTS (SELECT 1 FROM dbo.auth_UserAccount WHERE UserId = @UserId AND IsActive = 1)
-        THROW 51002, 'User does not exist or is inactive.', 1;
+        THROW 51002, N'使用者不存在或已停用。', 1;
 
     UPDATE dbo.auth_UserGroup
        SET IsActive = 1,
@@ -503,7 +503,7 @@ BEGIN
     );
 
     IF @GroupId IS NULL
-        THROW 51003, 'Security group does not exist.', 1;
+        THROW 51003, N'安全性群組不存在。', 1;
 
     UPDATE dbo.auth_UserGroup
        SET IsActive = 0
@@ -512,7 +512,7 @@ BEGIN
        AND IsActive = 1;
 
     IF @@ROWCOUNT = 0
-        THROW 51004, 'Active user-group membership does not exist.', 1;
+        THROW 51004, N'找不到有效的使用者群組成員資格。', 1;
 
     INSERT dbo.audit_AuditLog
         (UserId, ActionCode, EntityName, EntityId, Description)
