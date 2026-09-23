@@ -22,7 +22,6 @@ namespace Winform4System.Forms.Main
 
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.headerPanel = new DevExpress.XtraEditors.PanelControl();
             this.lblAppName = new DevExpress.XtraEditors.LabelControl();
             this.lblWelcome = new DevExpress.XtraEditors.LabelControl();
@@ -37,10 +36,10 @@ namespace Winform4System.Forms.Main
             ((System.ComponentModel.ISupportInitialize)(this.footerPanel)).BeginInit();
             this.footerPanel.SuspendLayout();
             this.SuspendLayout();
-            //
+            // 
             // headerPanel
-            //
-            this.headerPanel.Appearance.BackColor = System.Drawing.Color.FromArgb(20, 43, 64);
+            // 
+            this.headerPanel.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(43)))), ((int)(((byte)(64)))));
             this.headerPanel.Appearance.Options.UseBackColor = true;
             this.headerPanel.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.headerPanel.Controls.Add(this.lblAppName);
@@ -53,84 +52,88 @@ namespace Winform4System.Forms.Main
             this.headerPanel.Name = "headerPanel";
             this.headerPanel.Size = new System.Drawing.Size(1360, 94);
             this.headerPanel.TabIndex = 0;
-            //
+            // 
             // lblAppName
-            //
-            this.lblAppName.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 22F, System.Drawing.FontStyle.Bold);
+            // 
+            this.lblAppName.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAppName.Appearance.ForeColor = System.Drawing.Color.White;
             this.lblAppName.Appearance.Options.UseFont = true;
             this.lblAppName.Appearance.Options.UseForeColor = true;
-            this.lblAppName.Location = new System.Drawing.Point(28, 15);
+            this.lblAppName.Appearance.Options.UseTextOptions = true;
+            this.lblAppName.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.lblAppName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblAppName.Location = new System.Drawing.Point(28, 0);
             this.lblAppName.Name = "lblAppName";
-            this.lblAppName.Size = new System.Drawing.Size(294, 41);
+            this.lblAppName.Size = new System.Drawing.Size(350, 94);
             this.lblAppName.TabIndex = 0;
-            this.lblAppName.Text = "WINFORM 4 SYSTEM";
-            //
+            this.lblAppName.Text = "軋鋼部系統";
+            // 
             // lblWelcome
-            //
-            this.lblWelcome.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            this.lblWelcome.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            // 
+            this.lblWelcome.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblWelcome.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 12F, System.Drawing.FontStyle.Bold);
             this.lblWelcome.Appearance.ForeColor = System.Drawing.Color.White;
             this.lblWelcome.Appearance.Options.UseFont = true;
             this.lblWelcome.Appearance.Options.UseForeColor = true;
             this.lblWelcome.Appearance.Options.UseTextOptions = true;
             this.lblWelcome.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lblWelcome.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
             this.lblWelcome.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblWelcome.Location = new System.Drawing.Point(732, 17);
+            this.lblWelcome.Location = new System.Drawing.Point(732, 19);
             this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(430, 25);
+            this.lblWelcome.Size = new System.Drawing.Size(430, 27);
             this.lblWelcome.TabIndex = 1;
             this.lblWelcome.Text = "您好";
-            //
+            // 
             // lblSession
-            //
-            this.lblSession.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            this.lblSession.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblSession.Appearance.ForeColor = System.Drawing.Color.FromArgb(180, 205, 222);
+            // 
+            this.lblSession.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSession.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(205)))), ((int)(((byte)(222)))));
             this.lblSession.Appearance.Options.UseFont = true;
             this.lblSession.Appearance.Options.UseForeColor = true;
             this.lblSession.Appearance.Options.UseTextOptions = true;
             this.lblSession.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lblSession.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
             this.lblSession.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblSession.Location = new System.Drawing.Point(640, 47);
+            this.lblSession.Location = new System.Drawing.Point(640, 46);
             this.lblSession.Name = "lblSession";
-            this.lblSession.Size = new System.Drawing.Size(522, 22);
+            this.lblSession.Size = new System.Drawing.Size(522, 27);
             this.lblSession.TabIndex = 2;
             this.lblSession.Text = "登入資訊";
-            //
+            // 
             // btnUser
-            //
-            this.btnUser.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            this.btnUser.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            // 
+            this.btnUser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUser.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnUser.Appearance.Options.UseFont = true;
-            this.btnUser.Location = new System.Drawing.Point(1178, 21);
+            this.btnUser.Location = new System.Drawing.Point(1178, 19);
             this.btnUser.Name = "btnUser";
-            this.btnUser.Size = new System.Drawing.Size(92, 42);
+            this.btnUser.Size = new System.Drawing.Size(92, 54);
             this.btnUser.TabIndex = 3;
             this.btnUser.Text = "帳戶";
             this.btnUser.Click += new System.EventHandler(this.btnUser_Click);
-            //
+            // 
             // btnExit
-            //
-            this.btnExit.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
-            this.btnExit.Appearance.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
+            // 
+            this.btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExit.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnExit.Appearance.Options.UseFont = true;
-            this.btnExit.Location = new System.Drawing.Point(1276, 21);
+            this.btnExit.Location = new System.Drawing.Point(1276, 19);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(64, 42);
+            this.btnExit.Size = new System.Drawing.Size(64, 54);
             this.btnExit.TabIndex = 4;
             this.btnExit.Text = "離開";
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
-            //
+            // 
             // tileMain
-            //
+            // 
             this.tileMain.AllowDrag = false;
             this.tileMain.AllowDragTilesBetweenGroups = false;
-            this.tileMain.AppearanceGroupText.Font = new System.Drawing.Font("Segoe UI Semibold", 18F, System.Drawing.FontStyle.Bold);
-            this.tileMain.AppearanceGroupText.ForeColor = System.Drawing.Color.FromArgb(35, 55, 72);
+            this.tileMain.AppearanceGroupText.Font = new System.Drawing.Font("Microsoft JhengHei UI", 18F, System.Drawing.FontStyle.Bold);
+            this.tileMain.AppearanceGroupText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(55)))), ((int)(((byte)(72)))));
             this.tileMain.AppearanceGroupText.Options.UseFont = true;
             this.tileMain.AppearanceGroupText.Options.UseForeColor = true;
-            this.tileMain.BackColor = System.Drawing.Color.FromArgb(241, 246, 249);
+            this.tileMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(246)))), ((int)(((byte)(249)))));
             this.tileMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tileMain.Location = new System.Drawing.Point(0, 94);
             this.tileMain.Name = "tileMain";
@@ -138,10 +141,10 @@ namespace Winform4System.Forms.Main
             this.tileMain.ShowGroupText = true;
             this.tileMain.Size = new System.Drawing.Size(1360, 634);
             this.tileMain.TabIndex = 1;
-            //
+            // 
             // footerPanel
-            //
-            this.footerPanel.Appearance.BackColor = System.Drawing.Color.FromArgb(226, 235, 241);
+            // 
+            this.footerPanel.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(235)))), ((int)(((byte)(241)))));
             this.footerPanel.Appearance.Options.UseBackColor = true;
             this.footerPanel.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.footerPanel.Controls.Add(this.lblStatus);
@@ -150,21 +153,20 @@ namespace Winform4System.Forms.Main
             this.footerPanel.Name = "footerPanel";
             this.footerPanel.Size = new System.Drawing.Size(1360, 40);
             this.footerPanel.TabIndex = 2;
-            //
+            // 
             // lblStatus
-            //
-            this.lblStatus.Appearance.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblStatus.Appearance.ForeColor = System.Drawing.Color.FromArgb(70, 90, 105);
+            // 
+            this.lblStatus.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(90)))), ((int)(((byte)(105)))));
             this.lblStatus.Appearance.Options.UseFont = true;
             this.lblStatus.Appearance.Options.UseForeColor = true;
             this.lblStatus.Location = new System.Drawing.Point(28, 11);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(45, 15);
+            this.lblStatus.Size = new System.Drawing.Size(48, 15);
             this.lblStatus.TabIndex = 0;
             this.lblStatus.Text = "系統就緒";
-            //
+            // 
             // MainForm
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1360, 768);
@@ -179,11 +181,11 @@ namespace Winform4System.Forms.Main
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.headerPanel)).EndInit();
             this.headerPanel.ResumeLayout(false);
-            this.headerPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.footerPanel)).EndInit();
             this.footerPanel.ResumeLayout(false);
             this.footerPanel.PerformLayout();
             this.ResumeLayout(false);
+
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Winform4System.Forms.Main
                 Text = definition.Title,
                 TextAlignment = TileItemContentAlignment.TopLeft
             };
-            titleElement.Appearance.Normal.Font = new Font("Segoe UI Semibold", 15F, FontStyle.Bold);
+            titleElement.Appearance.Normal.Font = new Font("Microsoft JhengHei UI", 15F, FontStyle.Bold);
             titleElement.Appearance.Normal.Options.UseFont = true;
 
             var descriptionElement = new TileItemElement
@@ -68,7 +68,7 @@ namespace Winform4System.Forms.Main
                 TextAlignment = TileItemContentAlignment.BottomLeft,
                 TextLocation = new Point(0, -2)
             };
-            descriptionElement.Appearance.Normal.Font = new Font("Segoe UI", 9F);
+            descriptionElement.Appearance.Normal.Font = new Font("Microsoft JhengHei UI", 9F);
             descriptionElement.Appearance.Normal.ForeColor = Color.FromArgb(235, 245, 250);
             descriptionElement.Appearance.Normal.Options.UseFont = true;
             descriptionElement.Appearance.Normal.Options.UseForeColor = true;

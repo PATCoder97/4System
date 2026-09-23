@@ -3,6 +3,7 @@ using DevExpress.Skins;
 using DevExpress.UserSkins;
 using DevExpress.XtraEditors;
 using System;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using Winform4System.Business.Services;
@@ -22,6 +23,7 @@ namespace Winform4System
         {
             BonusSkins.Register();
             UserLookAndFeel.Default.SetSkinStyle("WXI");
+            WindowsFormsSettings.DefaultFont = new Font("Microsoft JhengHei UI", 9F, FontStyle.Regular);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
