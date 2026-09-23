@@ -6,3 +6,4 @@ obj/
 **/Logs/
 *.user
 *.suo
+Winform4System/connectionStrings.local.config

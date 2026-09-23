@@ -365,7 +365,11 @@ BEGIN CATCH
 END CATCH;
 GO
 
-CREATE OR ALTER VIEW dbo.vw_auth_UserEffectivePermission
+IF OBJECT_ID(N'dbo.vw_auth_UserEffectivePermission', N'V') IS NOT NULL
+    DROP VIEW dbo.vw_auth_UserEffectivePermission;
+GO
+
+CREATE VIEW dbo.vw_auth_UserEffectivePermission
 AS
     SELECT DISTINCT
         u.UserId,
@@ -405,7 +409,11 @@ AS
     WHERE u.IsActive = 1;
 GO
 
-CREATE OR ALTER PROCEDURE dbo.usp_auth_UserHasPermission
+IF OBJECT_ID(N'dbo.usp_auth_UserHasPermission', N'P') IS NOT NULL
+    DROP PROCEDURE dbo.usp_auth_UserHasPermission;
+GO
+
+CREATE PROCEDURE dbo.usp_auth_UserHasPermission
     @LoginName varchar(100),
     @PermissionCode varchar(150)
 AS
@@ -426,7 +434,11 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE dbo.usp_auth_AddUserToGroup
+IF OBJECT_ID(N'dbo.usp_auth_AddUserToGroup', N'P') IS NOT NULL
+    DROP PROCEDURE dbo.usp_auth_AddUserToGroup;
+GO
+
+CREATE PROCEDURE dbo.usp_auth_AddUserToGroup
     @UserId bigint,
     @GroupCode varchar(80),
     @AssignedByUserId bigint = NULL,
@@ -470,7 +482,11 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE dbo.usp_auth_RemoveUserFromGroup
+IF OBJECT_ID(N'dbo.usp_auth_RemoveUserFromGroup', N'P') IS NOT NULL
+    DROP PROCEDURE dbo.usp_auth_RemoveUserFromGroup;
+GO
+
+CREATE PROCEDURE dbo.usp_auth_RemoveUserFromGroup
     @UserId bigint,
     @GroupCode varchar(80),
     @RemovedByUserId bigint = NULL

@@ -55,6 +55,10 @@ EXEC dbo.usp_auth_AddUserToGroup
 
 Replace the sample domain and identity values before execution.
 
+## Local connection string
+
+The application reads `Winform4System/connectionStrings.local.config`. This file is ignored by Git because it contains machine-specific credentials. Copy `connectionStrings.example.config` to that filename and fill in the real SQL Server values. Never commit the local file.
+
 ## EF6 Database First
 
 After these scripts have been applied to the real database, generate the EDMX inside `Winform4System.DataAccess`. Import only the tables, view and stored procedures needed by the current module. Generated entity files must not contain handwritten business logic; extend them with partial classes or services.

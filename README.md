@@ -24,6 +24,6 @@ Log được tạo trong thư mục `Logs` cạnh file `.exe`.
 
 ## Database
 
-Connection string mẫu tên `MainDatabase` nằm trong `Winform4System/App.config`. Thay server và database khi bắt đầu triển khai DAL. Không đưa mật khẩu thật vào source control.
+`Winform4System/App.config` loads the `MainDatabase` connection from `connectionStrings.local.config`. The local file is ignored by Git; use `connectionStrings.example.config` as the template and never commit real SQL credentials.
 
 Chạy các script trong `Database/Scripts` theo thứ tự trước khi sinh EDMX bằng EF6 Database First. Mô hình phân quyền là `User -> SecurityGroup -> Role -> Permission -> Function`.
