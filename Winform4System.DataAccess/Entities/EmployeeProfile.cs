@@ -9,6 +9,9 @@ namespace Winform4System.DataAccess.Entities
         [Key]
         public long EmployeeProfileId { get; set; }
 
+        [Required, StringLength(10)]
+        public string EmployeeCode { get; set; }
+
         [StringLength(100)]
         public string DisplayNameTW { get; set; }
 

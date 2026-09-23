@@ -9,6 +9,9 @@ namespace Winform4System.DataAccess.Entities
         [Key]
         public int DepartmentId { get; set; }
 
+        [Required, StringLength(30)]
+        public string DepartmentCode { get; set; }
+
         [Required, StringLength(200)]
         public string DepartmentName { get; set; }
     }
