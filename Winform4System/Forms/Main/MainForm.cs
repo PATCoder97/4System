@@ -22,6 +22,8 @@ namespace Winform4System.Forms.Main
         private readonly UserSession _session;
         private readonly Dictionary<TileItem, MenuItemDefinition> _menuByTile = new Dictionary<TileItem, MenuItemDefinition>();
 
+        public bool LogoutRequested { get; private set; }
+
         public MainForm(IMainMenuService menuService, IAppLogger logger, UserSession session)
         {
             _menuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
@@ -149,12 +151,15 @@ namespace Winform4System.Forms.Main
                 return;
 
             _logger.Info(nameof(MainForm), $"User logout requested: {_session.UserId}");
+            LogoutRequested = true;
             Close();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _logger.Info(nameof(MainForm), "Application closing.");
+            _logger.Info(
+                nameof(MainForm),
+                LogoutRequested ? "User session closing for logout." : "Application closing.");
         }
     }
 }

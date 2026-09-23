@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Winform4System.Business.Security;
 using Winform4System.Business.Services;
+using Winform4System.Core.Models;
 using Winform4System.DataAccess.Configuration;
 using Winform4System.DataAccess.Repositories;
 using Winform4System.Forms.Login;
@@ -42,18 +43,31 @@ namespace Winform4System
                     new EfUserAccountRepository(new ConnectionStringProvider()),
                     new PasswordHasher());
 
-                using (var loginForm = new LoginForm(authenticationService, logger))
+                while (true)
                 {
-                    if (loginForm.ShowDialog() != DialogResult.OK)
+                    UserSession session;
+                    using (var loginForm = new LoginForm(authenticationService, logger))
                     {
-                        logger.Info("Program", "Login canceled. Application closing.");
-                        return;
+                        if (loginForm.ShowDialog() != DialogResult.OK)
+                        {
+                            logger.Info("Program", "Login canceled. Application closing.");
+                            return;
+                        }
+
+                        session = loginForm.Session;
                     }
 
                     IMainMenuService menuService = new EfMainMenuService(
                         new EfMainMenuRepository(new ConnectionStringProvider()),
-                        loginForm.Session.UserId);
-                    Application.Run(new MainForm(menuService, logger, loginForm.Session));
+                        session.UserId);
+                    using (var mainForm = new MainForm(menuService, logger, session))
+                    {
+                        Application.Run(mainForm);
+                        if (!mainForm.LogoutRequested)
+                            return;
+                    }
+
+                    logger.Info("Program", "Logout completed. Returning to login screen.");
                 }
             }
             catch (Exception exception)
