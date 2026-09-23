@@ -16,6 +16,14 @@
 - Chỉ sử dụng control WinForms thuần khi DevExpress không có control tương đương, control DevExpress không đáp ứng được hành vi cần thiết, hoặc có lý do kỹ thuật rõ ràng.
 - Khi chuyển giao diện từ `7system`, ưu tiên giữ cùng loại control DevExpress để giao diện, theme và hành vi được đồng nhất.
 
+## Truy cập dữ liệu
+
+- Tất cả truy cập SQL Server trong code ứng dụng phải sử dụng Entity Framework 6 và LINQ thông qua `DbContext`/entity của `Winform4System.DataAccess`.
+- Ưu tiên quy trình Database First: database là nguồn cấu trúc chính; khi schema thay đổi phải cập nhật model/mapping EF tương ứng.
+- Không viết câu SQL thuần trong code C# và không sử dụng `SqlCommand`, `ExecuteSqlCommand`, `SqlQuery` hoặc API tương đương để bỏ qua EF.
+- Mọi thao tác đọc, thêm, sửa, xóa và transaction phải thực hiện qua EF6 repository/service. Không để UI truy cập `DbContext` trực tiếp.
+- SQL thuần chỉ được phép trong các file migration, seed hoặc script quản trị nằm dưới thư mục `Database`; không nhúng các câu lệnh này vào application runtime.
+
 ## Trạng thái card chức năng
 
 - Card chức năng phải lấy màu theo trạng thái phát triển, không gán màu tùy ý theo từng chức năng.

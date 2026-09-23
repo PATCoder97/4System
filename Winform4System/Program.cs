@@ -4,10 +4,11 @@ using DevExpress.UserSkins;
 using DevExpress.XtraEditors;
 using System;
 using System.Drawing;
-using System.Threading;
 using System.Windows.Forms;
+using Winform4System.Business.Security;
 using Winform4System.Business.Services;
-using Winform4System.Core.Models;
+using Winform4System.DataAccess.Configuration;
+using Winform4System.DataAccess.Repositories;
 using Winform4System.Forms.Login;
 using Winform4System.Forms.Main;
 using Winform4System.Logging;
@@ -37,7 +38,11 @@ namespace Winform4System
 
             try
             {
-                using (var loginForm = new LoginForm(logger))
+                var authenticationService = new AuthenticationService(
+                    new EfUserAccountRepository(new ConnectionStringProvider()),
+                    new PasswordHasher());
+
+                using (var loginForm = new LoginForm(authenticationService, logger))
                 {
                     if (loginForm.ShowDialog() != DialogResult.OK)
                     {
@@ -46,9 +51,7 @@ namespace Winform4System
                     }
 
                     IMainMenuService menuService = new DemoMainMenuService();
-                    UserSession session = UserSession.CreateDemo();
-                    session.UserId = loginForm.UserId;
-                    Application.Run(new MainForm(menuService, logger, session));
+                    Application.Run(new MainForm(menuService, logger, loginForm.Session));
                 }
             }
             catch (Exception exception)

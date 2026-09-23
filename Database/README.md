@@ -27,40 +27,22 @@ Use `dbo.vw_auth_UserEffectivePermission` to inspect where a user receives a per
 
 `hr_EmployeeProfile` contains operational employee information. Personal identifiers, home address and other HR-sensitive fields are isolated in the one-to-one table `hr_EmployeePrivate`, so ordinary user-management screens do not need access to them.
 
-## Bootstrap example
+## Bootstrap tài khoản đăng nhập
 
-After creating the first department and employee, create the first Windows-authenticated user and place it in the administrator group:
+Ứng dụng hiện xác thực tài khoản `LOCAL` bằng PBKDF2-SHA256. Không seed tài khoản hoặc mật khẩu mặc định vào source. Sau khi chạy hai script schema, tạo quản trị viên đầu tiên bằng PowerShell; công cụ sẽ hỏi mật khẩu hai lần và không ghi mật khẩu ra console:
 
-```sql
-INSERT dbo.dm_Department(DepartmentCode, DepartmentName)
-VALUES ('IT', N'Phòng hệ thống');
-
-INSERT dbo.hr_EmployeeProfile(EmployeeCode, FullName, DepartmentId)
-SELECT 'EMP001', N'Quản trị viên đầu tiên', DepartmentId
-FROM dbo.dm_Department
-WHERE DepartmentCode = 'IT';
-
-INSERT dbo.auth_UserAccount(EmployeeProfileId, LoginName, DomainAccount, AuthenticationType)
-SELECT EmployeeProfileId, 'EMP001', 'DOMAIN\\EMP001', 'WINDOWS'
-FROM dbo.hr_EmployeeProfile
-WHERE EmployeeCode = 'EMP001';
-
-DECLARE @UserId bigint =
-(
-    SELECT UserId FROM dbo.auth_UserAccount WHERE LoginName = 'EMP001'
-);
-
-EXEC dbo.usp_auth_AddUserToGroup
-    @UserId = @UserId,
-    @GroupCode = 'SYSTEM_ADMINISTRATORS';
+```powershell
+.\Database\Tools\New-LocalUser.ps1 -LoginName ADMIN -SystemAdministrator
 ```
 
-Replace the sample domain and identity values before execution.
+Bỏ `-SystemAdministrator` để tạo tài khoản thuộc nhóm `STANDARD_USERS`. Mật khẩu phải có ít nhất 12 ký tự. Sau khi có module quản lý người dùng, việc tạo tài khoản và đổi mật khẩu nên được thực hiện trên giao diện đó thay vì dùng công cụ bootstrap.
 
 ## Local connection string
 
 The application reads `Winform4System/connectionStrings.local.config`. This file is ignored by Git because it contains machine-specific credentials. Copy `connectionStrings.example.config` to that filename and fill in the real SQL Server values. Never commit the local file.
 
-## EF6 Database First
+## EF6 với database hiện hữu
 
-After these scripts have been applied to the real database, generate the EDMX inside `Winform4System.DataAccess`. Import only the tables, view and stored procedures needed by the current module. Generated entity files must not contain handwritten business logic; extend them with partial classes or services.
+Runtime truy cập database bằng EF6 `DbContext` và LINQ trong `Winform4System.DataAccess`; không dùng SQL thuần trong code C#. Database là nguồn cấu trúc chính và EF không được tự tạo hay tự migrate database (`Database.SetInitializer(null)`).
+
+Chỉ map các bảng/cột mà module hiện tại thực sự sử dụng. Khi schema thay đổi, cập nhật entity/mapping EF tương ứng hoặc refresh EDMX nếu module đã chuyển sang model designer. Không đặt business logic trong entity sinh tự động; mở rộng qua repository, service hoặc partial class.

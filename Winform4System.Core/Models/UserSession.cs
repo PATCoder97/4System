@@ -2,6 +2,7 @@ namespace Winform4System.Core.Models
 {
     public sealed class UserSession
     {
+        public long AccountId { get; set; }
         public string UserId { get; set; }
         public string DisplayName { get; set; }
         public string Department { get; set; }
@@ -11,6 +12,7 @@ namespace Winform4System.Core.Models
         {
             return new UserSession
             {
+                AccountId = 0,
                 UserId = "DEMO001",
                 DisplayName = "示範使用者",
                 Department = "系統管理部",

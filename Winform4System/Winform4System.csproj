@@ -41,6 +41,14 @@
     <Reference Include="DevExpress.Sparkline.v22.1.Core" />
     <Reference Include="DevExpress.XtraEditors.v22.1" />
     <Reference Include="DevExpress.Printing.v22.1.Core" />
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.2\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -90,6 +98,7 @@
     <None Include="Assets\Icons\app-icon-source.png" />
     <None Include="Assets\Icons\app-icon.ico" />
     <None Include="connectionStrings.example.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -117,6 +126,10 @@
     <ProjectReference Include="..\Winform4System.Logging\Winform4System.Logging.csproj">
       <Project>{FA4985DA-837B-4851-B29F-95B014FE7498}</Project>
       <Name>Winform4System.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Winform4System.DataAccess\Winform4System.DataAccess.csproj">
+      <Project>{768B40CC-C94B-4EFA-BBFA-E0592E2C4864}</Project>
+      <Name>Winform4System.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

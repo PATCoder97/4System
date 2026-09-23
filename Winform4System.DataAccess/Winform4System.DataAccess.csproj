@@ -7,8 +7,33 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' "><DebugSymbols>true</DebugSymbols><DebugType>full</DebugType><OutputPath>bin\Debug\</OutputPath><DefineConstants>DEBUG;TRACE</DefineConstants></PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' "><Optimize>true</Optimize><DebugType>pdbonly</DebugType><OutputPath>bin\Release\</OutputPath><DefineConstants>TRACE</DefineConstants></PropertyGroup>
-  <ItemGroup><Reference Include="System" /><Reference Include="System.Configuration" /><Reference Include="System.Core" /></ItemGroup>
-  <ItemGroup><Compile Include="Configuration\ConnectionStringProvider.cs" /><Compile Include="Properties\AssemblyInfo.cs" /></ItemGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.2\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" /><Reference Include="System.ComponentModel.DataAnnotations" /><Reference Include="System.Configuration" /><Reference Include="System.Core" /><Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\ConnectionStringProvider.cs" />
+    <Compile Include="Entities\AuditLog.cs" />
+    <Compile Include="Entities\Department.cs" />
+    <Compile Include="Entities\EmployeeProfile.cs" />
+    <Compile Include="Entities\GroupRole.cs" />
+    <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\SecurityGroup.cs" />
+    <Compile Include="Entities\UserAccount.cs" />
+    <Compile Include="Entities\UserGroup.cs" />
+    <Compile Include="Models\UserAccountRecord.cs" />
+    <Compile Include="Repositories\IUserAccountRepository.cs" />
+    <Compile Include="Repositories\EfUserAccountRepository.cs" />
+    <Compile Include="Winform4SystemDbContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\Database\Scripts\001_core_identity_and_authorization.sql">
       <Link>Database\Scripts\001_core_identity_and_authorization.sql</Link>
@@ -19,6 +44,9 @@
     <None Include="..\Database\README.md">
       <Link>Database\README.md</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
