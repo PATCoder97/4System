@@ -35,8 +35,9 @@ namespace Winform4System.Forms.Main
 
         private void InitializeDashboard()
         {
-            lblWelcome.Text = $"您好，{_session.DisplayName}";
+            lblWelcome.Text = _session.DisplayName;
             lblSession.Text = $"{_session.UserId}  •  {_session.Department}  •  {_session.Role}";
+            LayoutUserLinks();
 
             IReadOnlyList<MenuItemDefinition> menuItems = _menuService.GetMenuItems();
             foreach (IGrouping<string, MenuItemDefinition> groupData in menuItems.GroupBy(item => item.Group))
@@ -48,7 +49,6 @@ namespace Winform4System.Forms.Main
                 tileMain.Groups.Add(group);
             }
 
-            lblStatus.Text = $"系統就緒  •  共 {menuItems.Count} 項功能  •  {DateTime.Now:yyyy/MM/dd HH:mm}";
             _logger.Info(nameof(MainForm), "Main dashboard initialized.");
         }
 
@@ -103,7 +103,7 @@ namespace Winform4System.Forms.Main
                 MessageBoxIcon.Information);
         }
 
-        private void btnUser_Click(object sender, EventArgs e)
+        private void lblWelcome_Click(object sender, EventArgs e)
         {
             XtraMessageBox.Show(
                 $"{_session.DisplayName}\n使用者代碼：{_session.UserId}\n部門：{_session.Department}\n狀態：{_session.Role}",
@@ -112,7 +112,33 @@ namespace Winform4System.Forms.Main
                 MessageBoxIcon.Information);
         }
 
-        private void btnExit_Click(object sender, EventArgs e) => Close();
+        private void headerPanel_SizeChanged(object sender, EventArgs e) => LayoutUserLinks();
+
+        private void LayoutUserLinks()
+        {
+            const int rightMargin = 28;
+            const int top = 10;
+            int right = headerPanel.ClientSize.Width - rightMargin;
+
+            lblLogout.Location = new Point(right - lblLogout.Width, top);
+            lblWelcome.Location = new Point(lblLogout.Left - lblWelcome.Width, top);
+            lblGreeting.Location = new Point(lblWelcome.Left - lblGreeting.Width, top);
+        }
+
+        private void lblLogout_Click(object sender, EventArgs e)
+        {
+            DialogResult result = XtraMessageBox.Show(
+                "確定要登出系統嗎？",
+                "Winform4System",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            _logger.Info(nameof(MainForm), $"User logout requested: {_session.UserId}");
+            Close();
+        }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
