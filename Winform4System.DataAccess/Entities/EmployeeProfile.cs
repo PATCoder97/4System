@@ -9,11 +9,11 @@ namespace Winform4System.DataAccess.Entities
         [Key]
         public long EmployeeProfileId { get; set; }
 
-        [Required, StringLength(200)]
-        public string FullName { get; set; }
-
         [StringLength(100)]
-        public string PreferredName { get; set; }
+        public string DisplayNameTW { get; set; }
+
+        [Required, StringLength(200)]
+        public string DisplayNameVN { get; set; }
 
         public int DepartmentId { get; set; }
     }

@@ -8,10 +8,11 @@ namespace Winform4System.DataAccess.Entities
     {
         [Key]
         public long AuditLogId { get; set; }
-        public long? UserId { get; set; }
+        [StringLength(10)]
+        public string UserId { get; set; }
 
         [StringLength(100)]
-        public string LoginName { get; set; }
+        public string AttemptedUserId { get; set; }
 
         [Required, StringLength(100)]
         public string ActionCode { get; set; }

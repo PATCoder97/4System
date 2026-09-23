@@ -5,8 +5,8 @@ namespace Winform4System.DataAccess.Repositories
 {
     public interface IUserAccountRepository
     {
-        UserAccountRecord FindByLoginName(string normalizedLoginName);
-        DateTime? RecordFailedLogin(long? userId, string loginName, int maximumAttempts, int lockoutMinutes);
-        bool RecordSuccessfulLogin(long userId, string loginName);
+        UserAccountRecord FindByUserId(string userId);
+        DateTime? RecordFailedLogin(string userId, int maximumAttempts, int lockoutMinutes);
+        bool RecordSuccessfulLogin(string userId);
     }
 }

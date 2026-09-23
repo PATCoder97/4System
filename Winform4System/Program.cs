@@ -52,7 +52,7 @@ namespace Winform4System
 
                     IMainMenuService menuService = new EfMainMenuService(
                         new EfMainMenuRepository(new ConnectionStringProvider()),
-                        loginForm.Session.AccountId);
+                        loginForm.Session.UserId);
                     Application.Run(new MainForm(menuService, logger, loginForm.Session));
                 }
             }

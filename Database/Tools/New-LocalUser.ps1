@@ -1,8 +1,8 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)]
-    [ValidatePattern('^[A-Za-z0-9._@-]{1,100}$')]
-    [string]$LoginName,
+    [ValidatePattern('^VNW[0-9]{7}$')]
+    [string]$UserId,
 
     [switch]$SystemAdministrator,
 
@@ -79,7 +79,7 @@ try {
     }
 
     $encodedHash = New-PasswordHash $password
-    $normalizedLoginName = $LoginName.Trim().ToUpperInvariant()
+    $normalizedUserId = $UserId.Trim().ToUpperInvariant()
     $groupCode = if ($SystemAdministrator) { 'SYSTEM_ADMINISTRATORS' } else { 'STANDARD_USERS' }
 
     $connection = New-Object Data.SqlClient.SqlConnection($connectionSetting.connectionString)
@@ -90,35 +90,31 @@ try {
             $insert = $connection.CreateCommand()
             $insert.Transaction = $transaction
             $insert.CommandText = @'
-IF EXISTS (SELECT 1 FROM dbo.auth_UserAccount WHERE NormalizedLoginName = @NormalizedLoginName)
+IF EXISTS (SELECT 1 FROM dbo.auth_UserAccount WHERE UserId = @UserId)
     THROW 51010, N'Tài khoản đã tồn tại.', 1;
 
-INSERT dbo.auth_UserAccount(LoginName, AuthenticationType, PasswordHash)
-VALUES (@LoginName, 'LOCAL', @PasswordHash);
-
-SELECT CAST(SCOPE_IDENTITY() AS bigint);
+INSERT dbo.auth_UserAccount(UserId, AuthenticationType, PasswordHash)
+VALUES (@UserId, 'LOCAL', @PasswordHash);
 '@
-            [void]$insert.Parameters.Add('@NormalizedLoginName', [Data.SqlDbType]::VarChar, 100)
-            [void]$insert.Parameters.Add('@LoginName', [Data.SqlDbType]::VarChar, 100)
+            [void]$insert.Parameters.Add('@UserId', [Data.SqlDbType]::VarChar, 10)
             [void]$insert.Parameters.Add('@PasswordHash', [Data.SqlDbType]::VarChar, 500)
-            $insert.Parameters['@NormalizedLoginName'].Value = $normalizedLoginName
-            $insert.Parameters['@LoginName'].Value = $LoginName.Trim()
+            $insert.Parameters['@UserId'].Value = $normalizedUserId
             $insert.Parameters['@PasswordHash'].Value = $encodedHash
-            $userId = [long]$insert.ExecuteScalar()
+            [void]$insert.ExecuteNonQuery()
 
             $assign = $connection.CreateCommand()
             $assign.Transaction = $transaction
             $assign.CommandText = 'EXEC dbo.usp_auth_AddUserToGroup @UserId, @GroupCode, @AssignedByUserId;'
-            [void]$assign.Parameters.Add('@UserId', [Data.SqlDbType]::BigInt)
+            [void]$assign.Parameters.Add('@UserId', [Data.SqlDbType]::VarChar, 10)
             [void]$assign.Parameters.Add('@GroupCode', [Data.SqlDbType]::VarChar, 80)
-            [void]$assign.Parameters.Add('@AssignedByUserId', [Data.SqlDbType]::BigInt)
-            $assign.Parameters['@UserId'].Value = $userId
+            [void]$assign.Parameters.Add('@AssignedByUserId', [Data.SqlDbType]::VarChar, 10)
+            $assign.Parameters['@UserId'].Value = $normalizedUserId
             $assign.Parameters['@GroupCode'].Value = $groupCode
-            $assign.Parameters['@AssignedByUserId'].Value = $userId
+            $assign.Parameters['@AssignedByUserId'].Value = $normalizedUserId
             [void]$assign.ExecuteNonQuery()
 
             $transaction.Commit()
-            Write-Output "Đã tạo tài khoản '$($LoginName.Trim())' trong nhóm '$groupCode'."
+            Write-Output "Đã tạo tài khoản '$normalizedUserId' trong nhóm '$groupCode'."
         }
         catch {
             $transaction.Rollback()

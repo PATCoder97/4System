@@ -24,6 +24,19 @@
 - Mọi thao tác đọc, thêm, sửa, xóa và transaction phải thực hiện qua EF6 repository/service. Không để UI truy cập `DbContext` trực tiếp.
 - SQL thuần chỉ được phép trong các file migration, seed hoặc script quản trị nằm dưới thư mục `Database`; không nhúng các câu lệnh này vào application runtime.
 
+## Định danh người dùng
+
+- `UserId` là mã nhân viên duy nhất, đồng thời là tài khoản đăng nhập và khóa chính được các bảng nghiệp vụ tham chiếu.
+- Định dạng chuẩn của `UserId` là `VNW` theo sau bởi đúng 7 chữ số, tổng cộng 10 ký tự, ví dụ `VNW0014732`.
+- Lưu `UserId` bằng `varchar(10)`, chuẩn hóa chữ hoa trước khi tra cứu và không tạo thêm khóa người dùng dạng số hoặc cột `LoginName` song song.
+- Mọi khóa ngoại tham chiếu người dùng phải dùng cùng kiểu `varchar(10)` và tên cột `UserId` hoặc tên vai trò rõ ràng như `CreatedByUserId`, `UpdatedByUserId`.
+
+## Tên người dùng
+
+- Hồ sơ nhân viên phải lưu riêng tên Trung phồn thể trong `DisplayNameTW` và tên Việt trong `DisplayNameVN`; không dùng các cột mơ hồ như `FullName` hoặc `PreferredName`.
+- Giao diện zh-Hant ưu tiên hiển thị `DisplayNameTW`, sau đó fallback sang `DisplayNameVN` và cuối cùng là `UserId` nếu hồ sơ chưa có tên.
+- Khi truyền thông tin người dùng qua repository, business service hoặc session, phải giữ riêng cả hai tên để các module sau có thể chọn đúng ngôn ngữ.
+
 ## Trạng thái card chức năng
 
 - Card chức năng phải lấy màu theo trạng thái phát triển, không gán màu tùy ý theo từng chức năng.

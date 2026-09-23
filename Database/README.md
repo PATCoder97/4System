@@ -5,10 +5,18 @@ Run scripts in numeric order against a new SQL Server database:
 1. `001_core_identity_and_authorization.sql`
 2. `002_seed_core_authorization.sql`
 3. `003_main_menu_cards.sql`
+4. `004_standardize_user_id.sql`
+5. `005_standardize_employee_display_names.sql`
 
 The SQL files are UTF-8. If a PowerShell runner is used, read them explicitly with `Get-Content -Encoding UTF8` so Traditional Chinese seed values are not corrupted.
 
 The scripts create the foundation only; no real employee or administrator account is seeded.
+
+## Định danh người dùng
+
+`UserId` là mã nhân viên duy nhất và cũng là tài khoản đăng nhập. Mã này có kiểu `varchar(10)` và định dạng `VNW` + 7 chữ số, ví dụ `VNW0014732`. Các bảng phân quyền, audit và bảng nghiệp vụ tham chiếu trực tiếp khóa này; không duy trì thêm `LoginName` hoặc khóa người dùng dạng số song song.
+
+Tên nhân viên được lưu riêng bằng `DisplayNameTW` (tên Trung phồn thể) và `DisplayNameVN` (tên Việt). Giao diện zh-Hant ưu tiên `DisplayNameTW`, sau đó mới dùng `DisplayNameVN` và cuối cùng là `UserId` khi chưa có hồ sơ nhân viên.
 
 ## Authorization model
 
@@ -33,7 +41,7 @@ Use `dbo.vw_auth_UserEffectivePermission` to inspect where a user receives a per
 Ứng dụng hiện xác thực tài khoản `LOCAL` bằng PBKDF2-SHA256. Không seed tài khoản hoặc mật khẩu mặc định vào source. Sau khi chạy hai script schema, tạo quản trị viên đầu tiên bằng PowerShell; công cụ sẽ hỏi mật khẩu hai lần và không ghi mật khẩu ra console:
 
 ```powershell
-.\Database\Tools\New-LocalUser.ps1 -LoginName ADMIN -SystemAdministrator
+.\Database\Tools\New-LocalUser.ps1 -UserId VNW0014732 -SystemAdministrator
 ```
 
 Bỏ `-SystemAdministrator` để tạo tài khoản thuộc nhóm `STANDARD_USERS`. Mật khẩu phải có ít nhất 8 ký tự. Sau khi có module quản lý người dùng, việc tạo tài khoản và đổi mật khẩu nên được thực hiện trên giao diện đó thay vì dùng công cụ bootstrap.

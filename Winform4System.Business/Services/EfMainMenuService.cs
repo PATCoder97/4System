@@ -10,9 +10,9 @@ namespace Winform4System.Business.Services
     public sealed class EfMainMenuService : IMainMenuService
     {
         private readonly IMainMenuRepository _repository;
-        private readonly long _userId;
+        private readonly string _userId;
 
-        public EfMainMenuService(IMainMenuRepository repository, long userId)
+        public EfMainMenuService(IMainMenuRepository repository, string userId)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _userId = userId;

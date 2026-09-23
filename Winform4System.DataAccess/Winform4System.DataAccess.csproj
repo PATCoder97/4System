@@ -50,6 +50,12 @@
     <None Include="..\Database\Scripts\003_main_menu_cards.sql">
       <Link>Database\Scripts\003_main_menu_cards.sql</Link>
     </None>
+    <None Include="..\Database\Scripts\004_standardize_user_id.sql">
+      <Link>Database\Scripts\004_standardize_user_id.sql</Link>
+    </None>
+    <None Include="..\Database\Scripts\005_standardize_employee_display_names.sql">
+      <Link>Database\Scripts\005_standardize_employee_display_names.sql</Link>
+    </None>
     <None Include="..\Database\README.md">
       <Link>Database\README.md</Link>
     </None>

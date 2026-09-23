@@ -28,13 +28,13 @@ namespace Winform4System.DataAccess.Repositories
             _connectionString = connectionString;
         }
 
-        public UserAccountRecord FindByLoginName(string normalizedLoginName)
+        public UserAccountRecord FindByUserId(string userId)
         {
             using (var context = CreateContext())
             {
                 var accountData =
                     (from user in context.UserAccounts.AsNoTracking()
-                     where user.NormalizedLoginName == normalizedLoginName
+                     where user.UserId == userId
                      join employee in context.EmployeeProfiles.AsNoTracking()
                          on user.EmployeeProfileId equals employee.EmployeeProfileId into employees
                      from employee in employees.DefaultIfEmpty()
@@ -44,13 +44,12 @@ namespace Winform4System.DataAccess.Repositories
                      select new
                      {
                          user.UserId,
-                         user.LoginName,
                          user.AuthenticationType,
                          user.PasswordHash,
                          user.IsActive,
                          user.LockoutEndUtc,
-                         FullName = employee == null ? null : employee.FullName,
-                         PreferredName = employee == null ? null : employee.PreferredName,
+                         DisplayNameTW = employee == null ? null : employee.DisplayNameTW,
+                         DisplayNameVN = employee == null ? null : employee.DisplayNameVN,
                          DepartmentName = department == null ? null : department.DepartmentName
                      })
                     .SingleOrDefault();
@@ -77,37 +76,29 @@ namespace Winform4System.DataAccess.Repositories
                     .Distinct()
                     .ToArray();
 
-                string displayName = !string.IsNullOrWhiteSpace(accountData.PreferredName)
-                    ? accountData.PreferredName
-                    : !string.IsNullOrWhiteSpace(accountData.FullName)
-                        ? accountData.FullName
-                        : accountData.LoginName;
-
                 return new UserAccountRecord
                 {
                     UserId = accountData.UserId,
-                    LoginName = accountData.LoginName,
                     AuthenticationType = accountData.AuthenticationType,
                     PasswordHash = accountData.PasswordHash,
                     IsActive = accountData.IsActive,
                     LockoutEndUtc = accountData.LockoutEndUtc.HasValue
                         ? DateTime.SpecifyKind(accountData.LockoutEndUtc.Value, DateTimeKind.Utc)
                         : (DateTime?)null,
-                    DisplayName = displayName,
+                    DisplayNameTW = accountData.DisplayNameTW,
+                    DisplayNameVN = accountData.DisplayNameVN,
                     Department = accountData.DepartmentName ?? string.Empty,
                     Roles = string.Join("、", roleNames)
                 };
             }
         }
 
-        public DateTime? RecordFailedLogin(long? userId, string loginName, int maximumAttempts, int lockoutMinutes)
+        public DateTime? RecordFailedLogin(string userId, int maximumAttempts, int lockoutMinutes)
         {
             using (var context = CreateContext())
             using (var transaction = context.Database.BeginTransaction(IsolationLevel.Serializable))
             {
-                UserAccount account = userId.HasValue
-                    ? context.UserAccounts.SingleOrDefault(item => item.UserId == userId.Value)
-                    : null;
+                UserAccount account = context.UserAccounts.SingleOrDefault(item => item.UserId == userId);
 
                 DateTime? lockoutEndUtc = null;
                 if (account != null)
@@ -124,7 +115,7 @@ namespace Winform4System.DataAccess.Repositories
 
                 context.AuditLogs.Add(CreateAuditLog(
                     account?.UserId,
-                    loginName,
+                    userId,
                     "AUTH.LOGIN.FAILED",
                     "登入失敗。"));
                 context.SaveChanges();
@@ -133,7 +124,7 @@ namespace Winform4System.DataAccess.Repositories
             }
         }
 
-        public bool RecordSuccessfulLogin(long userId, string loginName)
+        public bool RecordSuccessfulLogin(string userId)
         {
             using (var context = CreateContext())
             using (var transaction = context.Database.BeginTransaction(IsolationLevel.Serializable))
@@ -153,7 +144,7 @@ namespace Winform4System.DataAccess.Repositories
                 account.UpdatedAt = utcNow;
                 context.AuditLogs.Add(CreateAuditLog(
                     account.UserId,
-                    loginName,
+                    userId,
                     "AUTH.LOGIN.SUCCEEDED",
                     "登入成功。"));
                 context.SaveChanges();
@@ -167,12 +158,12 @@ namespace Winform4System.DataAccess.Repositories
             return new Winform4SystemDbContext(_connectionString);
         }
 
-        private static AuditLog CreateAuditLog(long? userId, string loginName, string actionCode, string description)
+        private static AuditLog CreateAuditLog(string userId, string attemptedUserId, string actionCode, string description)
         {
             return new AuditLog
             {
                 UserId = userId,
-                LoginName = loginName,
+                AttemptedUserId = attemptedUserId,
                 ActionCode = actionCode,
                 Description = description,
                 MachineName = Environment.MachineName

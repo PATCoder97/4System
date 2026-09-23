@@ -5,6 +5,6 @@ namespace Winform4System.DataAccess.Repositories
 {
     public interface IMainMenuRepository
     {
-        IReadOnlyList<MainMenuItemRecord> GetAuthorizedMenuItems(long userId);
+        IReadOnlyList<MainMenuItemRecord> GetAuthorizedMenuItems(string userId);
     }
 }

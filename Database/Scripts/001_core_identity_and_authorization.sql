@@ -58,9 +58,9 @@ BEGIN TRY
         CREATE TABLE dbo.hr_EmployeeProfile
         (
             EmployeeProfileId  bigint IDENTITY(1,1) NOT NULL,
-            EmployeeCode       varchar(30) NOT NULL,
-            FullName           nvarchar(200) NOT NULL,
-            PreferredName      nvarchar(100) NULL,
+            EmployeeCode       varchar(10) NOT NULL,
+            DisplayNameTW      nvarchar(100) NULL,
+            DisplayNameVN      nvarchar(200) NOT NULL,
             DepartmentId       int NOT NULL,
             JobTitleId         int NULL,
             WorkEmail          varchar(200) NULL,
@@ -74,6 +74,9 @@ BEGIN TRY
             RowVersion         rowversion NOT NULL,
             CONSTRAINT PK_hr_EmployeeProfile PRIMARY KEY CLUSTERED (EmployeeProfileId),
             CONSTRAINT UQ_hr_EmployeeProfile_EmployeeCode UNIQUE (EmployeeCode),
+            CONSTRAINT CK_hr_EmployeeProfile_EmployeeCode CHECK
+                (EmployeeCode = UPPER(EmployeeCode)
+                 AND EmployeeCode LIKE 'VNW[0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
             CONSTRAINT FK_hr_EmployeeProfile_Department FOREIGN KEY (DepartmentId)
                 REFERENCES dbo.dm_Department(DepartmentId),
             CONSTRAINT FK_hr_EmployeeProfile_JobTitle FOREIGN KEY (JobTitleId)
@@ -84,7 +87,7 @@ BEGIN TRY
 
         CREATE INDEX IX_hr_EmployeeProfile_Department_Status
             ON dbo.hr_EmployeeProfile(DepartmentId, EmploymentStatus)
-            INCLUDE (EmployeeCode, FullName, JobTitleId);
+            INCLUDE (EmployeeCode, DisplayNameTW, DisplayNameVN, JobTitleId);
     END;
 
     IF OBJECT_ID(N'dbo.hr_EmployeePrivate', N'U') IS NULL
@@ -117,10 +120,8 @@ BEGIN TRY
     BEGIN
         CREATE TABLE dbo.auth_UserAccount
         (
-            UserId              bigint IDENTITY(1,1) NOT NULL,
+            UserId              varchar(10) NOT NULL,
             EmployeeProfileId   bigint NULL,
-            LoginName           varchar(100) NOT NULL,
-            NormalizedLoginName AS UPPER(LoginName) PERSISTED,
             DomainAccount       varchar(200) NULL,
             AuthenticationType  varchar(20) NOT NULL CONSTRAINT DF_auth_UserAccount_AuthType DEFAULT ('WINDOWS'),
             PasswordHash        varchar(500) NULL,
@@ -133,11 +134,13 @@ BEGIN TRY
             UpdatedAt           datetime2(0) NULL,
             RowVersion          rowversion NOT NULL,
             CONSTRAINT PK_auth_UserAccount PRIMARY KEY CLUSTERED (UserId),
-            CONSTRAINT UQ_auth_UserAccount_Login UNIQUE (NormalizedLoginName),
             CONSTRAINT UQ_auth_UserAccount_Employee UNIQUE (EmployeeProfileId),
             CONSTRAINT FK_auth_UserAccount_Employee FOREIGN KEY (EmployeeProfileId)
                 REFERENCES dbo.hr_EmployeeProfile(EmployeeProfileId),
             CONSTRAINT CK_auth_UserAccount_AuthType CHECK (AuthenticationType IN ('WINDOWS', 'LOCAL')),
+            CONSTRAINT CK_auth_UserAccount_UserId CHECK
+                (UserId = UPPER(UserId)
+                 AND UserId LIKE 'VNW[0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
             CONSTRAINT CK_auth_UserAccount_Password CHECK
             (
                 AuthenticationType = 'WINDOWS'
@@ -151,7 +154,7 @@ BEGIN TRY
 
         CREATE INDEX IX_auth_UserAccount_Active
             ON dbo.auth_UserAccount(IsActive, UserId)
-            INCLUDE (LoginName, EmployeeProfileId, LockoutEndUtc);
+            INCLUDE (EmployeeProfileId, LockoutEndUtc);
     END;
 
     IF OBJECT_ID(N'dbo.auth_SecurityGroup', N'U') IS NULL
@@ -241,10 +244,10 @@ BEGIN TRY
     BEGIN
         CREATE TABLE dbo.auth_UserGroup
         (
-            UserId            bigint NOT NULL,
+            UserId            varchar(10) NOT NULL,
             GroupId           int NOT NULL,
             AssignedAt        datetime2(0) NOT NULL CONSTRAINT DF_auth_UserGroup_AssignedAt DEFAULT (SYSUTCDATETIME()),
-            AssignedByUserId  bigint NULL,
+            AssignedByUserId  varchar(10) NULL,
             ExpiresAt         datetime2(0) NULL,
             IsActive          bit NOT NULL CONSTRAINT DF_auth_UserGroup_Active DEFAULT (1),
             CONSTRAINT PK_auth_UserGroup PRIMARY KEY CLUSTERED (UserId, GroupId),
@@ -269,7 +272,7 @@ BEGIN TRY
             GroupId          int NOT NULL,
             RoleId           int NOT NULL,
             AssignedAt       datetime2(0) NOT NULL CONSTRAINT DF_auth_GroupRole_AssignedAt DEFAULT (SYSUTCDATETIME()),
-            AssignedByUserId bigint NULL,
+            AssignedByUserId varchar(10) NULL,
             IsActive         bit NOT NULL CONSTRAINT DF_auth_GroupRole_Active DEFAULT (1),
             CONSTRAINT PK_auth_GroupRole PRIMARY KEY CLUSTERED (GroupId, RoleId),
             CONSTRAINT FK_auth_GroupRole_Group FOREIGN KEY (GroupId)
@@ -292,7 +295,7 @@ BEGIN TRY
             RoleId           int NOT NULL,
             PermissionId     int NOT NULL,
             AssignedAt       datetime2(0) NOT NULL CONSTRAINT DF_auth_RolePermission_AssignedAt DEFAULT (SYSUTCDATETIME()),
-            AssignedByUserId bigint NULL,
+            AssignedByUserId varchar(10) NULL,
             IsActive         bit NOT NULL CONSTRAINT DF_auth_RolePermission_Active DEFAULT (1),
             CONSTRAINT PK_auth_RolePermission PRIMARY KEY CLUSTERED (RoleId, PermissionId),
             CONSTRAINT FK_auth_RolePermission_Role FOREIGN KEY (RoleId)
@@ -319,7 +322,7 @@ BEGIN TRY
             Description     nvarchar(500) NULL,
             IsSensitive     bit NOT NULL CONSTRAINT DF_sys_Setting_Sensitive DEFAULT (0),
             UpdatedAt       datetime2(0) NOT NULL CONSTRAINT DF_sys_Setting_UpdatedAt DEFAULT (SYSUTCDATETIME()),
-            UpdatedByUserId bigint NULL,
+            UpdatedByUserId varchar(10) NULL,
             RowVersion      rowversion NOT NULL,
             CONSTRAINT PK_sys_Setting PRIMARY KEY CLUSTERED (SettingKey),
             CONSTRAINT FK_sys_Setting_UpdatedBy FOREIGN KEY (UpdatedByUserId)
@@ -334,8 +337,8 @@ BEGIN TRY
         (
             AuditLogId    bigint IDENTITY(1,1) NOT NULL,
             CreatedAt     datetime2(3) NOT NULL CONSTRAINT DF_audit_AuditLog_CreatedAt DEFAULT (SYSUTCDATETIME()),
-            UserId        bigint NULL,
-            LoginName     varchar(100) NULL,
+            UserId        varchar(10) NULL,
+            AttemptedUserId varchar(100) NULL,
             ActionCode    varchar(100) NOT NULL,
             EntityName    varchar(128) NULL,
             EntityId      varchar(100) NULL,
@@ -373,7 +376,6 @@ CREATE VIEW dbo.vw_auth_UserEffectivePermission
 AS
     SELECT DISTINCT
         u.UserId,
-        u.LoginName,
         g.GroupId,
         g.GroupCode,
         r.RoleId,
@@ -414,7 +416,7 @@ IF OBJECT_ID(N'dbo.usp_auth_UserHasPermission', N'P') IS NOT NULL
 GO
 
 CREATE PROCEDURE dbo.usp_auth_UserHasPermission
-    @LoginName varchar(100),
+    @UserId varchar(10),
     @PermissionCode varchar(150)
 AS
 BEGIN
@@ -426,7 +428,7 @@ BEGIN
         (
             SELECT 1
             FROM dbo.vw_auth_UserEffectivePermission
-            WHERE LoginName = @LoginName
+            WHERE UserId = @UserId
               AND PermissionCode = @PermissionCode
         ) THEN 1 ELSE 0 END
         AS bit
@@ -439,9 +441,9 @@ IF OBJECT_ID(N'dbo.usp_auth_AddUserToGroup', N'P') IS NOT NULL
 GO
 
 CREATE PROCEDURE dbo.usp_auth_AddUserToGroup
-    @UserId bigint,
+    @UserId varchar(10),
     @GroupCode varchar(80),
-    @AssignedByUserId bigint = NULL,
+    @AssignedByUserId varchar(10) = NULL,
     @ExpiresAt datetime2(0) = NULL
 AS
 BEGIN
@@ -487,9 +489,9 @@ IF OBJECT_ID(N'dbo.usp_auth_RemoveUserFromGroup', N'P') IS NOT NULL
 GO
 
 CREATE PROCEDURE dbo.usp_auth_RemoveUserFromGroup
-    @UserId bigint,
+    @UserId varchar(10),
     @GroupCode varchar(80),
-    @RemovedByUserId bigint = NULL
+    @RemovedByUserId varchar(10) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;

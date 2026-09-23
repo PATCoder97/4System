@@ -78,7 +78,8 @@ namespace Winform4System.Forms.Login
             this.txtUserId.Properties.Appearance.Options.UseForeColor = true;
             this.txtUserId.Properties.AutoHeight = false;
             this.txtUserId.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.txtUserId.Properties.MaxLength = 50;
+            this.txtUserId.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.txtUserId.Properties.MaxLength = 10;
             this.txtUserId.Size = new System.Drawing.Size(197, 30);
             this.txtUserId.TabIndex = 0;
             // 

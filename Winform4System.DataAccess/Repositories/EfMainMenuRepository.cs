@@ -27,7 +27,7 @@ namespace Winform4System.DataAccess.Repositories
             _connectionString = connectionString;
         }
 
-        public IReadOnlyList<MainMenuItemRecord> GetAuthorizedMenuItems(long userId)
+        public IReadOnlyList<MainMenuItemRecord> GetAuthorizedMenuItems(string userId)
         {
             using (var context = new Winform4SystemDbContext(_connectionString))
             {

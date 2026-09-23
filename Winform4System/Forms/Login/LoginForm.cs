@@ -2,6 +2,7 @@ using DevExpress.XtraEditors;
 using System;
 using System.Data;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Winform4System.Business.Services;
@@ -12,6 +13,7 @@ namespace Winform4System.Forms.Login
 {
     public partial class LoginForm : XtraForm
     {
+        private static readonly Regex UserIdPattern = new Regex(@"^VNW\d{7}$", RegexOptions.CultureInvariant);
         private readonly IAppLogger _logger;
         private readonly IAuthenticationService _authenticationService;
         private bool _isAuthenticating;
@@ -43,6 +45,17 @@ namespace Winform4System.Forms.Login
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
                 (string.IsNullOrWhiteSpace(UserId) ? (Control)txtUserId : txtPassword).Focus();
+                return;
+            }
+
+            if (!UserIdPattern.IsMatch(UserId))
+            {
+                XtraMessageBox.Show(
+                    "使用者代碼格式必須為 VNW 加上 7 位數字，例如 VNW0014732。",
+                    ApplicationMetadata.DisplayName,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                txtUserId.Focus();
                 return;
             }
 

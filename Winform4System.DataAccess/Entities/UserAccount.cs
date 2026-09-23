@@ -8,15 +8,11 @@ namespace Winform4System.DataAccess.Entities
     public sealed class UserAccount
     {
         [Key]
-        public long UserId { get; set; }
+        [StringLength(10)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string UserId { get; set; }
 
         public long? EmployeeProfileId { get; set; }
-
-        [Required, StringLength(100)]
-        public string LoginName { get; set; }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed), StringLength(100)]
-        public string NormalizedLoginName { get; private set; }
 
         [Required, StringLength(20)]
         public string AuthenticationType { get; set; }
