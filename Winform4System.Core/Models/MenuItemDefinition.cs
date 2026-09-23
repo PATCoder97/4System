@@ -1,16 +1,27 @@
-using System.Drawing;
-
 namespace Winform4System.Core.Models
 {
+    public enum MenuDevelopmentStatus
+    {
+        NotStarted,
+        InProgress,
+        Completed
+    }
+
     public sealed class MenuItemDefinition
     {
-        public MenuItemDefinition(string code, string group, string title, string description, Color accentColor, bool isWide = true)
+        public MenuItemDefinition(
+            string code,
+            string group,
+            string title,
+            string description,
+            MenuDevelopmentStatus developmentStatus,
+            bool isWide = true)
         {
             Code = code;
             Group = group;
             Title = title;
             Description = description;
-            AccentColor = accentColor;
+            DevelopmentStatus = developmentStatus;
             IsWide = isWide;
         }
 
@@ -18,7 +29,7 @@ namespace Winform4System.Core.Models
         public string Group { get; }
         public string Title { get; }
         public string Description { get; }
-        public Color AccentColor { get; }
+        public MenuDevelopmentStatus DevelopmentStatus { get; }
         public bool IsWide { get; }
     }
 }

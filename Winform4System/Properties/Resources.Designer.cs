@@ -71,11 +71,11 @@ namespace Winform4System.Properties
         /// <summary>
         ///   Looks up the watercolor background for the rolling mill dashboard.
         /// </summary>
-        internal static global::System.Drawing.Bitmap MainBackgroundRollingMill
+        internal static global::System.Drawing.Bitmap MainDashboardBackground
         {
             get
             {
-                object obj = ResourceManager.GetObject("MainBackgroundRollingMill", resourceCulture);
+                object obj = ResourceManager.GetObject("MainDashboardBackground", resourceCulture);
                 return ((global::System.Drawing.Bitmap)(obj));
             }
         }

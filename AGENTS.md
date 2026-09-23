@@ -15,3 +15,11 @@
 - Ưu tiên sử dụng control của DevExpress cho form và các thành phần giao diện, ví dụ `XtraForm`, `SimpleButton`, `TextEdit`, `ButtonEdit`, `LabelControl`, `PanelControl`, `GridControl` và `LayoutControl`.
 - Chỉ sử dụng control WinForms thuần khi DevExpress không có control tương đương, control DevExpress không đáp ứng được hành vi cần thiết, hoặc có lý do kỹ thuật rõ ràng.
 - Khi chuyển giao diện từ `7system`, ưu tiên giữ cùng loại control DevExpress để giao diện, theme và hành vi được đồng nhất.
+
+## Trạng thái card chức năng
+
+- Card chức năng phải lấy màu theo trạng thái phát triển, không gán màu tùy ý theo từng chức năng.
+- Chưa triển khai (`NotStarted`): tím `RGB(128, 57, 123)`.
+- Đang phát triển (`InProgress`): nâu đỏ `RGB(183, 71, 42)`.
+- Đã hoàn thành (`Completed`): xanh `RGB(16, 110, 190)`.
+- Tiêu đề card trên Main dùng font `DFKai-SB` cỡ `26F`, theo giao diện của `7system`.

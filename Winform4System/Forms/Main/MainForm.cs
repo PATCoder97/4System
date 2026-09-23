@@ -13,6 +13,10 @@ namespace Winform4System.Forms.Main
 {
     public partial class MainForm : XtraForm
     {
+        private static readonly Color NotStartedColor = Color.FromArgb(128, 57, 123);
+        private static readonly Color InProgressColor = Color.FromArgb(183, 71, 42);
+        private static readonly Color CompletedColor = Color.FromArgb(16, 110, 190);
+
         private readonly IMainMenuService _menuService;
         private readonly IAppLogger _logger;
         private readonly UserSession _session;
@@ -59,7 +63,7 @@ namespace Winform4System.Forms.Main
                 Text = definition.Title,
                 TextAlignment = TileItemContentAlignment.TopLeft
             };
-            titleElement.Appearance.Normal.Font = new Font("Microsoft JhengHei UI", 15F, FontStyle.Bold);
+            titleElement.Appearance.Normal.Font = new Font("DFKai-SB", 26F, FontStyle.Regular);
             titleElement.Appearance.Normal.Options.UseFont = true;
 
             var descriptionElement = new TileItemElement
@@ -68,7 +72,7 @@ namespace Winform4System.Forms.Main
                 TextAlignment = TileItemContentAlignment.BottomLeft,
                 TextLocation = new Point(0, -2)
             };
-            descriptionElement.Appearance.Normal.Font = new Font("Microsoft JhengHei UI", 9F);
+            descriptionElement.Appearance.Normal.Font = new Font("DFKai-SB", 12F);
             descriptionElement.Appearance.Normal.ForeColor = Color.FromArgb(235, 245, 250);
             descriptionElement.Appearance.Normal.Options.UseFont = true;
             descriptionElement.Appearance.Normal.Options.UseForeColor = true;
@@ -78,7 +82,7 @@ namespace Winform4System.Forms.Main
                 Name = "tile" + definition.Code,
                 ItemSize = definition.IsWide ? TileItemSize.Wide : TileItemSize.Medium
             };
-            tile.AppearanceItem.Normal.BackColor = definition.AccentColor;
+            tile.AppearanceItem.Normal.BackColor = GetDevelopmentStatusColor(definition.DevelopmentStatus);
             tile.AppearanceItem.Normal.BorderColor = Color.FromArgb(45, 255, 255, 255);
             tile.AppearanceItem.Normal.Options.UseBackColor = true;
             tile.AppearanceItem.Normal.Options.UseBorderColor = true;
@@ -88,6 +92,19 @@ namespace Winform4System.Forms.Main
 
             _menuByTile[tile] = definition;
             return tile;
+        }
+
+        private static Color GetDevelopmentStatusColor(MenuDevelopmentStatus status)
+        {
+            switch (status)
+            {
+                case MenuDevelopmentStatus.Completed:
+                    return CompletedColor;
+                case MenuDevelopmentStatus.InProgress:
+                    return InProgressColor;
+                default:
+                    return NotStartedColor;
+            }
         }
 
         private void MenuTile_ItemClick(object sender, TileItemEventArgs e)

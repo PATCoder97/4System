@@ -114,10 +114,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="MainBackgroundRollingMill" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\Images\main-background-rolling-mill-v1.png;System.Drawing.Bitmap, System.Drawing</value>
+  <data name="MainDashboardBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Images\main-dashboard-background.png;System.Drawing.Bitmap, System.Drawing</value>
   </data>
   <data name="LoginBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\Images\login-background-rolling-mill-v2.png;System.Drawing.Bitmap, System.Drawing</value>
+    <value>..\Assets\Images\login-background.png;System.Drawing.Bitmap, System.Drawing</value>
   </data>
 </root>

@@ -51,7 +51,7 @@ namespace Winform4System.Forms.Main
             // 
             // lblAppName
             // 
-            this.lblAppName.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAppName.Appearance.Font = new System.Drawing.Font("DFKai-SB", 32F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblAppName.Appearance.ForeColor = System.Drawing.Color.White;
             this.lblAppName.Appearance.Options.UseFont = true;
             this.lblAppName.Appearance.Options.UseForeColor = true;
@@ -67,7 +67,7 @@ namespace Winform4System.Forms.Main
             // lblGreeting
             // 
             this.lblGreeting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblGreeting.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblGreeting.Appearance.Font = new System.Drawing.Font("DFKai-SB", 11F, System.Drawing.FontStyle.Bold);
             this.lblGreeting.Appearance.ForeColor = System.Drawing.Color.White;
             this.lblGreeting.Appearance.Options.UseFont = true;
             this.lblGreeting.Appearance.Options.UseForeColor = true;
@@ -80,7 +80,7 @@ namespace Winform4System.Forms.Main
             // lblWelcome
             // 
             this.lblWelcome.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblWelcome.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblWelcome.Appearance.Font = new System.Drawing.Font("DFKai-SB", 11F, System.Drawing.FontStyle.Bold);
             this.lblWelcome.Appearance.ForeColor = System.Drawing.Color.White;
             this.lblWelcome.Appearance.Options.UseFont = true;
             this.lblWelcome.Appearance.Options.UseForeColor = true;
@@ -95,6 +95,7 @@ namespace Winform4System.Forms.Main
             // lblSession
             // 
             this.lblSession.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSession.Appearance.Font = new System.Drawing.Font("DFKai-SB", 10F, System.Drawing.FontStyle.Regular);
             this.lblSession.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(205)))), ((int)(((byte)(222)))));
             this.lblSession.Appearance.Options.UseFont = true;
             this.lblSession.Appearance.Options.UseForeColor = true;
@@ -111,7 +112,7 @@ namespace Winform4System.Forms.Main
             // lblLogout
             // 
             this.lblLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblLogout.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblLogout.Appearance.Font = new System.Drawing.Font("DFKai-SB", 11F, System.Drawing.FontStyle.Bold);
             this.lblLogout.Appearance.ForeColor = System.Drawing.Color.LightCoral;
             this.lblLogout.Appearance.Options.UseFont = true;
             this.lblLogout.Appearance.Options.UseForeColor = true;
@@ -127,7 +128,7 @@ namespace Winform4System.Forms.Main
             // 
             this.tileMain.AllowDrag = false;
             this.tileMain.AllowDragTilesBetweenGroups = false;
-            this.tileMain.AppearanceGroupText.Font = new System.Drawing.Font("Microsoft JhengHei UI", 18F, System.Drawing.FontStyle.Bold);
+            this.tileMain.AppearanceGroupText.Font = new System.Drawing.Font("DFKai-SB", 18F, System.Drawing.FontStyle.Bold);
             this.tileMain.AppearanceGroupText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(55)))), ((int)(((byte)(72)))));
             this.tileMain.AppearanceGroupText.Options.UseFont = true;
             this.tileMain.AppearanceGroupText.Options.UseForeColor = true;
@@ -144,7 +145,9 @@ namespace Winform4System.Forms.Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::Winform4System.Properties.Resources.MainBackgroundRollingMill;
+            this.Appearance.Font = new System.Drawing.Font("DFKai-SB", 9F, System.Drawing.FontStyle.Regular);
+            this.Appearance.Options.UseFont = true;
+            this.BackgroundImage = global::Winform4System.Properties.Resources.MainDashboardBackground;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1360, 768);
             this.Controls.Add(this.tileMain);

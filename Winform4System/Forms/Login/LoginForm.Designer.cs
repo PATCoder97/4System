@@ -20,6 +20,12 @@ namespace Winform4System.Forms.Login
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
+            DevExpress.XtraEditors.Controls.EditorButtonImageOptions passwordButtonImageOptions = new DevExpress.XtraEditors.Controls.EditorButtonImageOptions();
+            DevExpress.Utils.SerializableAppearanceObject passwordButtonAppearance = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject passwordButtonHoveredAppearance = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject passwordButtonPressedAppearance = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject passwordButtonDisabledAppearance = new DevExpress.Utils.SerializableAppearanceObject();
             this.btnCancel = new DevExpress.XtraEditors.SimpleButton();
             this.btnLogin = new DevExpress.XtraEditors.SimpleButton();
             this.txtUserId = new DevExpress.XtraEditors.TextEdit();
@@ -65,7 +71,7 @@ namespace Winform4System.Forms.Login
             this.txtUserId.Location = new System.Drawing.Point(500, 213);
             this.txtUserId.Name = "txtUserId";
             this.txtUserId.Properties.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
-            this.txtUserId.Properties.Appearance.Font = new System.Drawing.Font("DFKai-SB", 14F);
+            this.txtUserId.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 12F);
             this.txtUserId.Properties.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(78)))), ((int)(((byte)(162)))));
             this.txtUserId.Properties.Appearance.Options.UseBackColor = true;
             this.txtUserId.Properties.Appearance.Options.UseFont = true;
@@ -81,15 +87,17 @@ namespace Winform4System.Forms.Login
             this.txtPassword.Location = new System.Drawing.Point(500, 278);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Properties.Appearance.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
-            this.txtPassword.Properties.Appearance.Font = new System.Drawing.Font("DFKai-SB", 14F);
+            this.txtPassword.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 12F);
             this.txtPassword.Properties.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(78)))), ((int)(((byte)(162)))));
             this.txtPassword.Properties.Appearance.Options.UseBackColor = true;
             this.txtPassword.Properties.Appearance.Options.UseFont = true;
             this.txtPassword.Properties.Appearance.Options.UseForeColor = true;
             this.txtPassword.Properties.AutoHeight = false;
             this.txtPassword.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            passwordButtonImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("editorButtonImageOptions1.SvgImage")));
+            passwordButtonImageOptions.SvgImageSize = new System.Drawing.Size(16, 16);
             this.txtPassword.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, passwordButtonImageOptions, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), passwordButtonAppearance, passwordButtonHoveredAppearance, passwordButtonPressedAppearance, passwordButtonDisabledAppearance, "顯示／隱藏密碼", null, null, DevExpress.Utils.ToolTipAnchor.Default)});
             this.txtPassword.Properties.MaxLength = 100;
             this.txtPassword.Properties.UseSystemPasswordChar = true;
             this.txtPassword.Size = new System.Drawing.Size(197, 30);
