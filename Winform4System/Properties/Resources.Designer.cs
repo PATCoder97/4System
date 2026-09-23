@@ -67,5 +67,17 @@ namespace Winform4System.Properties
                 resourceCulture = value;
             }
         }
+
+        /// <summary>
+        ///   Looks up the watercolor background for the rolling mill dashboard.
+        /// </summary>
+        internal static global::System.Drawing.Bitmap MainBackgroundRollingMill
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("MainBackgroundRollingMill", resourceCulture);
+                return ((global::System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

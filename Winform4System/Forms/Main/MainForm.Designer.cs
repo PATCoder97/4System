@@ -131,7 +131,7 @@ namespace Winform4System.Forms.Main
             this.tileMain.AppearanceGroupText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(55)))), ((int)(((byte)(72)))));
             this.tileMain.AppearanceGroupText.Options.UseFont = true;
             this.tileMain.AppearanceGroupText.Options.UseForeColor = true;
-            this.tileMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(246)))), ((int)(((byte)(249)))));
+            this.tileMain.BackColor = System.Drawing.Color.Transparent;
             this.tileMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tileMain.Location = new System.Drawing.Point(0, 72);
             this.tileMain.Name = "tileMain";
@@ -144,6 +144,8 @@ namespace Winform4System.Forms.Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::Winform4System.Properties.Resources.MainBackgroundRollingMill;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1360, 768);
             this.Controls.Add(this.tileMain);
             this.Controls.Add(this.headerPanel);
