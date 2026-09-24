@@ -10,7 +10,7 @@ Tài liệu này dùng làm backlog triển khai dần cho module `系統管理`
 - [x] `功能卡管理`: chỉnh cấu hình card chức năng.
 - [x] `安全性群組管理`: quản lý nhóm, vai trò của nhóm và xem thành viên.
 - [x] `角色與權限管理`: quản lý vai trò, ma trận quyền và phạm vi ảnh hưởng.
-- [ ] `稽核記錄`: chưa có giao diện tra cứu nhật ký.
+- [x] `稽核記錄`: tra cứu, xem chi tiết và xuất nhật ký theo quyền.
 - [ ] Quản trị vòng đời và bảo mật tài khoản chưa đầy đủ.
 
 ## Nguyên tắc phân quyền
@@ -107,14 +107,14 @@ Permission đề xuất:
 
 Phạm vi:
 
-- [ ] Ghi audit khi thêm/sửa/ngừng nhân viên và tài khoản.
-- [ ] Ghi audit khi thay đổi nhóm của nhân viên.
-- [ ] Ghi audit khi thay đổi nhóm, vai trò hoặc permission.
-- [ ] Ghi đăng nhập thành công, thất bại, khóa và mở khóa tài khoản.
-- [ ] Danh sách lọc theo thời gian, người thao tác, hành động, đối tượng và kết quả.
-- [ ] Xem chi tiết dữ liệu trước/sau đối với thay đổi quan trọng.
-- [ ] Xuất Excel theo permission.
-- [ ] Nhật ký chỉ đọc, không cho sửa hoặc xóa trên giao diện.
+- [x] Ghi audit khi thêm/sửa/ngừng nhân viên và tài khoản.
+- [x] Ghi audit khi thay đổi nhóm của nhân viên.
+- [x] Ghi audit khi thay đổi nhóm, vai trò hoặc permission.
+- [x] Ghi đăng nhập thành công, thất bại, khóa và tự động mở khóa tài khoản.
+- [x] Danh sách lọc theo thời gian, người thao tác, hành động và đối tượng.
+- [x] Xem chi tiết mô tả, dữ liệu JSON và mã liên kết của bản ghi.
+- [x] Xuất Excel theo permission và ghi audit cho thao tác xuất.
+- [x] Nhật ký chỉ đọc, không cho sửa hoặc xóa trên giao diện.
 
 Tiêu chí hoàn thành:
 

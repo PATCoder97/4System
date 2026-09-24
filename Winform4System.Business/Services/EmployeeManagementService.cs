@@ -75,6 +75,9 @@ namespace Winform4System.Business.Services
                 var employee = model.EmployeeProfileId.HasValue
                     ? context.EmployeeProfiles.FirstOrDefault(x => x.EmployeeProfileId == model.EmployeeProfileId.Value)
                     : null;
+                bool isNew = employee == null;
+                var existingAccount = context.UserAccounts.FirstOrDefault(x => x.UserId == userId);
+                var before = isNew ? null : CreateAuditSnapshot(employee, existingAccount);
                 if (model.EmployeeProfileId.HasValue && employee == null)
                     throw new InvalidOperationException("找不到需要更新的人員資料。");
                 if (employee == null)
@@ -99,7 +102,7 @@ namespace Winform4System.Business.Services
                 employee.UpdatedAt = DateTime.UtcNow;
                 context.SaveChanges();
 
-                var account = context.UserAccounts.FirstOrDefault(x => x.UserId == userId);
+                var account = existingAccount;
                 if (account == null)
                 {
                     account = new UserAccount { UserId = userId, FailedLoginCount = 0 };
@@ -114,6 +117,16 @@ namespace Winform4System.Business.Services
                 if (model.AuthenticationType == "LOCAL" && string.IsNullOrWhiteSpace(account.PasswordHash))
                     throw new InvalidOperationException("本機帳號必須設定密碼。");
 
+                context.AuditLogs.Add(new AuditLog
+                {
+                    UserId = CurrentAuthorization.UserId,
+                    ActionCode = isNew ? "EMPLOYEE.CREATE" : "EMPLOYEE.UPDATE",
+                    EntityName = "hr_EmployeeProfile",
+                    EntityId = userId,
+                    Description = (isNew ? "建立" : "更新") + "人員與帳號 " + userId,
+                    MachineName = Environment.MachineName,
+                    DataJson = AuditDataJson.Change(before, CreateAuditSnapshot(employee, account))
+                });
                 context.SaveChanges();
                 transaction.Commit();
             }
@@ -128,10 +141,24 @@ namespace Winform4System.Business.Services
                 var account = context.UserAccounts.FirstOrDefault(x => x.UserId == userId);
                 var employee = context.EmployeeProfiles.FirstOrDefault(x => x.EmployeeCode == userId);
                 if (employee == null) throw new InvalidOperationException("找不到所選人員。");
+                byte previousEmploymentStatus = employee.EmploymentStatus;
+                bool? previousAccountStatus = account?.IsActive;
                 employee.EmploymentStatus = 0;
                 employee.ResignDate = employee.ResignDate ?? DateTime.Today;
                 employee.UpdatedAt = DateTime.UtcNow;
                 if (account != null) { account.IsActive = false; account.UpdatedAt = DateTime.UtcNow; }
+                context.AuditLogs.Add(new AuditLog
+                {
+                    UserId = CurrentAuthorization.UserId,
+                    ActionCode = "EMPLOYEE.DEACTIVATE",
+                    EntityName = "hr_EmployeeProfile",
+                    EntityId = userId,
+                    Description = "停用人員與帳號 " + userId,
+                    MachineName = Environment.MachineName,
+                    DataJson = AuditDataJson.Change(
+                        new Dictionary<string, string> { { "employmentStatus", previousEmploymentStatus.ToString() }, { "accountActive", previousAccountStatus?.ToString() } },
+                        new Dictionary<string, string> { { "employmentStatus", "0" }, { "accountActive", account == null ? null : "False" } })
+                });
                 context.SaveChanges();
                 transaction.Commit();
             }
@@ -151,6 +178,21 @@ namespace Winform4System.Business.Services
         }
 
         private static string Normalize(string value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+
+        private static Dictionary<string, string> CreateAuditSnapshot(EmployeeProfile employee, UserAccount account)
+        {
+            if (employee == null) return null;
+            return new Dictionary<string, string>
+            {
+                { "displayNameTW", employee.DisplayNameTW },
+                { "displayNameVN", employee.DisplayNameVN },
+                { "departmentId", employee.DepartmentId.ToString() },
+                { "employmentStatus", employee.EmploymentStatus.ToString() },
+                { "authenticationType", account?.AuthenticationType },
+                { "domainAccount", account?.DomainAccount },
+                { "accountActive", account == null ? null : account.IsActive.ToString() }
+            };
+        }
     }
 
     public sealed class EmployeeListItem

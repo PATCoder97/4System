@@ -12,6 +12,7 @@ Run scripts in numeric order against a new SQL Server database:
 8. `008_employee_management.sql`
 9. `009_security_group_management.sql`
 10. `010_role_permission_management.sql`
+11. `011_audit_log_management.sql`
 
 Script `006` creates the spare-parts schema, registers the function and its permissions, and creates the `SPARE_PART_VIEWER`, `SPARE_PART_OPERATOR`, and `SPARE_PART_MANAGER` roles. Assign those roles through security groups; the script intentionally does not grant normal users access automatically.
 

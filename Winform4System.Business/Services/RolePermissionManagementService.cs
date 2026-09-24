@@ -104,10 +104,15 @@ namespace Winform4System.Business.Services
                 role.RoleName = model.RoleName.Trim(); role.Description = Normalize(model.Description); role.UpdatedAt = DateTime.UtcNow;
                 context.SaveChanges();
                 var mappings = context.RolePermissions.Where(x => x.RoleId == role.RoleId).ToList();
+                var beforePermissionIds = new HashSet<int>(mappings.Where(x => x.IsActive).Select(x => x.PermissionId));
+                var relevantPermissionIds = beforePermissionIds.Union(selectedIds).ToList();
+                var permissionCodes = context.Permissions.Where(x => relevantPermissionIds.Contains(x.PermissionId)).ToDictionary(x => x.PermissionId, x => x.PermissionCode);
                 foreach (var mapping in mappings) mapping.IsActive = selectedIds.Contains(mapping.PermissionId);
                 foreach (int permissionId in selectedIds.Where(x => mappings.All(m => m.PermissionId != x)))
                     context.RolePermissions.Add(new RolePermission { RoleId = role.RoleId, PermissionId = permissionId, AssignedAt = DateTime.UtcNow, AssignedByUserId = CurrentAuthorization.UserId, IsActive = true });
-                context.AuditLogs.Add(CreateAudit(isNew ? "SECURITY.ROLE.CREATE" : "SECURITY.ROLE.UPDATE", role.RoleId.ToString(), (isNew ? "建立" : "更新") + "角色 " + code));
+                var audit = CreateAudit(isNew ? "SECURITY.ROLE.CREATE" : "SECURITY.ROLE.UPDATE", role.RoleId.ToString(), (isNew ? "建立" : "更新") + "角色 " + code);
+                audit.DataJson = AuditDataJson.CollectionChange("permissions", beforePermissionIds.Select(x => permissionCodes[x]), selectedIds.Select(x => permissionCodes[x]));
+                context.AuditLogs.Add(audit);
                 context.SaveChanges(); transaction.Commit(); return role.RoleId;
             }
         }
@@ -123,8 +128,11 @@ namespace Winform4System.Business.Services
                 if (!role.RowVersion.SequenceEqual(rowVersion ?? new byte[0])) throw new InvalidOperationException("此角色已由其他使用者更新，請重新載入後再試。");
                 bool hasGroups = context.GroupRoles.Any(x => x.RoleId == roleId && x.IsActive);
                 if (role.IsSystemRole && hasGroups) throw new InvalidOperationException("系統角色仍指派給安全性群組，無法停用。請先移轉群組角色。");
+                bool wasActive = role.IsActive;
                 role.IsActive = false; role.UpdatedAt = DateTime.UtcNow;
-                context.AuditLogs.Add(CreateAudit("SECURITY.ROLE.DEACTIVATE", role.RoleId.ToString(), "停用角色 " + role.RoleCode));
+                var audit = CreateAudit("SECURITY.ROLE.DEACTIVATE", role.RoleId.ToString(), "停用角色 " + role.RoleCode);
+                audit.DataJson = AuditDataJson.Change(new Dictionary<string, string> { { "isActive", wasActive.ToString() } }, new Dictionary<string, string> { { "isActive", "False" } });
+                context.AuditLogs.Add(audit);
                 context.SaveChanges(); transaction.Commit();
             }
         }

@@ -145,6 +145,14 @@ namespace Winform4System.DataAccess.Repositories
                     userId,
                     "AUTH.LOGIN.FAILED",
                     "登入失敗。"));
+                if (lockoutEndUtc.HasValue)
+                {
+                    context.AuditLogs.Add(CreateAuditLog(
+                        account.UserId,
+                        userId,
+                        "AUTH.ACCOUNT.LOCKED",
+                        "登入失敗次數過多，帳號已暫時鎖定。"));
+                }
                 context.SaveChanges();
                 transaction.Commit();
                 return lockoutEndUtc;
@@ -165,6 +173,7 @@ namespace Winform4System.DataAccess.Repositories
                     return false;
                 }
 
+                bool wasAutomaticallyUnlocked = account.LockoutEndUtc.HasValue;
                 account.FailedLoginCount = 0;
                 account.LockoutEndUtc = null;
                 account.LastLoginAt = utcNow;
@@ -174,6 +183,14 @@ namespace Winform4System.DataAccess.Repositories
                     userId,
                     "AUTH.LOGIN.SUCCEEDED",
                     "登入成功。"));
+                if (wasAutomaticallyUnlocked)
+                {
+                    context.AuditLogs.Add(CreateAuditLog(
+                        account.UserId,
+                        userId,
+                        "AUTH.ACCOUNT.UNLOCKED",
+                        "鎖定期間已結束，帳號已自動解除鎖定。"));
+                }
                 context.SaveChanges();
                 transaction.Commit();
                 return true;

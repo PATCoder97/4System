@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,6 +9,10 @@ namespace Winform4System.DataAccess.Entities
     {
         [Key]
         public long AuditLogId { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedAt { get; set; }
+
         [StringLength(10)]
         public string UserId { get; set; }
 
@@ -28,5 +33,13 @@ namespace Winform4System.DataAccess.Entities
 
         [StringLength(100)]
         public string MachineName { get; set; }
+
+        [StringLength(50)]
+        public string IpAddress { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public Guid CorrelationId { get; set; }
+
+        public string DataJson { get; set; }
     }
 }

@@ -161,6 +161,10 @@
     <Compile Include="Forms\SystemManagement\RolePermissionManagementView.Designer.cs"><DependentUpon>RolePermissionManagementView.cs</DependentUpon></Compile>
     <Compile Include="Forms\SystemManagement\RolePermissionEditForm.cs"><SubType>Form</SubType></Compile>
     <Compile Include="Forms\SystemManagement\RolePermissionEditForm.Designer.cs"><DependentUpon>RolePermissionEditForm.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SystemManagement\AuditLogView.cs"><SubType>UserControl</SubType></Compile>
+    <Compile Include="Forms\SystemManagement\AuditLogView.Designer.cs"><DependentUpon>AuditLogView.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SystemManagement\AuditLogDetailForm.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\SystemManagement\AuditLogDetailForm.Designer.cs"><DependentUpon>AuditLogDetailForm.cs</DependentUpon></Compile>
     <Compile Include="Forms\SystemManagement\FunctionManagementView.Designer.cs">
       <DependentUpon>FunctionManagementView.cs</DependentUpon>
     </Compile>

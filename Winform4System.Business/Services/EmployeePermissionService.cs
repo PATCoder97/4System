@@ -62,9 +62,26 @@ namespace Winform4System.Business.Services
                 var validIds = new HashSet<int>(context.SecurityGroups.Where(x => x.IsActive).Select(x => x.GroupId));
                 if (selected.Any(x => !validIds.Contains(x))) throw new InvalidOperationException("所選安全性群組無效。");
                 var mappings = context.UserGroups.Where(x => x.UserId == userId).ToList();
-                foreach (var mapping in mappings) mapping.IsActive = selected.Contains(mapping.GroupId);
+                var beforeIds = new HashSet<int>(mappings.Where(x => x.IsActive && (!x.ExpiresAt.HasValue || x.ExpiresAt > DateTime.UtcNow)).Select(x => x.GroupId));
+                var relevantIds = beforeIds.Union(selected).ToList();
+                var groupCodes = context.SecurityGroups.Where(x => relevantIds.Contains(x.GroupId)).ToDictionary(x => x.GroupId, x => x.GroupCode);
+                foreach (var mapping in mappings)
+                {
+                    mapping.IsActive = selected.Contains(mapping.GroupId);
+                    if (mapping.IsActive) mapping.ExpiresAt = null;
+                }
                 foreach (int groupId in selected.Where(x => mappings.All(m => m.GroupId != x)))
                     context.UserGroups.Add(new UserGroup { UserId = userId, GroupId = groupId, IsActive = true });
+                context.AuditLogs.Add(new AuditLog
+                {
+                    UserId = CurrentAuthorization.UserId,
+                    ActionCode = "SECURITY.USER_GROUP.UPDATE",
+                    EntityName = "auth_UserAccount",
+                    EntityId = userId,
+                    Description = "更新人員安全性群組 " + userId,
+                    MachineName = Environment.MachineName,
+                    DataJson = AuditDataJson.CollectionChange("groups", beforeIds.Select(x => groupCodes[x]), selected.Select(x => groupCodes[x]))
+                });
                 context.SaveChanges();
                 transaction.Commit();
             }

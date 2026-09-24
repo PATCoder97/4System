@@ -49,6 +49,16 @@ namespace Winform4System.Forms.SystemManagement
                 }
             }
 
+            if (CurrentAuthorization.HasPermission("SYSTEM.AUDIT.VIEW"))
+            {
+                AddNavigationItem(settingsGroup, "audit-logs", "稽核記錄", SvgIconCatalog.View, () => new AuditLogView());
+                if (!initialTabRegistered)
+                {
+                    Shown += (sender, args) => OpenTab("audit-logs", "稽核記錄", () => new AuditLogView());
+                    initialTabRegistered = true;
+                }
+            }
+
             if (CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.VIEW"))
             {
                 AddNavigationItem(
@@ -59,7 +69,10 @@ namespace Winform4System.Forms.SystemManagement
                     () => new FunctionManagementView());
 
                 if (!initialTabRegistered)
+                {
                     Shown += (sender, args) => OpenTab("function-cards", "功能卡管理", () => new FunctionManagementView());
+                    initialTabRegistered = true;
+                }
             }
         }
     }

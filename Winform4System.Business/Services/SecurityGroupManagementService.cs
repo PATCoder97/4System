@@ -99,11 +99,16 @@ namespace Winform4System.Business.Services
                 context.SaveChanges();
 
                 var mappings = context.GroupRoles.Where(x => x.GroupId == group.GroupId).ToList();
+                var beforeRoleIds = new HashSet<int>(mappings.Where(x => x.IsActive).Select(x => x.RoleId));
+                var relevantRoleIds = beforeRoleIds.Union(selectedRoles).ToList();
+                var roleCodes = context.Roles.Where(x => relevantRoleIds.Contains(x.RoleId)).ToDictionary(x => x.RoleId, x => x.RoleCode);
                 foreach (var mapping in mappings) mapping.IsActive = selectedRoles.Contains(mapping.RoleId);
                 foreach (int roleId in selectedRoles.Where(x => mappings.All(m => m.RoleId != x)))
                     context.GroupRoles.Add(new GroupRole { GroupId = group.GroupId, RoleId = roleId, AssignedAt = DateTime.UtcNow, AssignedByUserId = CurrentAuthorization.UserId, IsActive = true });
 
-                context.AuditLogs.Add(CreateAudit(isNew ? "SECURITY.GROUP.CREATE" : "SECURITY.GROUP.UPDATE", group.GroupId.ToString(), (isNew ? "建立" : "更新") + "安全性群組 " + code));
+                var audit = CreateAudit(isNew ? "SECURITY.GROUP.CREATE" : "SECURITY.GROUP.UPDATE", group.GroupId.ToString(), (isNew ? "建立" : "更新") + "安全性群組 " + code);
+                audit.DataJson = AuditDataJson.CollectionChange("roles", beforeRoleIds.Select(x => roleCodes[x]), selectedRoles.Select(x => roleCodes[x]));
+                context.AuditLogs.Add(audit);
                 context.SaveChanges();
                 transaction.Commit();
                 return group.GroupId;
@@ -121,9 +126,12 @@ namespace Winform4System.Business.Services
                 if (!group.RowVersion.SequenceEqual(rowVersion ?? new byte[0])) throw new InvalidOperationException("此群組已由其他使用者更新，請重新載入後再試。");
                 bool hasMembers = context.UserGroups.Any(x => x.GroupId == groupId && x.IsActive && (!x.ExpiresAt.HasValue || x.ExpiresAt > DateTime.UtcNow));
                 if (group.IsSystemGroup && hasMembers) throw new InvalidOperationException("系統群組仍有使用者，無法停用。請先移轉群組成員。");
+                bool wasActive = group.IsActive;
                 group.IsActive = false;
                 group.UpdatedAt = DateTime.UtcNow;
-                context.AuditLogs.Add(CreateAudit("SECURITY.GROUP.DEACTIVATE", group.GroupId.ToString(), "停用安全性群組 " + group.GroupCode));
+                var audit = CreateAudit("SECURITY.GROUP.DEACTIVATE", group.GroupId.ToString(), "停用安全性群組 " + group.GroupCode);
+                audit.DataJson = AuditDataJson.Change(new Dictionary<string, string> { { "isActive", wasActive.ToString() } }, new Dictionary<string, string> { { "isActive", "False" } });
+                context.AuditLogs.Add(audit);
                 context.SaveChanges();
                 transaction.Commit();
             }
