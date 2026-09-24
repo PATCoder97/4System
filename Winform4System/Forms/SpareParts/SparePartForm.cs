@@ -90,7 +90,7 @@ namespace Winform4System.Forms.SpareParts
                 Style = ElementStyle.Group,
                 Expanded = true
             };
-            group.Appearance.Default.Font = new Font("Microsoft JhengHei UI", 12F);
+            group.Appearance.Default.Font = NavigationFont;
 
             AddNavigationItem(group, "materials", "備品資料", SvgIconCatalog.View, () => new SparePartMaterialView());
             AddNavigationItem(group, "machines", "設備管理", SvgIconCatalog.Equipment, () => new SparePartMachineView());
@@ -103,7 +103,7 @@ namespace Winform4System.Forms.SpareParts
             _navigation.Elements.Add(group);
         }
 
-        private static Font NavigationFont => new Font("Microsoft JhengHei UI", 12F);
+        private static Font NavigationFont => new Font("Microsoft JhengHei UI", 14.25F);
 
         private void AddNavigationItem(
             AccordionControlElement parent,
