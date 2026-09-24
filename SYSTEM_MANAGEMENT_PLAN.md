@@ -124,15 +124,15 @@ Tiêu chí hoàn thành:
 
 Tên giao diện có thể tích hợp vào `人員管理` và menu chuột phải.
 
-- [ ] Mở khóa tài khoản và đặt lại `FailedLoginCount`.
+- [x] Mở khóa tài khoản và đặt lại `FailedLoginCount`.
 - [x] Chỉ sử dụng xác thực domain `vn.fpg.com` theo `7system`, không phân loại LOCAL/Windows trên giao diện.
 - [x] Cho phép xác thực bằng hash của lần đăng nhập domain thành công gần nhất khi domain controller không khả dụng.
-- [ ] Bật/tắt tài khoản độc lập với trạng thái hồ sơ nhân viên khi nghiệp vụ yêu cầu.
-- [ ] Thu hồi phiên đăng nhập bằng `SecurityStamp` hoặc cơ chế phiên tương đương.
-- [ ] Buộc đổi mật khẩu ở lần đăng nhập tiếp theo.
-- [ ] Chính sách mật khẩu và thời hạn khóa từ tham số hệ thống.
-- [ ] Hiển thị lần đăng nhập cuối và trạng thái khóa.
-- [ ] Xác nhận và audit mọi thao tác bảo mật.
+- [x] Bật/tắt tài khoản độc lập với trạng thái hồ sơ nhân viên khi nghiệp vụ yêu cầu.
+- [x] Thu hồi phiên đăng nhập bằng `SecurityStamp` hoặc cơ chế phiên tương đương.
+- [x] Không quản lý hoặc buộc đổi mật khẩu domain trong ứng dụng; chỉ lưu hash để kiểm tra ngoại tuyến.
+- [ ] Chính sách số lần đăng nhập sai và thời hạn khóa từ tham số hệ thống.
+- [x] Hiển thị lần đăng nhập cuối và trạng thái khóa.
+- [x] Xác nhận và audit mọi thao tác bảo mật.
 
 Tiêu chí hoàn thành:
 

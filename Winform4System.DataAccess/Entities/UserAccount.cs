@@ -14,15 +14,10 @@ namespace Winform4System.DataAccess.Entities
 
         public long? EmployeeProfileId { get; set; }
 
-        [StringLength(200)]
-        public string DomainAccount { get; set; }
-
-        [Required, StringLength(20)]
-        public string AuthenticationType { get; set; }
-
         [StringLength(500)]
-        public string PasswordHash { get; set; }
+        public string CachedDomainPasswordHash { get; set; }
         public DateTime? LastDomainValidatedAt { get; set; }
+        public Guid SecurityStamp { get; set; }
 
         public int FailedLoginCount { get; set; }
         public DateTime? LockoutEndUtc { get; set; }

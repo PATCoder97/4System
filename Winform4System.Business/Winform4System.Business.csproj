@@ -38,6 +38,7 @@
     <Compile Include="Services\EmployeePermissionService.cs" />
     <Compile Include="Services\SecurityGroupManagementService.cs" />
     <Compile Include="Services\RolePermissionManagementService.cs" />
+    <Compile Include="Services\SessionSecurityService.cs" />
     <Compile Include="Services\AuditLogService.cs" />
     <Compile Include="Services\AuditDataJson.cs" />
     <Compile Include="Services\IMainMenuService.cs" />

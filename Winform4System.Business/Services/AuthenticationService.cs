@@ -69,6 +69,7 @@ namespace Winform4System.Business.Services
 
             return AuthenticationResult.Success(new UserSession
             {
+                SecurityStamp = account.SecurityStamp,
                 UserId = account.UserId,
                 DisplayNameTW = account.DisplayNameTW,
                 DisplayNameVN = account.DisplayNameVN,

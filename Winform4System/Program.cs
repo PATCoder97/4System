@@ -71,7 +71,11 @@ namespace Winform4System
                     IMainMenuService menuService = new EfMainMenuService(
                         new EfMainMenuRepository(new ConnectionStringProvider()),
                         session.UserId);
-                    using (var mainForm = new MainForm(menuService, logger, session))
+                    using (var mainForm = new MainForm(
+                        menuService,
+                        logger,
+                        session,
+                        new SessionSecurityService(new ConnectionStringProvider())))
                     {
                         Application.Run(mainForm);
                         if (!mainForm.LogoutRequested)

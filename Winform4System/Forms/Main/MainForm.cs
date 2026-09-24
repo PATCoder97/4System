@@ -23,15 +23,17 @@ namespace Winform4System.Forms.Main
         private readonly IMainMenuService _menuService;
         private readonly IAppLogger _logger;
         private readonly UserSession _session;
+        private readonly SessionSecurityService _sessionSecurityService;
         private readonly Dictionary<TileItem, MenuItemDefinition> _menuByTile = new Dictionary<TileItem, MenuItemDefinition>();
 
         public bool LogoutRequested { get; private set; }
 
-        public MainForm(IMainMenuService menuService, IAppLogger logger, UserSession session)
+        public MainForm(IMainMenuService menuService, IAppLogger logger, UserSession session, SessionSecurityService sessionSecurityService)
         {
             _menuService = menuService ?? throw new ArgumentNullException(nameof(menuService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _session = session ?? throw new ArgumentNullException(nameof(session));
+            _sessionSecurityService = sessionSecurityService ?? throw new ArgumentNullException(nameof(sessionSecurityService));
 
             InitializeComponent();
             InitializeDashboard();
@@ -46,6 +48,26 @@ namespace Winform4System.Forms.Main
             LoadDashboardCards();
 
             _logger.Info(nameof(MainForm), "Main dashboard initialized.");
+        }
+
+        private void sessionValidationTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_sessionSecurityService.IsSessionValid(_session.UserId, _session.SecurityStamp)) return;
+                sessionValidationTimer.Stop();
+                XtraMessageBox.Show(
+                    "此登入工作階段已失效或帳號已停用，請重新登入。",
+                    ApplicationMetadata.DisplayName,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                LogoutRequested = true;
+                Close();
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(nameof(MainForm), "Unable to validate the current session.", exception);
+            }
         }
 
         private void LoadDashboardCards()
@@ -209,6 +231,7 @@ namespace Winform4System.Forms.Main
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            sessionValidationTimer.Stop();
             _logger.Info(
                 nameof(MainForm),
                 LogoutRequested ? "User session closing for logout." : "Application closing.");

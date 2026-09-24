@@ -36,13 +36,11 @@ try {
 IF EXISTS (SELECT 1 FROM dbo.auth_UserAccount WHERE UserId = @UserId)
     THROW 51010, N'Tài khoản đã tồn tại.', 1;
 
-INSERT dbo.auth_UserAccount(UserId, DomainAccount, AuthenticationType, PasswordHash)
-VALUES (@UserId, @DomainAccount, 'WINDOWS', NULL);
+INSERT dbo.auth_UserAccount(UserId)
+VALUES (@UserId);
 '@
         [void]$insert.Parameters.Add('@UserId', [Data.SqlDbType]::VarChar, 10)
         $insert.Parameters['@UserId'].Value = $normalizedUserId
-        [void]$insert.Parameters.Add('@DomainAccount', [Data.SqlDbType]::VarChar, 200)
-        $insert.Parameters['@DomainAccount'].Value = $normalizedUserId
         [void]$insert.ExecuteNonQuery()
 
         $assign = $connection.CreateCommand()

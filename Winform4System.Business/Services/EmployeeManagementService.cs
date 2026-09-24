@@ -45,6 +45,9 @@ namespace Winform4System.Business.Services
                             EmploymentStatus = employee.EmploymentStatus,
                             IsAccountActive = account != null && account.IsActive,
                             HasAccount = account != null,
+                            FailedLoginCount = account == null ? 0 : account.FailedLoginCount,
+                            LockoutEndUtc = account == null ? null : account.LockoutEndUtc,
+                            LastLoginAt = account == null ? null : account.LastLoginAt,
                             EmployeeRowVersion = employee.RowVersion,
                             AccountRowVersion = account == null ? null : account.RowVersion
                         }).ToList();
@@ -108,13 +111,12 @@ namespace Winform4System.Business.Services
                 var account = existingAccount;
                 if (account == null)
                 {
-                    account = new UserAccount { UserId = userId, FailedLoginCount = 0 };
+                    account = new UserAccount { UserId = userId, FailedLoginCount = 0, SecurityStamp = Guid.NewGuid() };
                     context.UserAccounts.Add(account);
                 }
                 account.EmployeeProfileId = employee.EmployeeProfileId;
-                account.AuthenticationType = "WINDOWS";
-                account.DomainAccount = userId;
                 if (!model.IsAccountActive) EnsureCanDisableAccount(context, userId);
+                if (account.IsActive != model.IsAccountActive) account.SecurityStamp = Guid.NewGuid();
                 account.IsActive = model.IsAccountActive;
                 account.UpdatedAt = DateTime.UtcNow;
                 context.AuditLogs.Add(new AuditLog
@@ -149,7 +151,7 @@ namespace Winform4System.Business.Services
                 employee.EmploymentStatus = 0;
                 employee.ResignDate = employee.ResignDate ?? DateTime.Today;
                 employee.UpdatedAt = DateTime.UtcNow;
-                if (account != null) { account.IsActive = false; account.UpdatedAt = DateTime.UtcNow; }
+                if (account != null) { account.IsActive = false; account.SecurityStamp = Guid.NewGuid(); account.UpdatedAt = DateTime.UtcNow; }
                 context.AuditLogs.Add(new AuditLog
                 {
                     UserId = CurrentAuthorization.UserId,
@@ -162,6 +164,69 @@ namespace Winform4System.Business.Services
                         new Dictionary<string, string> { { "employmentStatus", previousEmploymentStatus.ToString() }, { "accountActive", previousAccountStatus?.ToString() } },
                         new Dictionary<string, string> { { "employmentStatus", "0" }, { "accountActive", account == null ? null : "False" } })
                 });
+                context.SaveChanges();
+                transaction.Commit();
+            }
+        }
+
+        public void UnlockAccount(string userId, byte[] accountRowVersion)
+        {
+            CurrentAuthorization.Demand("SYSTEM.USER.ADMIN");
+            using (var context = new Winform4SystemDbContext(_connectionString))
+            using (var transaction = context.Database.BeginTransaction(IsolationLevel.Serializable))
+            {
+                UserAccount account = GetAccountForSecurityAction(context, userId, accountRowVersion);
+                int previousFailedCount = account.FailedLoginCount;
+                DateTime? previousLockoutEnd = account.LockoutEndUtc;
+                account.FailedLoginCount = 0;
+                account.LockoutEndUtc = null;
+                account.UpdatedAt = DateTime.UtcNow;
+                context.AuditLogs.Add(CreateAccountAudit(
+                    account.UserId,
+                    "AUTH.ACCOUNT.UNLOCKED.BY_ADMIN",
+                    "管理員已解除帳號鎖定。",
+                    new Dictionary<string, string> { { "failedLoginCount", previousFailedCount.ToString() }, { "lockoutEndUtc", previousLockoutEnd?.ToString("O") } },
+                    new Dictionary<string, string> { { "failedLoginCount", "0" }, { "lockoutEndUtc", null } }));
+                context.SaveChanges();
+                transaction.Commit();
+            }
+        }
+
+        public void SetAccountActive(string userId, bool isActive, byte[] accountRowVersion)
+        {
+            CurrentAuthorization.Demand("SYSTEM.USER.ADMIN");
+            using (var context = new Winform4SystemDbContext(_connectionString))
+            using (var transaction = context.Database.BeginTransaction(IsolationLevel.Serializable))
+            {
+                UserAccount account = GetAccountForSecurityAction(context, userId, accountRowVersion);
+                if (account.IsActive == isActive) return;
+                if (!isActive) EnsureCanDisableAccount(context, account.UserId);
+
+                bool previousStatus = account.IsActive;
+                account.IsActive = isActive;
+                account.SecurityStamp = Guid.NewGuid();
+                account.UpdatedAt = DateTime.UtcNow;
+                context.AuditLogs.Add(CreateAccountAudit(
+                    account.UserId,
+                    isActive ? "AUTH.ACCOUNT.ENABLED" : "AUTH.ACCOUNT.DISABLED",
+                    isActive ? "管理員已啟用登入帳號。" : "管理員已停用登入帳號。",
+                    new Dictionary<string, string> { { "isActive", previousStatus.ToString() } },
+                    new Dictionary<string, string> { { "isActive", isActive.ToString() } }));
+                context.SaveChanges();
+                transaction.Commit();
+            }
+        }
+
+        public void RevokeSessions(string userId, byte[] accountRowVersion)
+        {
+            CurrentAuthorization.Demand("SYSTEM.USER.ADMIN");
+            using (var context = new Winform4SystemDbContext(_connectionString))
+            using (var transaction = context.Database.BeginTransaction(IsolationLevel.Serializable))
+            {
+                UserAccount account = GetAccountForSecurityAction(context, userId, accountRowVersion);
+                account.SecurityStamp = Guid.NewGuid();
+                account.UpdatedAt = DateTime.UtcNow;
+                context.AuditLogs.Add(CreateAccountAudit(account.UserId, "AUTH.SESSION.REVOKED", "管理員已撤銷此帳號的登入工作階段。", null, null));
                 context.SaveChanges();
                 transaction.Commit();
             }
@@ -201,6 +266,30 @@ namespace Winform4System.Business.Services
                 throw new InvalidOperationException("系統必須保留至少一個有效的管理員帳號，無法停用最後一位管理員。");
         }
 
+        private static UserAccount GetAccountForSecurityAction(Winform4SystemDbContext context, string userId, byte[] accountRowVersion)
+        {
+            UserAccount account = context.UserAccounts.FirstOrDefault(x => x.UserId == userId);
+            if (account == null) throw new InvalidOperationException("找不到所選登入帳號。");
+            if (!RowVersionMatches(account.RowVersion, accountRowVersion))
+                throw new InvalidOperationException("此登入帳號已由其他使用者更新，請重新載入後再試。");
+            return account;
+        }
+
+        private static AuditLog CreateAccountAudit(string targetUserId, string actionCode, string description, IDictionary<string, string> before, IDictionary<string, string> after)
+        {
+            return new AuditLog
+            {
+                UserId = CurrentAuthorization.UserId,
+                AttemptedUserId = targetUserId,
+                ActionCode = actionCode,
+                EntityName = "auth_UserAccount",
+                EntityId = targetUserId,
+                Description = description + " " + targetUserId,
+                MachineName = Environment.MachineName,
+                DataJson = before == null && after == null ? null : AuditDataJson.Change(before, after)
+            };
+        }
+
         private static Dictionary<string, string> CreateAuditSnapshot(EmployeeProfile employee, UserAccount account)
         {
             if (employee == null) return null;
@@ -229,6 +318,9 @@ namespace Winform4System.Business.Services
         public byte EmploymentStatus { get; set; }
         public bool IsAccountActive { get; set; }
         public bool HasAccount { get; set; }
+        public int FailedLoginCount { get; set; }
+        public DateTime? LockoutEndUtc { get; set; }
+        public DateTime? LastLoginAt { get; set; }
         public byte[] EmployeeRowVersion { get; set; }
         public byte[] AccountRowVersion { get; set; }
         public string EmploymentStatusDisplay
@@ -244,6 +336,16 @@ namespace Winform4System.Business.Services
                     default: return "未知";
                 }
             }
+        }
+        public bool IsLocked => LockoutEndUtc.HasValue && LockoutEndUtc.Value > DateTime.UtcNow;
+        public string AccountStatusDisplay => !HasAccount ? "未建立" : !IsAccountActive ? "已停用" : IsLocked ? "已鎖定" : "正常";
+        public string LockoutEndDisplay => ToLocalDisplay(LockoutEndUtc);
+        public string LastLoginDisplay => ToLocalDisplay(LastLoginAt);
+
+        private static string ToLocalDisplay(DateTime? value)
+        {
+            if (!value.HasValue) return string.Empty;
+            return DateTime.SpecifyKind(value.Value, DateTimeKind.Utc).ToLocalTime().ToString("yyyy/MM/dd HH:mm:ss");
         }
     }
 

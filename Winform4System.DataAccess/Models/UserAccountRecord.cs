@@ -7,6 +7,7 @@ namespace Winform4System.DataAccess.Models
         public string UserId { get; set; }
         public string CachedDomainPasswordHash { get; set; }
         public DateTime? LastDomainValidatedAt { get; set; }
+        public Guid SecurityStamp { get; set; }
         public bool IsActive { get; set; }
         public DateTime? LockoutEndUtc { get; set; }
         public string DisplayNameTW { get; set; }

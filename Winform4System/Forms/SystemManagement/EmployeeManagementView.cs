@@ -16,12 +16,18 @@ namespace Winform4System.Forms.SystemManagement
         private readonly EmployeeManagementService _service = new EmployeeManagementService(new ConnectionStringProvider());
         private readonly DXMenuItem _editItem;
         private readonly DXMenuItem _deactivateItem;
+        private readonly DXMenuItem _accountStatusItem;
+        private readonly DXMenuItem _unlockAccountItem;
+        private readonly DXMenuItem _revokeSessionsItem;
 
         public EmployeeManagementView()
         {
             InitializeComponent();
             _editItem = CreateMenuItem("編輯人員", EditSelected, SvgIconCatalog.Edit);
             _deactivateItem = CreateMenuItem("停用人員", DeactivateSelected, SvgIconCatalog.SuspendUser);
+            _accountStatusItem = CreateMenuItem("停用登入帳號", ChangeAccountStatus, SvgIconCatalog.Disabled);
+            _unlockAccountItem = CreateMenuItem("解除帳號鎖定", UnlockAccount, SvgIconCatalog.Confirm);
+            _revokeSessionsItem = CreateMenuItem("撤銷登入工作階段", RevokeSessions, SvgIconCatalog.Denied);
             btnAdd.Visibility = CurrentAuthorization.HasPermission("SYSTEM.USER.ADMIN") ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
         }
 
@@ -42,9 +48,20 @@ namespace Winform4System.Forms.SystemManagement
             gridViewEmployees.FocusedRowHandle = e.HitInfo.RowHandle;
             _editItem.BeginGroup = e.Menu.Items.Count > 0;
             _deactivateItem.BeginGroup = true;
-            _deactivateItem.Enabled = GetSelected()?.IsAccountActive == true;
+            EmployeeListItem selected = GetSelected();
+            _deactivateItem.Enabled = selected?.EmploymentStatus != 0;
+            _accountStatusItem.BeginGroup = true;
+            _accountStatusItem.Caption = selected?.IsAccountActive == true ? "停用登入帳號" : "啟用登入帳號";
+            _accountStatusItem.ImageOptions.SvgImage = selected?.IsAccountActive == true ? SvgIconCatalog.Disabled : SvgIconCatalog.Confirm;
+            _accountStatusItem.Enabled = selected?.HasAccount == true
+                && (selected.IsAccountActive == false || !string.Equals(selected.UserId, CurrentAuthorization.UserId, StringComparison.OrdinalIgnoreCase));
+            _unlockAccountItem.Enabled = selected?.HasAccount == true && (selected.FailedLoginCount > 0 || selected.LockoutEndUtc.HasValue);
+            _revokeSessionsItem.Enabled = selected?.HasAccount == true && selected.IsAccountActive;
             e.Menu.Items.Add(_editItem);
             e.Menu.Items.Add(_deactivateItem);
+            e.Menu.Items.Add(_accountStatusItem);
+            e.Menu.Items.Add(_unlockAccountItem);
+            e.Menu.Items.Add(_revokeSessionsItem);
         }
 
         private EmployeeListItem GetSelected() => gridViewEmployees.GetFocusedRow() as EmployeeListItem;
@@ -67,6 +84,35 @@ namespace Winform4System.Forms.SystemManagement
             if (XtraMessageBox.Show($"確定要停用人員「{GetName(item)}」及其登入帳號嗎？", "停用確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
             try { _service.Deactivate(item.UserId, item.EmployeeRowVersion, item.AccountRowVersion); LoadData(item.UserId); }
             catch (Exception ex) { ShowError(ex.Message, "停用人員失敗"); }
+        }
+
+        private void ChangeAccountStatus(object sender, EventArgs e)
+        {
+            EmployeeListItem item = GetSelected();
+            if (item == null || !item.HasAccount) return;
+            bool enable = !item.IsAccountActive;
+            string action = enable ? "啟用" : "停用";
+            if (XtraMessageBox.Show($"確定要{action}「{GetName(item)}」的登入帳號嗎？\n此操作不會變更人員任職狀態。", action + "帳號確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+            try { _service.SetAccountActive(item.UserId, enable, item.AccountRowVersion); LoadData(item.UserId); }
+            catch (Exception ex) { ShowError(ex.Message, action + "帳號失敗"); }
+        }
+
+        private void UnlockAccount(object sender, EventArgs e)
+        {
+            EmployeeListItem item = GetSelected();
+            if (item == null || !item.HasAccount) return;
+            if (XtraMessageBox.Show($"確定要解除「{GetName(item)}」的帳號鎖定並清除登入失敗次數嗎？", "解除鎖定確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+            try { _service.UnlockAccount(item.UserId, item.AccountRowVersion); LoadData(item.UserId); }
+            catch (Exception ex) { ShowError(ex.Message, "解除帳號鎖定失敗"); }
+        }
+
+        private void RevokeSessions(object sender, EventArgs e)
+        {
+            EmployeeListItem item = GetSelected();
+            if (item == null || !item.HasAccount) return;
+            if (XtraMessageBox.Show($"確定要撤銷「{GetName(item)}」目前所有登入工作階段嗎？\n使用者最晚會在 30 秒內被要求重新登入。", "撤銷工作階段確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+            try { _service.RevokeSessions(item.UserId, item.AccountRowVersion); LoadData(item.UserId); }
+            catch (Exception ex) { ShowError(ex.Message, "撤銷登入工作階段失敗"); }
         }
 
         private void LoadData(string selectedUserId = null)

@@ -44,8 +44,9 @@ namespace Winform4System.DataAccess.Repositories
                      select new
                      {
                          user.UserId,
-                         user.PasswordHash,
+                         user.CachedDomainPasswordHash,
                          user.LastDomainValidatedAt,
+                         user.SecurityStamp,
                          user.IsActive,
                          user.LockoutEndUtc,
                          DisplayNameTW = employee == null ? null : employee.DisplayNameTW,
@@ -104,8 +105,9 @@ namespace Winform4System.DataAccess.Repositories
                 return new UserAccountRecord
                 {
                     UserId = accountData.UserId,
-                    CachedDomainPasswordHash = accountData.PasswordHash,
+                    CachedDomainPasswordHash = accountData.CachedDomainPasswordHash,
                     LastDomainValidatedAt = accountData.LastDomainValidatedAt,
+                    SecurityStamp = accountData.SecurityStamp,
                     IsActive = accountData.IsActive,
                     LockoutEndUtc = accountData.LockoutEndUtc.HasValue
                         ? DateTime.SpecifyKind(accountData.LockoutEndUtc.Value, DateTimeKind.Utc)
@@ -166,7 +168,7 @@ namespace Winform4System.DataAccess.Repositories
             {
                 UserAccount account = context.UserAccounts.SingleOrDefault(item => item.UserId == userId);
                 if (account == null || !account.IsActive) return;
-                account.PasswordHash = passwordHash;
+                account.CachedDomainPasswordHash = passwordHash;
                 account.LastDomainValidatedAt = DateTime.UtcNow;
                 account.UpdatedAt = DateTime.UtcNow;
                 context.AuditLogs.Add(CreateAuditLog(account.UserId, account.UserId, "AUTH.DOMAIN.CACHE.REFRESHED", "已更新離線登入驗證資料。"));

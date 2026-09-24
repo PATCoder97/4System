@@ -9,6 +9,7 @@ namespace Winform4System.Forms.Main
         private DevExpress.XtraEditors.LabelControl lblSession;
         private DevExpress.XtraEditors.LabelControl lblLogout;
         private DevExpress.XtraEditors.TileControl tileMain;
+        private System.Windows.Forms.Timer sessionValidationTimer;
 
         protected override void Dispose(bool disposing)
         {
@@ -26,6 +27,7 @@ namespace Winform4System.Forms.Main
             this.lblSession = new DevExpress.XtraEditors.LabelControl();
             this.lblLogout = new DevExpress.XtraEditors.LabelControl();
             this.tileMain = new DevExpress.XtraEditors.TileControl();
+            this.sessionValidationTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.headerPanel)).BeginInit();
             this.headerPanel.SuspendLayout();
             this.SuspendLayout();
@@ -133,6 +135,12 @@ namespace Winform4System.Forms.Main
             this.tileMain.ShowGroupText = true;
             this.tileMain.Size = new System.Drawing.Size(1360, 696);
             this.tileMain.TabIndex = 1;
+            //
+            // sessionValidationTimer
+            //
+            this.sessionValidationTimer.Enabled = true;
+            this.sessionValidationTimer.Interval = 30000;
+            this.sessionValidationTimer.Tick += new System.EventHandler(this.sessionValidationTimer_Tick);
             // 
             // MainForm
             // 

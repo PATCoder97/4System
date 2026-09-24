@@ -2,6 +2,7 @@ namespace Winform4System.Core.Models
 {
     public sealed class UserSession
     {
+        public System.Guid SecurityStamp { get; set; }
         public string UserId { get; set; }
         public string DisplayNameTW { get; set; }
         public string DisplayNameVN { get; set; }
