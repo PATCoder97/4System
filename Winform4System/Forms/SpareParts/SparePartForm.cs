@@ -86,7 +86,7 @@ namespace Winform4System.Forms.SpareParts
         {
             var group = new AccordionControlElement
             {
-                Text = "備品備件功能",
+                Text = "機邊庫",
                 Style = ElementStyle.Group,
                 Expanded = true
             };
@@ -103,7 +103,7 @@ namespace Winform4System.Forms.SpareParts
             {
                 var managerGroup = new AccordionControlElement
                 {
-                    Text = "經理室的功能",
+                    Text = "機邊庫【經理室】",
                     Hint = "經理室的功能",
                     Style = ElementStyle.Group,
                     Expanded = true
