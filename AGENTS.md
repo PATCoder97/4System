@@ -15,6 +15,28 @@
 - Ưu tiên sử dụng control của DevExpress cho form và các thành phần giao diện, ví dụ `XtraForm`, `SimpleButton`, `TextEdit`, `ButtonEdit`, `LabelControl`, `PanelControl`, `GridControl` và `LayoutControl`.
 - Chỉ sử dụng control WinForms thuần khi DevExpress không có control tương đương, control DevExpress không đáp ứng được hành vi cần thiết, hoặc có lý do kỹ thuật rõ ràng.
 - Khi chuyển giao diện từ `7system`, ưu tiên giữ cùng loại control DevExpress để giao diện, theme và hành vi được đồng nhất.
+- Các module cấp cao có thanh điều hướng và nhiều chức năng con phải kế thừa khung `FluentModuleForm` dùng chung; không sao chép lại cấu hình `FluentDesignForm`, `AccordionControl` và tab trong từng module.
+- Mỗi chức năng con trong module phải được triển khai dưới dạng `XtraUserControl` và mở trong tab của khung chung. Chỉ dùng `XtraForm` riêng cho dialog nhập liệu, xác nhận hoặc tác vụ cần cửa sổ độc lập.
+- `XtraUserControl` nghiệp vụ và dialog nhập liệu phải dùng `LayoutControl` làm layout gốc để quản lý căn lề, co giãn và khoảng cách. Không bố trí giao diện chính bằng tọa độ tuyệt đối hoặc ghép nhiều panel thủ công khi `LayoutControl` đáp ứng được.
+- Tất cả control cố định của form/UserControl phải được khai báo và cấu hình trong file `.Designer.cs` thông qua `InitializeComponent`, bao gồm layout, bar, nút, editor, grid/tree, cột cố định, repository editor và các layout item. Không sinh các control cố định trong constructor hoặc code-behind.
+- Code-behind chỉ dùng để nạp dữ liệu, gắn hành vi nghiệp vụ, cập nhật trạng thái và tạo những control/menu thực sự thay đổi theo dữ liệu lúc chạy. Nếu cấu trúc giao diện không thay đổi theo dữ liệu thì phải đưa về Designer.
+- Mỗi form/UserControl có giao diện phải dùng class `partial`, ghép đúng `.cs`, `.Designer.cs` và `.resx` khi có tài nguyên; file project phải khai báo `DependentUpon` đúng để Visual Studio Designer nhận diện.
+- Nút thao tác của màn hình và dialog phải nằm trong vùng layout riêng, có thứ tự nhất quán; nội dung chính phải co giãn theo kích thước cửa sổ.
+- Thanh lệnh chính của `XtraUserControl` và `XtraForm` phải ưu tiên `BarManager` kết hợp `Bar`, `BarButtonItem` và `StandaloneBarDockControl`/`BarDockControl`; không tự dựng toolbar bằng nhiều `SimpleButton` đặt theo tọa độ khi Bar đáp ứng được.
+- Bộ lọc hoặc lựa chọn nằm trên thanh lệnh phải dùng `BarEditItem` cùng repository editor DevExpress phù hợp, ví dụ `RepositoryItemComboBox`, `RepositoryItemLookUpEdit` hoặc `RepositoryItemSearchLookUpEdit`.
+- Mọi hành động áp dụng cho một dòng, bản ghi hoặc node cụ thể như xem, sửa, xóa và đổi trạng thái phải được đưa vào menu chuột phải của `GridView`/`TreeList`; không đặt các hành động theo dòng trên thanh lệnh chính. Khi người dùng nhấp chuột phải, phải chọn đúng dòng/node dưới con trỏ trước khi mở menu. Thanh lệnh chính chỉ dành cho thao tác toàn màn hình hoặc toàn danh sách như thêm mới, tải lại, lọc, xuất và in.
+- Menu chuột phải trên `GridView`/`TreeList` phải dùng menu DevExpress như `PopupMenu`, `DXPopupMenu`, `DXMenuItem` và `DXSubMenuItem`. Ưu tiên xử lý sự kiện `PopupMenuShowing`, giữ nguyên menu mặc định do DevExpress cung cấp và thêm các hành động nghiệp vụ vào `e.Menu`; không thay menu gốc bằng một popup riêng nếu không có yêu cầu đặc biệt. Dùng `BeginGroup` để phân tách hành động nghiệp vụ với menu gốc và giữa các nhóm hành động khác mục đích.
+- Menu mặc định do DevExpress sinh ra cũng phải được localize sang tiếng Trung phồn thể bằng localizer dùng chung; không để lẫn caption tiếng Anh hoặc tiếng Trung giản thể. Font menu mặc định là `Microsoft JhengHei UI` cỡ `12F`, bao gồm cả mục mặc định và mục nghiệp vụ được thêm lúc chạy.
+- Các hành động chuẩn như thêm, sửa, xóa, xem, tải lại, xác nhận, hủy, xuất và in phải dùng icon từ catalog SVG dùng chung; kích thước icon và kiểu hiển thị caption phải đồng nhất trong cùng một thanh lệnh.
+- Nút hoặc menu không có quyền thực hiện phải được ẩn hoặc vô hiệu hóa ngay khi khởi tạo giao diện và cập nhật lại theo trạng thái bản ghi đang chọn.
+- Dữ liệu phân cấp phải ưu tiên `TreeList`; dữ liệu phẳng ưu tiên `GridControl`/`GridView`. Cả hai phải dùng font giao diện chuẩn, tiêu đề rõ ràng và hỗ trợ lọc khi danh sách có thể dài.
+- Tiêu đề cột của `GridView`/`TreeList` mặc định dùng `Microsoft JhengHei UI` cỡ `14.25F`; dòng dữ liệu mặc định dùng cỡ `12F`. Chỉ giảm cỡ chữ khi không gian hiển thị thực sự hạn chế và phải giữ đồng nhất trong toàn màn hình.
+- Danh sách nghiệp vụ mặc định bật dòng lọc nhanh, ẩn group panel khi không có nhu cầu nhóm, tắt sửa trực tiếp nếu việc sửa phải qua dialog, và tránh focus từng ô khi người dùng thao tác theo dòng.
+- Cột phải có caption tiếng Trung phồn thể, định dạng ngày/số rõ ràng, căn lề theo loại dữ liệu và chiều rộng hợp lý; không phụ thuộc hoàn toàn vào `BestFitColumns` nếu có cột mô tả dài hoặc cột nghiệp vụ quan trọng.
+- Hành động áp dụng cho bản ghi đang chọn phải đặt trong menu chuột phải; trạng thái `Enabled`/`Visible` phải cập nhật theo quyền, loại bản ghi và trạng thái nghiệp vụ hiện tại.
+- Sau khi dialog thêm/sửa/xóa hoàn tất thành công, màn hình gọi phải tải lại dữ liệu và cố gắng giữ lại dòng đang chọn khi điều đó giúp người dùng tiếp tục công việc.
+- Dialog nhập liệu phải phân biệt rõ chế độ xem, thêm, sửa và xóa; thanh lệnh chỉ hiển thị các hành động hợp lệ cho chế độ hiện tại, đồng thời phải xác nhận trước thao tác phá hủy hoặc thay đổi trạng thái quan trọng.
+- Menu, tab và nút thao tác phải được ẩn hoặc vô hiệu hóa theo permission trước khi người dùng thao tác; tầng Business vẫn phải kiểm tra permission lại trước khi thay đổi dữ liệu.
 
 ## Truy cập dữ liệu
 

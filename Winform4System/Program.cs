@@ -1,7 +1,9 @@
 using DevExpress.LookAndFeel;
 using DevExpress.Skins;
+using DevExpress.Utils;
 using DevExpress.UserSkins;
 using DevExpress.XtraEditors;
+using DevExpress.XtraTreeList.Localization;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -13,6 +15,7 @@ using Winform4System.DataAccess.Configuration;
 using Winform4System.DataAccess.Repositories;
 using Winform4System.Forms.Login;
 using Winform4System.Forms.Main;
+using Winform4System.Helpers;
 using Winform4System.Logging;
 
 namespace Winform4System
@@ -28,6 +31,8 @@ namespace Winform4System
             BonusSkins.Register();
             UserLookAndFeel.Default.SetSkinStyle("WXI");
             WindowsFormsSettings.DefaultFont = new Font("Microsoft JhengHei UI", 9F, FontStyle.Regular);
+            AppearanceObject.DefaultMenuFont = new Font("Microsoft JhengHei UI", 12F, FontStyle.Regular);
+            TreeListLocalizer.Active = new TraditionalChineseTreeListLocalizer();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

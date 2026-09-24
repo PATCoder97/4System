@@ -115,54 +115,139 @@
     <Compile Include="Forms\Main\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Common\FluentModuleForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SystemManagement\FunctionManagementView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SystemManagement\FunctionEditForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SystemManagement\SystemSettingsForm.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\Common\FluentModuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\FunctionManagementView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\FunctionManagementView.Designer.cs">
+      <DependentUpon>FunctionManagementView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\FunctionEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\FunctionEditForm.Designer.cs">
+      <DependentUpon>FunctionEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\SystemSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Forms\SpareParts\SparePartRecoveryConstants.cs" />
     <Compile Include="Forms\SpareParts\SparePartForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\SpareParts\SparePartRecoveryTicketGridRow.cs" />
-    <Compile Include="Forms\SpareParts\SparePartMachineForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartMachineForm.Designer.cs"><DependentUpon>SparePartMachineForm.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartReplacementChainForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartReplacementChainForm.Designer.cs"><DependentUpon>SparePartReplacementChainForm.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartReplacementForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartReplacementForm.Designer.cs"><DependentUpon>SparePartReplacementForm.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartMaterialForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartMaterialForm.Designer.cs"><DependentUpon>SparePartMaterialForm.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecheckForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecheckForm.Designer.cs"><DependentUpon>SparePartRecheckForm.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecoveryEvidenceForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecoveryEvidenceForm.Designer.cs"><DependentUpon>SparePartRecoveryEvidenceForm.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecoveryGuideForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecoveryGuideForm.Designer.cs"><DependentUpon>SparePartRecoveryGuideForm.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecoveryScheduleForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecoveryScheduleForm.Designer.cs"><DependentUpon>SparePartRecoveryScheduleForm.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartTransactionForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartTransactionForm.Designer.cs"><DependentUpon>SparePartTransactionForm.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\SparePartMachineForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartMachineForm.Designer.cs">
+      <DependentUpon>SparePartMachineForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartReplacementChainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartReplacementChainForm.Designer.cs">
+      <DependentUpon>SparePartReplacementChainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartReplacementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartReplacementForm.Designer.cs">
+      <DependentUpon>SparePartReplacementForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartMaterialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartMaterialForm.Designer.cs">
+      <DependentUpon>SparePartMaterialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecheckForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecheckForm.Designer.cs">
+      <DependentUpon>SparePartRecheckForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecoveryEvidenceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecoveryEvidenceForm.Designer.cs">
+      <DependentUpon>SparePartRecoveryEvidenceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecoveryGuideForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecoveryGuideForm.Designer.cs">
+      <DependentUpon>SparePartRecoveryGuideForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecoveryScheduleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecoveryScheduleForm.Designer.cs">
+      <DependentUpon>SparePartRecoveryScheduleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartTransactionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartTransactionForm.Designer.cs">
+      <DependentUpon>SparePartTransactionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SpareParts\SparePartRecoveryFileHelper.cs" />
-    <Compile Include="Forms\SpareParts\SparePartDateRangeControl.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartDateRangeControl.Designer.cs"><DependentUpon>SparePartDateRangeControl.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartCostView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartCostView.Designer.cs"><DependentUpon>SparePartCostView.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartTransactionView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartTransactionView.Designer.cs"><DependentUpon>SparePartTransactionView.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartInspectionView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartInspectionView.Designer.cs"><DependentUpon>SparePartInspectionView.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartMachineView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartMachineView.Designer.cs"><DependentUpon>SparePartMachineView.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecheckView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecheckView.Designer.cs"><DependentUpon>SparePartRecheckView.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecoveryView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecoveryView.Designer.cs"><DependentUpon>SparePartRecoveryView.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SpareParts\SparePartRecoveryTaskView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartMaterialView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SpareParts\SparePartMaterialView.Designer.cs"><DependentUpon>SparePartMaterialView.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\SparePartDateRangeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartDateRangeControl.Designer.cs">
+      <DependentUpon>SparePartDateRangeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartCostView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartCostView.Designer.cs">
+      <DependentUpon>SparePartCostView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartTransactionView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartTransactionView.Designer.cs">
+      <DependentUpon>SparePartTransactionView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartInspectionView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartInspectionView.Designer.cs">
+      <DependentUpon>SparePartInspectionView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartMachineView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartMachineView.Designer.cs">
+      <DependentUpon>SparePartMachineView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecheckView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecheckView.Designer.cs">
+      <DependentUpon>SparePartRecheckView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecoveryView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecoveryView.Designer.cs">
+      <DependentUpon>SparePartRecoveryView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartRecoveryTaskView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartMaterialView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SpareParts\SparePartMaterialView.Designer.cs">
+      <DependentUpon>SparePartMaterialView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\StoredFileNameGenerator.cs" />
     <Compile Include="Helpers\StoredFileWriter.cs" />
+    <Compile Include="Helpers\TraditionalChineseTreeListLocalizer.cs" />
     <Compile Include="Helpers\DevExpressGridViewHelper.cs" />
     <Compile Include="Forms\SpareParts\SparePartInspectionPhotoHelper.cs" />
     <Compile Include="Forms\SpareParts\SparePartHelper.cs" />
@@ -177,18 +262,46 @@
     <EmbeddedResource Include="Forms\Login\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SystemManagement\FunctionEditForm.resx">
+      <DependentUpon>FunctionEditForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SystemManagement\FunctionManagementView.resx">
+      <DependentUpon>FunctionManagementView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
-    <EmbeddedResource Include="Forms\SpareParts\SparePartMachineForm.resx"><DependentUpon>SparePartMachineForm.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="Forms\SpareParts\SparePartMaterialForm.resx"><DependentUpon>SparePartMaterialForm.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="Forms\SpareParts\SparePartRecheckForm.resx"><DependentUpon>SparePartRecheckForm.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="Forms\SpareParts\SparePartTransactionForm.resx"><DependentUpon>SparePartTransactionForm.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="Forms\SpareParts\SparePartDateRangeControl.resx"><DependentUpon>SparePartDateRangeControl.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="Forms\SpareParts\SparePartCostView.resx"><DependentUpon>SparePartCostView.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="Forms\SpareParts\SparePartTransactionView.resx"><DependentUpon>SparePartTransactionView.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="Forms\SpareParts\SparePartInspectionView.resx"><DependentUpon>SparePartInspectionView.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="Forms\SpareParts\SparePartMachineView.resx"><DependentUpon>SparePartMachineView.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="Forms\SpareParts\SparePartRecheckView.resx"><DependentUpon>SparePartRecheckView.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="Forms\SpareParts\SparePartMaterialView.resx"><DependentUpon>SparePartMaterialView.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\SparePartMachineForm.resx">
+      <DependentUpon>SparePartMachineForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\SparePartMaterialForm.resx">
+      <DependentUpon>SparePartMaterialForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\SparePartRecheckForm.resx">
+      <DependentUpon>SparePartRecheckForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\SparePartTransactionForm.resx">
+      <DependentUpon>SparePartTransactionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\SparePartDateRangeControl.resx">
+      <DependentUpon>SparePartDateRangeControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\SparePartCostView.resx">
+      <DependentUpon>SparePartCostView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\SparePartTransactionView.resx">
+      <DependentUpon>SparePartTransactionView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\SparePartInspectionView.resx">
+      <DependentUpon>SparePartInspectionView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\SparePartMachineView.resx">
+      <DependentUpon>SparePartMachineView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\SparePartRecheckView.resx">
+      <DependentUpon>SparePartRecheckView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\SparePartMaterialView.resx">
+      <DependentUpon>SparePartMaterialView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
