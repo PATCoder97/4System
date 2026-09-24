@@ -1,16 +1,12 @@
+using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraGrid;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Winform4System.Forms.SpareParts
+namespace Winform4System.Helpers
 {
-    public class SparePartRefreshHelper
+    public class GridViewStateManager
     {
         [Serializable]
         public struct RowInfo
@@ -26,7 +22,7 @@ namespace Winform4System.Forms.SpareParts
         private ArrayList saveMasterRowsList;
         private int visibleRowIndex = -1;
 
-        public SparePartRefreshHelper(GridView view, string keyFieldName)
+        public GridViewStateManager(GridView view, string keyFieldName)
         {
             this.view = view;
             this.keyFieldName = keyFieldName;
@@ -225,4 +221,3 @@ namespace Winform4System.Forms.SpareParts
         }
     }
 }
-

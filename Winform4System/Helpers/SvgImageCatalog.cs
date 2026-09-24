@@ -5,9 +5,9 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 
-namespace Winform4System.Forms.SpareParts
+namespace Winform4System.Helpers
 {
-    public class SparePartSvgImages
+    public static class SvgImageCatalog
     {
         public static readonly string StartupPath = AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string ImagesPath = ResolveImagesPath();

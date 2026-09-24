@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public static class SparePartRecoveryFileHelper
@@ -49,18 +51,16 @@ namespace Winform4System.Forms.SpareParts
         public static (string encryptionName, string actualName, string extension) SaveGuideFile(string sourceFilePath)
         {
             string actualName = Path.GetFileName(sourceFilePath);
-            string encryptionName = SparePartEncryptionHelper.EncryptionFileName(sourceFilePath);
-            string extension = Path.GetExtension(sourceFilePath) ?? string.Empty;
-            File.Copy(sourceFilePath, Path.Combine(EnsureGuideFolder(), encryptionName), true);
+            string extension = (Path.GetExtension(sourceFilePath) ?? string.Empty).ToLowerInvariant();
+            string encryptionName = StoredFileWriter.CopyToStorage(sourceFilePath, EnsureGuideFolder());
             return (encryptionName, actualName, extension);
         }
 
         public static (string encryptionName, string actualName, string extension) SaveEvidenceFile(int ticketId, string sourceFilePath)
         {
             string actualName = Path.GetFileName(sourceFilePath);
-            string encryptionName = SparePartEncryptionHelper.EncryptionFileName(sourceFilePath);
-            string extension = Path.GetExtension(sourceFilePath) ?? string.Empty;
-            File.Copy(sourceFilePath, Path.Combine(EnsureEvidenceFolder(ticketId), encryptionName), true);
+            string extension = (Path.GetExtension(sourceFilePath) ?? string.Empty).ToLowerInvariant();
+            string encryptionName = StoredFileWriter.CopyToStorage(sourceFilePath, EnsureEvidenceFolder(ticketId));
             return (encryptionName, actualName, extension);
         }
 

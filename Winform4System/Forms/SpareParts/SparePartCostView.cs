@@ -20,6 +20,8 @@ using DevExpress.XtraSplashScreen;
 using Winform4System.Forms.SpareParts;
 using static DevExpress.XtraEditors.Mask.MaskSettings;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public partial class SparePartCostView : DevExpress.XtraEditors.XtraUserControl
@@ -31,21 +33,21 @@ namespace Winform4System.Forms.SpareParts
             InitializeIcon();
             //InitializeMenuItems();
 
-            helper = new SparePartRefreshHelper(gvData, "Id");
+            helper = new GridViewStateManager(gvData, "Id");
 
             System.Drawing.Font fontUI12 = new System.Drawing.Font("Microsoft JhengHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             DevExpress.Utils.AppearanceObject.DefaultMenuFont = fontUI12;
         }
 
-        SparePartRefreshHelper helper;
+        GridViewStateManager helper;
         BindingSource sourceBases = new BindingSource();
 
         DateTime dateFrom, dateTo;
 
         private void InitializeIcon()
         {
-            btnReload.ImageOptions.SvgImage = SparePartSvgImages.Search;
-            btnExportExcel.ImageOptions.SvgImage = SparePartSvgImages.Excel;
+            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Search;
+            btnExportExcel.ImageOptions.SvgImage = SvgImageCatalog.Excel;
         }
 
         private void LoadData()
@@ -173,13 +175,13 @@ namespace Winform4System.Forms.SpareParts
         private void SparePartCostView_Load(object sender, EventArgs e)
         {
             gvData.ReadOnlyGridView();
-            gvData.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvData.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             gvData.OptionsDetail.AllowOnlyOneMasterRowExpanded = true;
             gvStorage.ReadOnlyGridView();
-            gvStorage.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvStorage.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             gvStorage.OptionsDetail.AllowOnlyOneMasterRowExpanded = true;
             gvMaterial.ReadOnlyGridView();
-            gvMaterial.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvMaterial.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
 
             //// Kiểm tra quyền từng ke để có quyền truy cập theo nhóm
             //LoadData();

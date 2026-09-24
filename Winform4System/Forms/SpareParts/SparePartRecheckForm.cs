@@ -12,6 +12,8 @@ using Winform4System.DataAccess.Entities.SpareParts;
 using DevExpress.XtraEditors;
 using Winform4System.Forms.SpareParts;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public partial class SparePartRecheckForm : DevExpress.XtraEditors.XtraForm
@@ -25,8 +27,8 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnConfirm.ImageOptions.SvgImage = SparePartSvgImages.Confirm;
-            btnCancel.ImageOptions.SvgImage = SparePartSvgImages.Cancel;
+            btnConfirm.ImageOptions.SvgImage = SvgImageCatalog.Confirm;
+            btnCancel.ImageOptions.SvgImage = SvgImageCatalog.Cancel;
         }
 
         public bool _IsUploadAbnormal = false;
@@ -75,7 +77,7 @@ namespace Winform4System.Forms.SpareParts
 
             gcData.DataSource = batchMaterialList;
             gvSparePart.ReadOnlyGridView();
-            gvSparePart.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvSparePart.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             gvSparePart.RowCellClick += GvSparePart_RowCellClick;
             gvSparePart.BestFitColumns();
         }

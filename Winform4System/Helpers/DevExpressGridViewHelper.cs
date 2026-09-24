@@ -1,14 +1,10 @@
 using DevExpress.XtraGrid.Views.Grid;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Winform4System.Forms.SpareParts
+namespace Winform4System.Helpers
 {
-    public static class SparePartGridHelper
+    public static class DevExpressGridViewHelper
     {
         public static void ReadOnlyGridView(this GridView gridView_, bool active = true)
         {
@@ -18,7 +14,7 @@ namespace Winform4System.Forms.SpareParts
             gridView_.OptionsBehavior.EditingMode = active ? GridEditingMode.EditFormInplace : GridEditingMode.Inplace;
         }
 
-        public static void GridViewCopyCellData_KeyDown(object sender, KeyEventArgs e)
+        public static void CopyFocusedCellOnCtrlC(object sender, KeyEventArgs e)
         {
             GridView view = sender as GridView;
             if (e.Control && e.KeyCode == Keys.C)

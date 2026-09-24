@@ -1,6 +1,8 @@
 using Winform4System.DataAccess.Entities.SpareParts;
 using System.IO;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public static class SparePartInspectionPhotoHelper
@@ -26,9 +28,8 @@ namespace Winform4System.Forms.SpareParts
         public static (string encryptionName, string actualName) SavePhoto(int batchMaterialId, string sourceFilePath)
         {
             string actualName = Path.GetFileName(sourceFilePath);
-            string encryptionName = SparePartEncryptionHelper.EncryptionFileName(sourceFilePath);
             string folder = EnsureInspectionPhotoFolder(batchMaterialId);
-            File.Copy(sourceFilePath, Path.Combine(folder, encryptionName), true);
+            string encryptionName = StoredFileWriter.CopyToStorage(sourceFilePath, folder);
             return (encryptionName, actualName);
         }
 
@@ -62,4 +63,3 @@ namespace Winform4System.Forms.SpareParts
         }
     }
 }
-

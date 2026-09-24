@@ -8,12 +8,14 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public partial class SparePartRecoveryGuideForm : XtraForm
     {
         private readonly BindingSource sourceGuides = new BindingSource();
-        private SparePartRefreshHelper helper;
+        private GridViewStateManager helper;
 
         public SparePartRecoveryGuideForm()
         {
@@ -22,7 +24,7 @@ namespace Winform4System.Forms.SpareParts
             InitializeIcon();
             ConfigureGrid();
 
-            helper = new SparePartRefreshHelper(gvData, "Id");
+            helper = new GridViewStateManager(gvData, "Id");
             gcData.DataSource = sourceGuides;
         }
 
@@ -33,10 +35,10 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnUpload.ImageOptions.SvgImage = SparePartSvgImages.UploadFile;
-            btnView.ImageOptions.SvgImage = SparePartSvgImages.View;
-            btnDelete.ImageOptions.SvgImage = SparePartSvgImages.Remove;
-            btnReload.ImageOptions.SvgImage = SparePartSvgImages.Reload;
+            btnUpload.ImageOptions.SvgImage = SvgImageCatalog.UploadFile;
+            btnView.ImageOptions.SvgImage = SvgImageCatalog.View;
+            btnDelete.ImageOptions.SvgImage = SvgImageCatalog.Remove;
+            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
         }
 
         private void ConfigureGrid()
@@ -49,7 +51,7 @@ namespace Winform4System.Forms.SpareParts
             gvData.OptionsView.EnableAppearanceOddRow = true;
             gvData.OptionsView.ShowAutoFilterRow = true;
             gvData.OptionsView.ShowGroupPanel = false;
-            gvData.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvData.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
 
             gvData.Columns.AddVisible(nameof(SparePartRecoveryGuide.Title), "\u6a19\u984c").Width = 220;
             gvData.Columns.AddVisible(nameof(SparePartRecoveryGuide.ActualName), "\u6a94\u540d").Width = 260;

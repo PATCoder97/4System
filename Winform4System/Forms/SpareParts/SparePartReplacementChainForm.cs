@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public partial class SparePartReplacementChainForm : XtraForm
@@ -28,7 +30,7 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnClose.ImageOptions.SvgImage = SparePartSvgImages.Close;
+            btnClose.ImageOptions.SvgImage = SvgImageCatalog.Close;
         }
 
         private void ConfigureGrid()
@@ -89,7 +91,7 @@ namespace Winform4System.Forms.SpareParts
 
         private void SparePartReplacementChainForm_Load(object sender, EventArgs e)
         {
-            gvData.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvData.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             LoadData();
         }
 

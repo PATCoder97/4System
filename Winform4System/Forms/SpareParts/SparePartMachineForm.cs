@@ -15,6 +15,8 @@ using DevExpress.XtraLayout;
 using DevExpress.XtraSplashScreen;
 using Winform4System.Forms.SpareParts;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public partial class SparePartMachineForm : DevExpress.XtraEditors.XtraForm
@@ -38,9 +40,9 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnEdit.ImageOptions.SvgImage = SparePartSvgImages.Edit;
-            btnDelete.ImageOptions.SvgImage = SparePartSvgImages.Remove;
-            btnConfirm.ImageOptions.SvgImage = SparePartSvgImages.Confirm;
+            btnEdit.ImageOptions.SvgImage = SvgImageCatalog.Edit;
+            btnDelete.ImageOptions.SvgImage = SvgImageCatalog.Remove;
+            btnConfirm.ImageOptions.SvgImage = SvgImageCatalog.Confirm;
         }
 
         private void EnabledController(bool _enable = true)

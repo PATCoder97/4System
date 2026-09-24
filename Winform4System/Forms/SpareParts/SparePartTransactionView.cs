@@ -25,6 +25,8 @@ using System.Windows.Forms;
 using System.Windows.Media.Media3D;
 using static DevExpress.XtraEditors.Mask.MaskSettings;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public partial class SparePartTransactionView : DevExpress.XtraEditors.XtraUserControl
@@ -37,13 +39,13 @@ namespace Winform4System.Forms.SpareParts
             InitializeMenuItems();
             CreateRuleGV();
 
-            helper = new SparePartRefreshHelper(gvData, "Id");
+            helper = new GridViewStateManager(gvData, "Id");
 
             Font fontUI12 = new Font("Microsoft JhengHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             DevExpress.Utils.AppearanceObject.DefaultMenuFont = fontUI12;
         }
 
-        SparePartRefreshHelper helper;
+        GridViewStateManager helper;
         BindingSource sourceBases = new BindingSource();
         string idDept2word = SparePartConfiguration.idDept2word;
 
@@ -77,9 +79,9 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnReload.ImageOptions.SvgImage = SparePartSvgImages.Reload;
-            btnExportExcel.ImageOptions.SvgImage = SparePartSvgImages.Excel;
-            barCbbDept.ImageOptions.SvgImage = SparePartSvgImages.Dept;
+            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
+            btnExportExcel.ImageOptions.SvgImage = SvgImageCatalog.Excel;
+            barCbbDept.ImageOptions.SvgImage = SvgImageCatalog.Dept;
         }
 
         DXMenuItem CreateMenuItem(string caption, EventHandler clickEvent, SvgImage svgImage)
@@ -97,13 +99,13 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeMenuItems()
         {
-            //itemViewInfo = CreateMenuItem("查看資訊", ItemViewInfo_Click, SparePartSvgImages.View);
-            //itemUpdatePrice = CreateMenuItem("更新單價", ItemUpdatePrice_Click, SparePartSvgImages.Money);
+            //itemViewInfo = CreateMenuItem("查看資訊", ItemViewInfo_Click, SvgImageCatalog.View);
+            //itemUpdatePrice = CreateMenuItem("更新單價", ItemUpdatePrice_Click, SvgImageCatalog.Money);
 
-            //itemMaterialIn = CreateMenuItem("收料", ItemMaterialIn_Click, SparePartSvgImages.Num1);
-            //itemMaterialOut = CreateMenuItem("領用", ItemMaterialOut_Click, SparePartSvgImages.Num2);
-            //itemMaterialTransfer = CreateMenuItem("轉庫", ItemMaterialTransfer_Click, SparePartSvgImages.Num3);
-            //itemMaterialCheck = CreateMenuItem("盤點", ItemMaterialCheck_Click, SparePartSvgImages.Num4);
+            //itemMaterialIn = CreateMenuItem("收料", ItemMaterialIn_Click, SvgImageCatalog.Num1);
+            //itemMaterialOut = CreateMenuItem("領用", ItemMaterialOut_Click, SvgImageCatalog.Num2);
+            //itemMaterialTransfer = CreateMenuItem("轉庫", ItemMaterialTransfer_Click, SvgImageCatalog.Num3);
+            //itemMaterialCheck = CreateMenuItem("盤點", ItemMaterialCheck_Click, SvgImageCatalog.Num4);
         }
 
         private void CreateRuleGV()
@@ -189,10 +191,10 @@ namespace Winform4System.Forms.SpareParts
         private void SparePartTransactionView_Load(object sender, EventArgs e)
         {
             gvData.ReadOnlyGridView();
-            gvData.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvData.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             gvData.OptionsDetail.AllowOnlyOneMasterRowExpanded = true;
             gvSparePart.ReadOnlyGridView();
-            gvSparePart.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvSparePart.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
 
             // Kiểm tra quyền từng ke để có quyền truy cập theo nhóm
             var departmentItems = SparePartHelper.GetAccessibleDepartments()

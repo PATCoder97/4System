@@ -23,6 +23,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public partial class SparePartMachineView : DevExpress.XtraEditors.XtraUserControl
@@ -34,13 +36,13 @@ namespace Winform4System.Forms.SpareParts
             InitializeIcon();
             InitializeMenuItems();
 
-            helper = new SparePartRefreshHelper(gvData, "Id");
+            helper = new GridViewStateManager(gvData, "Id");
 
             Font fontUI12 = new Font("Microsoft JhengHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             DevExpress.Utils.AppearanceObject.DefaultMenuFont = fontUI12;
         }
 
-        SparePartRefreshHelper helper;
+        GridViewStateManager helper;
         BindingSource sourceBases = new BindingSource();
         string idDept2word = SparePartConfiguration.idDept2word;
         string deptGetData = "";
@@ -62,13 +64,13 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnAdd.ImageOptions.SvgImage = SparePartSvgImages.Add;
-            btnReload.ImageOptions.SvgImage = SparePartSvgImages.Reload;
-            barExport.ImageOptions.SvgImage = SparePartSvgImages.Excel;
-            barCbbDept.ImageOptions.SvgImage = SparePartSvgImages.Dept;
+            btnAdd.ImageOptions.SvgImage = SvgImageCatalog.Add;
+            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
+            barExport.ImageOptions.SvgImage = SvgImageCatalog.Excel;
+            barCbbDept.ImageOptions.SvgImage = SvgImageCatalog.Dept;
 
-            btnMachineList.ImageOptions.SvgImage = SparePartSvgImages.Num1;
-            btnSummary.ImageOptions.SvgImage = SparePartSvgImages.Num2;
+            btnMachineList.ImageOptions.SvgImage = SvgImageCatalog.Num1;
+            btnSummary.ImageOptions.SvgImage = SvgImageCatalog.Num2;
         }
 
         DXMenuItem CreateMenuItem(string caption, EventHandler clickEvent, SvgImage svgImage)
@@ -86,7 +88,7 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeMenuItems()
         {
-            itemViewInfo = CreateMenuItem("查看資訊", ItemViewInfo_Click, SparePartSvgImages.View);
+            itemViewInfo = CreateMenuItem("查看資訊", ItemViewInfo_Click, SvgImageCatalog.View);
         }
 
         private void ItemViewInfo_Click(object sender, EventArgs e)
@@ -163,10 +165,10 @@ namespace Winform4System.Forms.SpareParts
         private void SparePartMachineView_Load(object sender, EventArgs e)
         {
             gvData.ReadOnlyGridView();
-            gvData.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvData.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             gvData.OptionsDetail.AllowOnlyOneMasterRowExpanded = true;
             gvSparePart.ReadOnlyGridView();
-            gvSparePart.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvSparePart.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
 
             // Kiểm tra quyền từng ke để có quyền truy cập theo nhóm
             var departmentItems = SparePartHelper.GetAccessibleDepartments()

@@ -9,6 +9,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using Winform4System.Core.Models;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public sealed class SparePartForm : FluentDesignForm
@@ -60,6 +62,12 @@ namespace Winform4System.Forms.SpareParts
                 ClosePageButtonShowMode = ClosePageButtonShowMode.InAllTabPageHeaders,
                 ShowTabHeader = DefaultBoolean.True
             };
+            _tabs.AppearancePage.Header.Font = new Font("Microsoft JhengHei UI", 12F);
+            _tabs.AppearancePage.Header.Options.UseFont = true;
+            _tabs.AppearancePage.HeaderActive.Font = new Font("Microsoft JhengHei UI", 12F);
+            _tabs.AppearancePage.HeaderActive.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            _tabs.AppearancePage.HeaderActive.Options.UseFont = true;
+            _tabs.AppearancePage.HeaderActive.Options.UseForeColor = true;
             _tabs.CloseButtonClick += Tabs_CloseButtonClick;
             _container.Controls.Add(_tabs);
 
@@ -84,14 +92,14 @@ namespace Winform4System.Forms.SpareParts
             };
             group.Appearance.Default.Font = new Font("Microsoft JhengHei UI", 12F);
 
-            AddNavigationItem(group, "materials", "備品資料", SparePartSvgImages.View, () => new SparePartMaterialView());
-            AddNavigationItem(group, "machines", "設備管理", SparePartSvgImages.Gears, () => new SparePartMachineView());
-            AddNavigationItem(group, "transactions", "進出庫管理", SparePartSvgImages.Transfer, () => new SparePartTransactionView());
-            AddNavigationItem(group, "inspection", "盤點批次", SparePartSvgImages.CheckedRadio, () => new SparePartInspectionView());
-            AddNavigationItem(group, "recheck", "複盤作業", SparePartSvgImages.Reload, () => new SparePartRecheckView());
-            AddNavigationItem(group, "cost", "成本計算", SparePartSvgImages.Money, () => new SparePartCostView());
-            AddNavigationItem(group, "recovery", "回收管理", SparePartSvgImages.Schedule, () => new SparePartRecoveryView());
-            AddNavigationItem(group, "my-recovery", "我的回收作業", SparePartSvgImages.PersonnelChanges, () => new SparePartRecoveryTaskView());
+            AddNavigationItem(group, "materials", "備品資料", SvgImageCatalog.View, () => new SparePartMaterialView());
+            AddNavigationItem(group, "machines", "設備管理", SvgImageCatalog.Gears, () => new SparePartMachineView());
+            AddNavigationItem(group, "transactions", "進出庫管理", SvgImageCatalog.Transfer, () => new SparePartTransactionView());
+            AddNavigationItem(group, "inspection", "盤點批次", SvgImageCatalog.CheckedRadio, () => new SparePartInspectionView());
+            AddNavigationItem(group, "recheck", "複盤作業", SvgImageCatalog.Reload, () => new SparePartRecheckView());
+            AddNavigationItem(group, "cost", "成本計算", SvgImageCatalog.Money, () => new SparePartCostView());
+            AddNavigationItem(group, "recovery", "回收管理", SvgImageCatalog.Schedule, () => new SparePartRecoveryView());
+            AddNavigationItem(group, "my-recovery", "我的回收作業", SvgImageCatalog.PersonnelChanges, () => new SparePartRecoveryTaskView());
             _navigation.Elements.Add(group);
         }
 

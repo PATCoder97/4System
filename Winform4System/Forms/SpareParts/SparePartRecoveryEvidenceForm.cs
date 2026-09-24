@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public partial class SparePartRecoveryEvidenceForm : XtraForm
@@ -32,12 +34,12 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnConfirm.ImageOptions.SvgImage = SparePartSvgImages.Confirm;
-            btnCancel.ImageOptions.SvgImage = SparePartSvgImages.Cancel;
+            btnConfirm.ImageOptions.SvgImage = SvgImageCatalog.Confirm;
+            btnCancel.ImageOptions.SvgImage = SvgImageCatalog.Cancel;
 
-            btnAddFile.ImageOptions.SvgImage = SparePartSvgImages.Add;
-            btnViewFile.ImageOptions.SvgImage = SparePartSvgImages.View;
-            btnRemoveFile.ImageOptions.SvgImage = SparePartSvgImages.Remove;
+            btnAddFile.ImageOptions.SvgImage = SvgImageCatalog.Add;
+            btnViewFile.ImageOptions.SvgImage = SvgImageCatalog.View;
+            btnRemoveFile.ImageOptions.SvgImage = SvgImageCatalog.Remove;
         }
 
         private void InitializeForm(DateTime? actualDisposeDate, string resultNote)

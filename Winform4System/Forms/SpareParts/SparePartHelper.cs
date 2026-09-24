@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using Winform4System.Business.Services.SpareParts;
 using Winform4System.Core.Security;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public static class SparePartHelper
@@ -57,8 +59,9 @@ namespace Winform4System.Forms.SpareParts
         public static (string encryptionName, string actualName) SaveMaterialPhoto(int materialId, string sourceFilePath)
         {
             string actualName = Path.GetFileName(sourceFilePath);
-            string encryptionName = SparePartEncryptionHelper.EncryptionFileName(sourceFilePath);
-            File.Copy(sourceFilePath, Path.Combine(EnsureMaterialPhotoFolder(materialId), encryptionName), true);
+            string encryptionName = StoredFileWriter.CopyToStorage(
+                sourceFilePath,
+                EnsureMaterialPhotoFolder(materialId));
             return (encryptionName, actualName);
         }
 
@@ -70,7 +73,10 @@ namespace Winform4System.Forms.SpareParts
         public static string CopyToTemp(string sourcePath, string actualName)
         {
             Directory.CreateDirectory(SparePartConfiguration.TempFolderData);
-            string tempFile = Path.Combine(SparePartConfiguration.TempFolderData, $"{DateTime.Now:yyyyMMddHHmmssfff}-{actualName}");
+            string extension = Path.GetExtension(actualName) ?? string.Empty;
+            string tempFile = Path.Combine(
+                SparePartConfiguration.TempFolderData,
+                $"{Guid.NewGuid():N}{extension}");
             File.Copy(sourcePath, tempFile, true);
             return tempFile;
         }

@@ -34,6 +34,8 @@ using Font = System.Drawing.Font;
 using GridView = DevExpress.XtraGrid.Views.Grid.GridView;
 using Tuple = System.Tuple;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public partial class SparePartMaterialView : DevExpress.XtraEditors.XtraUserControl
@@ -45,7 +47,7 @@ namespace Winform4System.Forms.SpareParts
             InitializeIcon();
             InitializeMenuItems();
 
-            helper = new SparePartRefreshHelper(gvData, "Id");
+            helper = new GridViewStateManager(gvData, "Id");
 
             Font fontUI12 = new Font("Microsoft JhengHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             DevExpress.Utils.AppearanceObject.DefaultMenuFont = fontUI12;
@@ -53,7 +55,7 @@ namespace Winform4System.Forms.SpareParts
             barCbbDept.EditValueChanged += CbbDept_EditValueChanged;
         }
 
-        SparePartRefreshHelper helper;
+        GridViewStateManager helper;
         BindingSource sourceBases = new BindingSource();
         string idDept2word = SparePartConfiguration.idDept2word;
         string deptGetData = "";
@@ -91,14 +93,14 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnAdd.ImageOptions.SvgImage = SparePartSvgImages.Add;
-            btnReload.ImageOptions.SvgImage = SparePartSvgImages.Reload;
-            btnExportExcel.ImageOptions.SvgImage = SparePartSvgImages.Excel;
-            barCbbDept.ImageOptions.SvgImage = SparePartSvgImages.Dept;
+            btnAdd.ImageOptions.SvgImage = SvgImageCatalog.Add;
+            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
+            btnExportExcel.ImageOptions.SvgImage = SvgImageCatalog.Excel;
+            barCbbDept.ImageOptions.SvgImage = SvgImageCatalog.Dept;
 
-            btnExcelBySpare.ImageOptions.SvgImage = SparePartSvgImages.Num1;
-            btnExcelByMachine.ImageOptions.SvgImage = SparePartSvgImages.Num2;
-            btnExcelByNotify.ImageOptions.SvgImage = SparePartSvgImages.Num3;
+            btnExcelBySpare.ImageOptions.SvgImage = SvgImageCatalog.Num1;
+            btnExcelByMachine.ImageOptions.SvgImage = SvgImageCatalog.Num2;
+            btnExcelByNotify.ImageOptions.SvgImage = SvgImageCatalog.Num3;
         }
 
         private void CreateRuleGV()
@@ -236,23 +238,23 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeMenuItems()
         {
-            itemViewInfo = CreateMenuItem("查看資訊", ItemViewInfo_Click, SparePartSvgImages.View);
-            itemSetReplacement = CreateMenuItem("設定替代料", ItemSetReplacement_Click, SparePartSvgImages.Edit);
-            itemClearReplacement = CreateMenuItem("清除替代料", ItemClearReplacement_Click, SparePartSvgImages.Remove);
-            itemViewReplacementChain = CreateMenuItem("查看替代鏈", ItemViewReplacementChain_Click, SparePartSvgImages.Search);
-            itemUploadPhoto = CreateMenuItem("上傳圖片", ItemUploadPhoto_Click, SparePartSvgImages.UploadFile);
-            itemViewPhoto = CreateMenuItem("查看圖片", ItemViewPhoto_Click, SparePartSvgImages.Search);
-            itemUpdatePrice = CreateMenuItem("更新單價", ItemUpdatePrice_Click, SparePartSvgImages.Money);
+            itemViewInfo = CreateMenuItem("查看資訊", ItemViewInfo_Click, SvgImageCatalog.View);
+            itemSetReplacement = CreateMenuItem("設定替代料", ItemSetReplacement_Click, SvgImageCatalog.Edit);
+            itemClearReplacement = CreateMenuItem("清除替代料", ItemClearReplacement_Click, SvgImageCatalog.Remove);
+            itemViewReplacementChain = CreateMenuItem("查看替代鏈", ItemViewReplacementChain_Click, SvgImageCatalog.Search);
+            itemUploadPhoto = CreateMenuItem("上傳圖片", ItemUploadPhoto_Click, SvgImageCatalog.UploadFile);
+            itemViewPhoto = CreateMenuItem("查看圖片", ItemViewPhoto_Click, SvgImageCatalog.Search);
+            itemUpdatePrice = CreateMenuItem("更新單價", ItemUpdatePrice_Click, SvgImageCatalog.Money);
 
-            itemMaterialIn = CreateMenuItem("收料", ItemMaterialIn_Click, SparePartSvgImages.Num1);
-            itemMaterialOut = CreateMenuItem("領用", ItemMaterialOut_Click, SparePartSvgImages.Num2);
-            itemMaterialTransfer = CreateMenuItem("轉庫", ItemMaterialTransfer_Click, SparePartSvgImages.Num3);
-            itemMaterialGetFromOther = CreateMenuItem("調撥", ItemMaterialGetFromOther_Click, SparePartSvgImages.Num4);
+            itemMaterialIn = CreateMenuItem("收料", ItemMaterialIn_Click, SvgImageCatalog.Num1);
+            itemMaterialOut = CreateMenuItem("領用", ItemMaterialOut_Click, SvgImageCatalog.Num2);
+            itemMaterialTransfer = CreateMenuItem("轉庫", ItemMaterialTransfer_Click, SvgImageCatalog.Num3);
+            itemMaterialGetFromOther = CreateMenuItem("調撥", ItemMaterialGetFromOther_Click, SvgImageCatalog.Num4);
 
-            itemDisable = CreateMenuItem("停用", ItemDisable_Click, SparePartSvgImages.Disable);
-            itemEnable = CreateMenuItem("啟用", ItemEnable_Click, SparePartSvgImages.Confirm);
-            itemMultiselect = CreateMenuItem("啟用多選", ItemMultiselect_Click, SparePartSvgImages.CheckedRadio);
-            itemPrintStamp = CreateMenuItem("執行列印", ItemPrintStamp_Click, SparePartSvgImages.Print);
+            itemDisable = CreateMenuItem("停用", ItemDisable_Click, SvgImageCatalog.Disable);
+            itemEnable = CreateMenuItem("啟用", ItemEnable_Click, SvgImageCatalog.Confirm);
+            itemMultiselect = CreateMenuItem("啟用多選", ItemMultiselect_Click, SvgImageCatalog.CheckedRadio);
+            itemPrintStamp = CreateMenuItem("執行列印", ItemPrintStamp_Click, SvgImageCatalog.Print);
         }
 
         private dynamic GetFocusedDisplayRow()
@@ -707,14 +709,14 @@ namespace Winform4System.Forms.SpareParts
         private void SparePartMaterialView_Load(object sender, EventArgs e)
         {
             gvData.ReadOnlyGridView();
-            gvData.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvData.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             gvData.OptionsDetail.AllowOnlyOneMasterRowExpanded = true;
             gvTransactions.ReadOnlyGridView();
-            gvTransactions.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvTransactions.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             gvPrices.ReadOnlyGridView();
-            gvPrices.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvPrices.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             gvMachine.ReadOnlyGridView();
-            gvMachine.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvMachine.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
 
             gColDisplayName.AppearanceCell.Options.HighPriority = true;
 
@@ -782,13 +784,13 @@ namespace Winform4System.Forms.SpareParts
                 itemDisable.BeginGroup = true;
                 itemMultiselect.BeginGroup = true;
 
-                DXSubMenuItem replacementMenu = new DXSubMenuItem("替代設定") { SvgImage = SparePartSvgImages.Transfer };
+                DXSubMenuItem replacementMenu = new DXSubMenuItem("替代設定") { SvgImage = SvgImageCatalog.Transfer };
                 replacementMenu.ImageOptions.SvgImageSize = new Size(24, 24);
                 replacementMenu.Items.Add(itemViewReplacementChain);
                 replacementMenu.Items.Add(itemSetReplacement);
                 replacementMenu.Items.Add(itemClearReplacement);
 
-                DXSubMenuItem photoMenu = new DXSubMenuItem("圖片") { SvgImage = SparePartSvgImages.Attach };
+                DXSubMenuItem photoMenu = new DXSubMenuItem("圖片") { SvgImage = SvgImageCatalog.Attach };
                 photoMenu.ImageOptions.SvgImageSize = new Size(24, 24);
 
                 e.Menu.Items.Add(itemViewInfo);
@@ -806,7 +808,7 @@ namespace Winform4System.Forms.SpareParts
                     e.Menu.Items.Add(photoMenu);
                     e.Menu.Items.Add(itemUpdatePrice);
 
-                    DXSubMenuItem dXSubMenuReports = new DXSubMenuItem("庫存作業") { SvgImage = SparePartSvgImages.PersonnelChanges };
+                    DXSubMenuItem dXSubMenuReports = new DXSubMenuItem("庫存作業") { SvgImage = SvgImageCatalog.PersonnelChanges };
                     dXSubMenuReports.ImageOptions.SvgImageSize = new Size(24, 24);
 
                     dXSubMenuReports.Items.Add(itemMaterialIn);

@@ -33,6 +33,8 @@ using System.Transactions;
 using System.Web.Util;
 using System.Windows.Forms;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public partial class SparePartRecheckView : DevExpress.XtraEditors.XtraUserControl
@@ -44,7 +46,7 @@ namespace Winform4System.Forms.SpareParts
             InitializeIcon();
             InitializeMenuItems();
 
-            helper = new SparePartRefreshHelper(gvData, "Id");
+            helper = new GridViewStateManager(gvData, "Id");
 
             Font fontUI12 = new Font("Microsoft JhengHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             DevExpress.Utils.AppearanceObject.DefaultMenuFont = fontUI12;
@@ -52,7 +54,7 @@ namespace Winform4System.Forms.SpareParts
             barCbbDept.EditValueChanged += CbbDept_EditValueChanged;
         }
 
-        SparePartRefreshHelper helper;
+        GridViewStateManager helper;
         BindingSource sourceBases = new BindingSource();
         string idDept2word = SparePartConfiguration.idDept2word;
         string deptGetData = "";
@@ -100,9 +102,9 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnReload.ImageOptions.SvgImage = SparePartSvgImages.Reload;
-            btnExportExcel.ImageOptions.SvgImage = SparePartSvgImages.Excel;
-            barCbbDept.ImageOptions.SvgImage = SparePartSvgImages.Dept;
+            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
+            btnExportExcel.ImageOptions.SvgImage = SvgImageCatalog.Excel;
+            barCbbDept.ImageOptions.SvgImage = SvgImageCatalog.Dept;
         }
 
         private void CreateRuleGV()
@@ -164,12 +166,12 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeMenuItems()
         {
-            itemDownCheckFile = CreateMenuItem("下載盤點表", ItemDownCheckFile_Click, SparePartSvgImages.Excel);
-            itemUpdateCheckFile = CreateMenuItem("上傳盤點表", ItemUpdateCheckFile_Click, SparePartSvgImages.UploadFile);
+            itemDownCheckFile = CreateMenuItem("下載盤點表", ItemDownCheckFile_Click, SvgImageCatalog.Excel);
+            itemUpdateCheckFile = CreateMenuItem("上傳盤點表", ItemUpdateCheckFile_Click, SvgImageCatalog.UploadFile);
 
-            itemDownCheckFileProxy = CreateMenuItem("下載盤點表(代理)", ItemDownCheckFileProxy_Click, SparePartSvgImages.Excel);
-            itemUpdateCheckFileProxy = CreateMenuItem("上傳盤點表(代理)", ItemUpdateCheckFileProxy_Click, SparePartSvgImages.UploadFile);
-            itemViewCheckPhoto = CreateMenuItem("查看圖片", ItemViewCheckPhoto_Click, SparePartSvgImages.Search);
+            itemDownCheckFileProxy = CreateMenuItem("下載盤點表(代理)", ItemDownCheckFileProxy_Click, SvgImageCatalog.Excel);
+            itemUpdateCheckFileProxy = CreateMenuItem("上傳盤點表(代理)", ItemUpdateCheckFileProxy_Click, SvgImageCatalog.UploadFile);
+            itemViewCheckPhoto = CreateMenuItem("查看圖片", ItemViewCheckPhoto_Click, SvgImageCatalog.Search);
         }
 
         private bool IsBatchCancelled(SparePartInspectionBatch batch)
@@ -1129,10 +1131,10 @@ namespace Winform4System.Forms.SpareParts
             gvSparePart.OptionsCustomization.AllowGroup = false;
 
             gvData.ReadOnlyGridView();
-            gvData.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvData.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             gvData.OptionsDetail.AllowOnlyOneMasterRowExpanded = true;
             gvSparePart.ReadOnlyGridView();
-            gvSparePart.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvSparePart.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             gvSparePart.DoubleClick += GvSparePart_DoubleClick;
 
             // Kiểm tra quyền từng ke để có quyền truy cập theo nhóm

@@ -9,6 +9,8 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     public partial class SparePartRecoveryScheduleForm : XtraForm
@@ -35,8 +37,8 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnConfirm.ImageOptions.SvgImage = SparePartSvgImages.Confirm;
-            btnCancel.ImageOptions.SvgImage = SparePartSvgImages.Cancel;
+            btnConfirm.ImageOptions.SvgImage = SvgImageCatalog.Confirm;
+            btnCancel.ImageOptions.SvgImage = SvgImageCatalog.Cancel;
         }
 
         private void ConfigureUserLookup()

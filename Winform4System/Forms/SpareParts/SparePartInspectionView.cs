@@ -28,6 +28,8 @@ using DevExpress.XtraGrid.Menu;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using DevExpress.Data;
 
+using Winform4System.Helpers;
+
 namespace Winform4System.Forms.SpareParts
 {
     /// <summary>
@@ -42,13 +44,13 @@ namespace Winform4System.Forms.SpareParts
             InitializeIcon();
             InitializeMenuItems();
 
-            helper = new SparePartRefreshHelper(gvData, "Id");
+            helper = new GridViewStateManager(gvData, "Id");
 
             Font fontUI12 = new Font("Microsoft JhengHei UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             DevExpress.Utils.AppearanceObject.DefaultMenuFont = fontUI12;
         }
 
-        SparePartRefreshHelper helper;
+        GridViewStateManager helper;
         BindingSource sourceBases = new BindingSource();
         string idDept2word = SparePartConfiguration.idDept2word;
 
@@ -58,9 +60,9 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnAdd.ImageOptions.SvgImage = SparePartSvgImages.Add;
-            btnReload.ImageOptions.SvgImage = SparePartSvgImages.Reload;
-            btnExportExcel.ImageOptions.SvgImage = SparePartSvgImages.Excel;
+            btnAdd.ImageOptions.SvgImage = SvgImageCatalog.Add;
+            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
+            btnExportExcel.ImageOptions.SvgImage = SvgImageCatalog.Excel;
         }
 
         private void CreateRuleGV()
@@ -122,16 +124,16 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeMenuItems()
         {
-            itemUpdateRemainDate = CreateMenuItem("延時提醒", ItemUpdateRemainDate_Click, SparePartSvgImages.DateAdd);
-            itemCancelBatch = CreateMenuItem("取消批次", ItemCancelBatch_Click, SparePartSvgImages.Remove);
-            itemViewCheckPhoto = CreateMenuItem("查看圖片", ItemViewCheckPhoto_Click, SparePartSvgImages.Search);
-            //itemUpdatePrice = CreateMenuItem("更新單價", ItemUpdatePrice_Click, SparePartSvgImages.Money);
+            itemUpdateRemainDate = CreateMenuItem("延時提醒", ItemUpdateRemainDate_Click, SvgImageCatalog.DateAdd);
+            itemCancelBatch = CreateMenuItem("取消批次", ItemCancelBatch_Click, SvgImageCatalog.Remove);
+            itemViewCheckPhoto = CreateMenuItem("查看圖片", ItemViewCheckPhoto_Click, SvgImageCatalog.Search);
+            //itemUpdatePrice = CreateMenuItem("更新單價", ItemUpdatePrice_Click, SvgImageCatalog.Money);
 
-            //itemMaterialIn = CreateMenuItem("收料", ItemMaterialIn_Click, SparePartSvgImages.Num1);
-            //itemMaterialOut = CreateMenuItem("領用", ItemMaterialOut_Click, SparePartSvgImages.Num2);
-            //itemMaterialTransfer = CreateMenuItem("轉庫", ItemMaterialTransfer_Click, SparePartSvgImages.Num3);
-            //itemMaterialCheck = CreateMenuItem("盤點", ItemMaterialCheck_Click, SparePartSvgImages.Num4);
-            //itemMaterialGetFromOther = CreateMenuItem("調撥", ItemMaterialGetFromOther_Click, SparePartSvgImages.Num5);
+            //itemMaterialIn = CreateMenuItem("收料", ItemMaterialIn_Click, SvgImageCatalog.Num1);
+            //itemMaterialOut = CreateMenuItem("領用", ItemMaterialOut_Click, SvgImageCatalog.Num2);
+            //itemMaterialTransfer = CreateMenuItem("轉庫", ItemMaterialTransfer_Click, SvgImageCatalog.Num3);
+            //itemMaterialCheck = CreateMenuItem("盤點", ItemMaterialCheck_Click, SvgImageCatalog.Num4);
+            //itemMaterialGetFromOther = CreateMenuItem("調撥", ItemMaterialGetFromOther_Click, SvgImageCatalog.Num5);
         }
 
         private bool IsBatchCancelled(SparePartInspectionBatch batch)
@@ -322,10 +324,10 @@ namespace Winform4System.Forms.SpareParts
             gvSparePart.OptionsCustomization.AllowGroup = false;
 
             gvData.ReadOnlyGridView();
-            gvData.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvData.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             gvData.OptionsDetail.AllowOnlyOneMasterRowExpanded = true;
             gvSparePart.ReadOnlyGridView();
-            gvSparePart.KeyDown += SparePartGridHelper.GridViewCopyCellData_KeyDown;
+            gvSparePart.KeyDown += DevExpressGridViewHelper.CopyFocusedCellOnCtrlC;
             gvSparePart.DoubleClick += GvSparePart_DoubleClick;
 
             LoadData();
