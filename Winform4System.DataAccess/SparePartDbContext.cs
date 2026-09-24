@@ -1,43 +1,41 @@
 using System.Data.Entity;
 using System.Linq;
-using DataAccessLayer;
+using Winform4System.DataAccess.Entities.SpareParts;
 using Winform4System.DataAccess.Configuration;
 using Winform4System.Core.Security;
 
-namespace DataAccessLayer
+namespace Winform4System.DataAccess
 {
-    public sealed class DBDocumentManagementSystemEntities : DbContext
+    public sealed class SparePartDbContext : DbContext
     {
-        static DBDocumentManagementSystemEntities()
+        static SparePartDbContext()
         {
-            Database.SetInitializer<DBDocumentManagementSystemEntities>(null);
+            Database.SetInitializer<SparePartDbContext>(null);
         }
 
-        public DBDocumentManagementSystemEntities()
+        public SparePartDbContext()
             : base(new ConnectionStringProvider().Get())
         {
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
         }
 
-        public DbSet<dt309_InspectionBatch> dt309_InspectionBatch { get; set; }
-        public DbSet<dt309_InspectionBatchMaterial> dt309_InspectionBatchMaterial { get; set; }
-        public DbSet<dt309_MachineMaterials> dt309_MachineMaterials { get; set; }
-        public DbSet<dt309_Machines> dt309_Machines { get; set; }
-        public DbSet<dt309_MaterialPhoto> dt309_MaterialPhoto { get; set; }
-        public DbSet<dt309_Materials> dt309_Materials { get; set; }
-        public DbSet<dt309_Prices> dt309_Prices { get; set; }
-        public DbSet<dt309_RecoveryEvidence> dt309_RecoveryEvidence { get; set; }
-        public DbSet<dt309_RecoveryGuides> dt309_RecoveryGuides { get; set; }
-        public DbSet<dt309_RecoveryTickets> dt309_RecoveryTickets { get; set; }
-        public DbSet<dt309_Storages> dt309_Storages { get; set; }
-        public DbSet<dt309_Transactions> dt309_Transactions { get; set; }
-        public DbSet<dt309_Units> dt309_Units { get; set; }
-        public DbSet<dm_User> dm_User { get; set; }
-        public DbSet<dm_Departments> dm_Departments { get; set; }
-        public DbSet<dm_Group> dm_Group { get; set; }
-        public DbSet<dm_GroupUser> dm_GroupUser { get; set; }
-        public DbSet<dm_Attachment> dm_Attachment { get; set; }
+        public DbSet<SparePartInspectionBatch> InspectionBatches { get; set; }
+        public DbSet<SparePartInspectionItem> InspectionItems { get; set; }
+        public DbSet<SparePartMachineMaterial> MachineMaterials { get; set; }
+        public DbSet<SparePartMachine> Machines { get; set; }
+        public DbSet<SparePartMaterialPhoto> MaterialPhotos { get; set; }
+        public DbSet<SparePartMaterial> Materials { get; set; }
+        public DbSet<SparePartPrice> Prices { get; set; }
+        public DbSet<SparePartRecoveryEvidence> RecoveryEvidence { get; set; }
+        public DbSet<SparePartRecoveryGuide> RecoveryGuides { get; set; }
+        public DbSet<SparePartRecoveryTicket> RecoveryTickets { get; set; }
+        public DbSet<SparePartStorage> Storages { get; set; }
+        public DbSet<SparePartTransaction> Transactions { get; set; }
+        public DbSet<SparePartUnit> Units { get; set; }
+        public DbSet<SparePartUser> Users { get; set; }
+        public DbSet<SparePartDepartment> Departments { get; set; }
+        public DbSet<SparePartInspectionAttachment> InspectionAttachments { get; set; }
 
         public override int SaveChanges()
         {
@@ -57,15 +55,26 @@ namespace DataAccessLayer
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<dm_User>().HasKey(item => item.Id).ToTable("vw_309_User");
-            modelBuilder.Entity<dm_Departments>().HasKey(item => item.Id).ToTable("vw_309_Department");
-            modelBuilder.Entity<dm_Group>().HasKey(item => item.Id).ToTable("vw_309_Group");
-            modelBuilder.Entity<dm_GroupUser>().HasKey(item => item.Id).ToTable("vw_309_GroupUser");
-            modelBuilder.Entity<dm_Attachment>().HasKey(item => item.Id).ToTable("dt309_Attachment");
+            modelBuilder.Entity<SparePartUnit>().ToTable("sparepart_Unit");
+            modelBuilder.Entity<SparePartStorage>().ToTable("sparepart_Storage");
+            modelBuilder.Entity<SparePartMaterial>().ToTable("sparepart_Material");
+            modelBuilder.Entity<SparePartMachine>().ToTable("sparepart_Machine");
+            modelBuilder.Entity<SparePartMachineMaterial>().ToTable("sparepart_MachineMaterial");
+            modelBuilder.Entity<SparePartTransaction>().ToTable("sparepart_Transaction");
+            modelBuilder.Entity<SparePartPrice>().ToTable("sparepart_Price");
+            modelBuilder.Entity<SparePartMaterialPhoto>().ToTable("sparepart_MaterialPhoto");
+            modelBuilder.Entity<SparePartInspectionBatch>().ToTable("sparepart_InspectionBatch");
+            modelBuilder.Entity<SparePartInspectionItem>().ToTable("sparepart_InspectionItem");
+            modelBuilder.Entity<SparePartRecoveryTicket>().ToTable("sparepart_RecoveryTicket");
+            modelBuilder.Entity<SparePartRecoveryEvidence>().ToTable("sparepart_RecoveryEvidence");
+            modelBuilder.Entity<SparePartRecoveryGuide>().ToTable("sparepart_RecoveryGuide");
+            modelBuilder.Entity<SparePartInspectionAttachment>().ToTable("sparepart_InspectionAttachment");
+            modelBuilder.Entity<SparePartUser>().HasKey(item => item.Id).ToTable("vw_sparepart_User");
+            modelBuilder.Entity<SparePartDepartment>().HasKey(item => item.Id).ToTable("vw_sparepart_Department");
 
-            modelBuilder.Entity<dt309_Materials>()
-                .HasOptional(item => item.dt309_Materials2)
-                .WithMany(item => item.dt309_Materials1)
+            modelBuilder.Entity<SparePartMaterial>()
+                .HasOptional(item => item.ReplacementMaterial)
+                .WithMany(item => item.ReplacedByMaterials)
                 .HasForeignKey(item => item.ReplacementMaterialId)
                 .WillCascadeOnDelete(false);
 

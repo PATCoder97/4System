@@ -1,47 +1,180 @@
-using DevExpress.XtraEditors;
+using DevExpress.Utils;
+using DevExpress.XtraBars.FluentDesignSystem;
+using DevExpress.XtraBars.Navigation;
+using DevExpress.XtraSplashScreen;
 using DevExpress.XtraTab;
-using KnowledgeSystem.Helpers;
-using KnowledgeSystem.Views._03_DepartmentManage._09_SparePart;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using Winform4System.Core.Models;
-using Winform4System.Core.Security;
 
 namespace Winform4System.Forms.SpareParts
 {
-    public sealed class SparePartForm : XtraForm
+    public sealed class SparePartForm : FluentDesignForm
     {
+        private readonly AccordionControl _navigation;
+        private readonly FluentDesignFormContainer _container;
+        private readonly FluentDesignFormControl _titleBar;
+        private readonly XtraTabControl _tabs;
+        private readonly Dictionary<string, XtraTabPage> _openPages =
+            new Dictionary<string, XtraTabPage>(StringComparer.OrdinalIgnoreCase);
+
         public SparePartForm(UserSession session)
         {
             if (session == null)
                 throw new ArgumentNullException(nameof(session));
 
-            TPConfigs.Initialize(session);
-            Text = "309 備品備件管理";
+            SparePartConfiguration.Initialize(session);
+            Text = "備品備件管理";
             IconOptions.Icon = Properties.Resources.AppIcon;
             StartPosition = FormStartPosition.CenterParent;
             WindowState = FormWindowState.Maximized;
-            MinimumSize = new System.Drawing.Size(1100, 700);
+            MinimumSize = new Size(1100, 700);
 
-            var tabs = new XtraTabControl { Dock = DockStyle.Fill };
-            Controls.Add(tabs);
+            _titleBar = new FluentDesignFormControl
+            {
+                Dock = DockStyle.Top,
+                FluentDesignForm = this,
+                Name = "sparePartTitleBar"
+            };
+            _navigation = new AccordionControl
+            {
+                AllowItemSelection = true,
+                Dock = DockStyle.Left,
+                Name = "sparePartNavigation",
+                ScrollBarMode = ScrollBarMode.Touch,
+                ShowFilterControl = ShowFilterControl.Always,
+                ViewType = AccordionControlViewType.HamburgerMenu,
+                Width = 235
+            };
+            _container = new FluentDesignFormContainer
+            {
+                Dock = DockStyle.Fill,
+                Name = "sparePartContainer"
+            };
+            _tabs = new XtraTabControl
+            {
+                Dock = DockStyle.Fill,
+                Name = "sparePartTabs",
+                ClosePageButtonShowMode = ClosePageButtonShowMode.InAllTabPageHeaders,
+                ShowTabHeader = DefaultBoolean.True
+            };
+            _tabs.CloseButtonClick += Tabs_CloseButtonClick;
+            _container.Controls.Add(_tabs);
 
-            AddPage(tabs, "配件資料", new uc309_SparePartMain());
-            AddPage(tabs, "設備管理", new uc309_MachineMgmt());
-            AddPage(tabs, "進出庫管理", new uc309_InOutMgmt());
-            AddPage(tabs, "盤點批次", new uc309_InspectionBatch());
-            AddPage(tabs, "複盤作業", new uc309_RecheckBatch());
-            AddPage(tabs, "成本計算", new uc309_CostCalculation());
-            AddPage(tabs, "回收管理", new uc309_RecoveryMgmt());
-            AddPage(tabs, "我的回收作業", new uc309_RecoveryTask());
+            Controls.Add(_container);
+            Controls.Add(_navigation);
+            Controls.Add(_titleBar);
+            ControlContainer = _container;
+            FluentDesignFormControl = _titleBar;
+            NavigationControl = _navigation;
+
+            BuildNavigation();
+            Shown += (sender, args) => OpenTab("materials", "備品資料", () => new SparePartMaterialView());
         }
 
-        private static void AddPage(XtraTabControl tabs, string caption, Control content)
+        private void BuildNavigation()
         {
-            var page = new XtraTabPage { Text = caption };
-            content.Dock = DockStyle.Fill;
-            page.Controls.Add(content);
-            tabs.TabPages.Add(page);
+            var group = new AccordionControlElement
+            {
+                Text = "備品備件功能",
+                Style = ElementStyle.Group,
+                Expanded = true
+            };
+            group.Appearance.Default.Font = new Font("Microsoft JhengHei UI", 12F);
+
+            AddNavigationItem(group, "materials", "備品資料", SparePartSvgImages.View, () => new SparePartMaterialView());
+            AddNavigationItem(group, "machines", "設備管理", SparePartSvgImages.Gears, () => new SparePartMachineView());
+            AddNavigationItem(group, "transactions", "進出庫管理", SparePartSvgImages.Transfer, () => new SparePartTransactionView());
+            AddNavigationItem(group, "inspection", "盤點批次", SparePartSvgImages.CheckedRadio, () => new SparePartInspectionView());
+            AddNavigationItem(group, "recheck", "複盤作業", SparePartSvgImages.Reload, () => new SparePartRecheckView());
+            AddNavigationItem(group, "cost", "成本計算", SparePartSvgImages.Money, () => new SparePartCostView());
+            AddNavigationItem(group, "recovery", "回收管理", SparePartSvgImages.Schedule, () => new SparePartRecoveryView());
+            AddNavigationItem(group, "my-recovery", "我的回收作業", SparePartSvgImages.PersonnelChanges, () => new SparePartRecoveryTaskView());
+            _navigation.Elements.Add(group);
+        }
+
+        private static Font NavigationFont => new Font("Microsoft JhengHei UI", 12F);
+
+        private void AddNavigationItem(
+            AccordionControlElement parent,
+            string key,
+            string caption,
+            DevExpress.Utils.Svg.SvgImage icon,
+            Func<Control> contentFactory)
+        {
+            var item = new AccordionControlElement
+            {
+                Name = "nav_" + key,
+                Text = caption,
+                Hint = caption,
+                Style = ElementStyle.Item,
+                Tag = new SparePartNavigationItem(key, caption, contentFactory)
+            };
+            item.Appearance.Default.Font = NavigationFont;
+            item.Appearance.Normal.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Hyperlink;
+            item.Appearance.Hovered.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            item.Appearance.Pressed.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
+            item.ImageOptions.SvgImage = icon;
+            item.Click += NavigationItem_Click;
+            parent.Elements.Add(item);
+        }
+
+        private void NavigationItem_Click(object sender, EventArgs e)
+        {
+            var element = sender as AccordionControlElement;
+            var navigationItem = element?.Tag as SparePartNavigationItem;
+            if (navigationItem != null)
+                OpenTab(navigationItem.Key, navigationItem.Caption, navigationItem.ContentFactory);
+        }
+
+        private void OpenTab(string key, string caption, Func<Control> contentFactory)
+        {
+            if (_openPages.TryGetValue(key, out XtraTabPage existingPage))
+            {
+                _tabs.SelectedTabPage = existingPage;
+                return;
+            }
+
+            using (SplashScreenManager.ShowOverlayForm(this))
+            {
+                Control content = contentFactory();
+                content.Dock = DockStyle.Fill;
+                var page = new XtraTabPage { Name = "tab_" + key, Text = caption, Tag = key };
+                page.Controls.Add(content);
+                _tabs.TabPages.Add(page);
+                _openPages.Add(key, page);
+                _tabs.SelectedTabPage = page;
+            }
+        }
+
+        private void Tabs_CloseButtonClick(object sender, EventArgs e)
+        {
+            var pageProperty = e?.GetType().GetProperty("Page");
+            var page = pageProperty?.GetValue(e, null) as XtraTabPage ?? _tabs.SelectedTabPage;
+            if (page == null)
+                return;
+
+            string key = page.Tag as string;
+            if (!string.IsNullOrWhiteSpace(key))
+                _openPages.Remove(key);
+            _tabs.TabPages.Remove(page);
+            page.Dispose();
+        }
+
+        private sealed class SparePartNavigationItem
+        {
+            public SparePartNavigationItem(string key, string caption, Func<Control> contentFactory)
+            {
+                Key = key;
+                Caption = caption;
+                ContentFactory = contentFactory;
+            }
+
+            public string Key { get; }
+            public string Caption { get; }
+            public Func<Control> ContentFactory { get; }
         }
     }
 }

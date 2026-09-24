@@ -39,24 +39,22 @@
     <Compile Include="Repositories\EfUserAccountRepository.cs" />
     <Compile Include="Winform4SystemDbContext.cs" />
     <Compile Include="SparePartDbContext.cs" />
-    <Compile Include="Entities\SpareParts\dm_Attachment.cs" />
-    <Compile Include="Entities\SpareParts\dm_Departments.cs" />
-    <Compile Include="Entities\SpareParts\dm_Group.cs" />
-    <Compile Include="Entities\SpareParts\dm_GroupUser.cs" />
-    <Compile Include="Entities\SpareParts\dm_User.cs" />
-    <Compile Include="Entities\SpareParts\dt309_InspectionBatch.cs" />
-    <Compile Include="Entities\SpareParts\dt309_InspectionBatchMaterial.cs" />
-    <Compile Include="Entities\SpareParts\dt309_MachineMaterials.cs" />
-    <Compile Include="Entities\SpareParts\dt309_Machines.cs" />
-    <Compile Include="Entities\SpareParts\dt309_MaterialPhoto.cs" />
-    <Compile Include="Entities\SpareParts\dt309_Materials.cs" />
-    <Compile Include="Entities\SpareParts\dt309_Prices.cs" />
-    <Compile Include="Entities\SpareParts\dt309_RecoveryEvidence.cs" />
-    <Compile Include="Entities\SpareParts\dt309_RecoveryGuides.cs" />
-    <Compile Include="Entities\SpareParts\dt309_RecoveryTickets.cs" />
-    <Compile Include="Entities\SpareParts\dt309_Storages.cs" />
-    <Compile Include="Entities\SpareParts\dt309_Transactions.cs" />
-    <Compile Include="Entities\SpareParts\dt309_Units.cs" />
+    <Compile Include="Entities\SpareParts\SparePartInspectionAttachment.cs" />
+    <Compile Include="Entities\SpareParts\SparePartDepartment.cs" />
+    <Compile Include="Entities\SpareParts\SparePartUser.cs" />
+    <Compile Include="Entities\SpareParts\SparePartInspectionBatch.cs" />
+    <Compile Include="Entities\SpareParts\SparePartInspectionItem.cs" />
+    <Compile Include="Entities\SpareParts\SparePartMachineMaterial.cs" />
+    <Compile Include="Entities\SpareParts\SparePartMachine.cs" />
+    <Compile Include="Entities\SpareParts\SparePartMaterialPhoto.cs" />
+    <Compile Include="Entities\SpareParts\SparePartMaterial.cs" />
+    <Compile Include="Entities\SpareParts\SparePartPrice.cs" />
+    <Compile Include="Entities\SpareParts\SparePartRecoveryEvidence.cs" />
+    <Compile Include="Entities\SpareParts\SparePartRecoveryGuide.cs" />
+    <Compile Include="Entities\SpareParts\SparePartRecoveryTicket.cs" />
+    <Compile Include="Entities\SpareParts\SparePartStorage.cs" />
+    <Compile Include="Entities\SpareParts\SparePartTransaction.cs" />
+    <Compile Include="Entities\SpareParts\SparePartUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,8 +73,8 @@
     <None Include="..\Database\Scripts\005_standardize_employee_display_names.sql">
       <Link>Database\Scripts\005_standardize_employee_display_names.sql</Link>
     </None>
-    <None Include="..\Database\Scripts\006_spare_part_309.sql">
-      <Link>Database\Scripts\006_spare_part_309.sql</Link>
+    <None Include="..\Database\Scripts\006_spare_part.sql">
+      <Link>Database\Scripts\006_spare_part.sql</Link>
     </None>
     <None Include="..\Database\README.md">
       <Link>Database\README.md</Link>
