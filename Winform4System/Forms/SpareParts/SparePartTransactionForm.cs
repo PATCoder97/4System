@@ -62,9 +62,9 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnEdit.ImageOptions.SvgImage = SvgImageCatalog.Edit;
-            btnDelete.ImageOptions.SvgImage = SvgImageCatalog.Remove;
-            btnConfirm.ImageOptions.SvgImage = SvgImageCatalog.Confirm;
+            btnEdit.ImageOptions.SvgImage = SvgIconCatalog.Edit;
+            btnDelete.ImageOptions.SvgImage = SvgIconCatalog.Delete;
+            btnConfirm.ImageOptions.SvgImage = SvgIconCatalog.Confirm;
         }
 
         private void InitializeRecoverySection()

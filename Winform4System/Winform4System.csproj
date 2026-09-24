@@ -163,7 +163,7 @@
     <Compile Include="Forms\SpareParts\SparePartHelper.cs" />
     <Compile Include="Helpers\GridViewStateManager.cs" />
     <Compile Include="Forms\SpareParts\SparePartConfiguration.cs" />
-    <Compile Include="Helpers\SvgImageCatalog.cs" />
+    <Compile Include="Helpers\SvgIconCatalog.cs" />
     <Compile Include="Forms\SpareParts\SparePartPermissionUi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Main\MainForm.resx">

@@ -79,9 +79,9 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
-            btnExportExcel.ImageOptions.SvgImage = SvgImageCatalog.Excel;
-            barCbbDept.ImageOptions.SvgImage = SvgImageCatalog.Dept;
+            btnReload.ImageOptions.SvgImage = SvgIconCatalog.Refresh;
+            btnExportExcel.ImageOptions.SvgImage = SvgIconCatalog.ExportExcel;
+            barCbbDept.ImageOptions.SvgImage = SvgIconCatalog.Department;
         }
 
         DXMenuItem CreateMenuItem(string caption, EventHandler clickEvent, SvgImage svgImage)
@@ -99,13 +99,13 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeMenuItems()
         {
-            //itemViewInfo = CreateMenuItem("查看資訊", ItemViewInfo_Click, SvgImageCatalog.View);
-            //itemUpdatePrice = CreateMenuItem("更新單價", ItemUpdatePrice_Click, SvgImageCatalog.Money);
+            //itemViewInfo = CreateMenuItem("查看資訊", ItemViewInfo_Click, SvgIconCatalog.View);
+            //itemUpdatePrice = CreateMenuItem("更新單價", ItemUpdatePrice_Click, SvgIconCatalog.Cost);
 
-            //itemMaterialIn = CreateMenuItem("收料", ItemMaterialIn_Click, SvgImageCatalog.Num1);
-            //itemMaterialOut = CreateMenuItem("領用", ItemMaterialOut_Click, SvgImageCatalog.Num2);
-            //itemMaterialTransfer = CreateMenuItem("轉庫", ItemMaterialTransfer_Click, SvgImageCatalog.Num3);
-            //itemMaterialCheck = CreateMenuItem("盤點", ItemMaterialCheck_Click, SvgImageCatalog.Num4);
+            //itemMaterialIn = CreateMenuItem("收料", ItemMaterialIn_Click, SvgIconCatalog.Step1);
+            //itemMaterialOut = CreateMenuItem("領用", ItemMaterialOut_Click, SvgIconCatalog.Step2);
+            //itemMaterialTransfer = CreateMenuItem("轉庫", ItemMaterialTransfer_Click, SvgIconCatalog.Step3);
+            //itemMaterialCheck = CreateMenuItem("盤點", ItemMaterialCheck_Click, SvgIconCatalog.Step4);
         }
 
         private void CreateRuleGV()

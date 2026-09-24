@@ -37,8 +37,8 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnConfirm.ImageOptions.SvgImage = SvgImageCatalog.Confirm;
-            btnCancel.ImageOptions.SvgImage = SvgImageCatalog.Cancel;
+            btnConfirm.ImageOptions.SvgImage = SvgIconCatalog.Confirm;
+            btnCancel.ImageOptions.SvgImage = SvgIconCatalog.Cancel;
         }
 
         private void ConfigureUserLookup()

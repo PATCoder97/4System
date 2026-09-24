@@ -46,8 +46,8 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Search;
-            btnExportExcel.ImageOptions.SvgImage = SvgImageCatalog.Excel;
+            btnReload.ImageOptions.SvgImage = SvgIconCatalog.Search;
+            btnExportExcel.ImageOptions.SvgImage = SvgIconCatalog.ExportExcel;
         }
 
         private void LoadData()

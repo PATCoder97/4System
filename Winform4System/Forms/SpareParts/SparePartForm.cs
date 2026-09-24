@@ -92,14 +92,14 @@ namespace Winform4System.Forms.SpareParts
             };
             group.Appearance.Default.Font = new Font("Microsoft JhengHei UI", 12F);
 
-            AddNavigationItem(group, "materials", "備品資料", SvgImageCatalog.View, () => new SparePartMaterialView());
-            AddNavigationItem(group, "machines", "設備管理", SvgImageCatalog.Gears, () => new SparePartMachineView());
-            AddNavigationItem(group, "transactions", "進出庫管理", SvgImageCatalog.Transfer, () => new SparePartTransactionView());
-            AddNavigationItem(group, "inspection", "盤點批次", SvgImageCatalog.CheckedRadio, () => new SparePartInspectionView());
-            AddNavigationItem(group, "recheck", "複盤作業", SvgImageCatalog.Reload, () => new SparePartRecheckView());
-            AddNavigationItem(group, "cost", "成本計算", SvgImageCatalog.Money, () => new SparePartCostView());
-            AddNavigationItem(group, "recovery", "回收管理", SvgImageCatalog.Schedule, () => new SparePartRecoveryView());
-            AddNavigationItem(group, "my-recovery", "我的回收作業", SvgImageCatalog.PersonnelChanges, () => new SparePartRecoveryTaskView());
+            AddNavigationItem(group, "materials", "備品資料", SvgIconCatalog.View, () => new SparePartMaterialView());
+            AddNavigationItem(group, "machines", "設備管理", SvgIconCatalog.Equipment, () => new SparePartMachineView());
+            AddNavigationItem(group, "transactions", "進出庫管理", SvgIconCatalog.Transfer, () => new SparePartTransactionView());
+            AddNavigationItem(group, "inspection", "盤點批次", SvgIconCatalog.Selected, () => new SparePartInspectionView());
+            AddNavigationItem(group, "recheck", "複盤作業", SvgIconCatalog.Refresh, () => new SparePartRecheckView());
+            AddNavigationItem(group, "cost", "成本計算", SvgIconCatalog.Cost, () => new SparePartCostView());
+            AddNavigationItem(group, "recovery", "回收管理", SvgIconCatalog.Schedule, () => new SparePartRecoveryView());
+            AddNavigationItem(group, "my-recovery", "我的回收作業", SvgIconCatalog.UserTransfer, () => new SparePartRecoveryTaskView());
             _navigation.Elements.Add(group);
         }
 

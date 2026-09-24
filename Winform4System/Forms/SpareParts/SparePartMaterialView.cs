@@ -93,14 +93,14 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnAdd.ImageOptions.SvgImage = SvgImageCatalog.Add;
-            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
-            btnExportExcel.ImageOptions.SvgImage = SvgImageCatalog.Excel;
-            barCbbDept.ImageOptions.SvgImage = SvgImageCatalog.Dept;
+            btnAdd.ImageOptions.SvgImage = SvgIconCatalog.Add;
+            btnReload.ImageOptions.SvgImage = SvgIconCatalog.Refresh;
+            btnExportExcel.ImageOptions.SvgImage = SvgIconCatalog.ExportExcel;
+            barCbbDept.ImageOptions.SvgImage = SvgIconCatalog.Department;
 
-            btnExcelBySpare.ImageOptions.SvgImage = SvgImageCatalog.Num1;
-            btnExcelByMachine.ImageOptions.SvgImage = SvgImageCatalog.Num2;
-            btnExcelByNotify.ImageOptions.SvgImage = SvgImageCatalog.Num3;
+            btnExcelBySpare.ImageOptions.SvgImage = SvgIconCatalog.Step1;
+            btnExcelByMachine.ImageOptions.SvgImage = SvgIconCatalog.Step2;
+            btnExcelByNotify.ImageOptions.SvgImage = SvgIconCatalog.Step3;
         }
 
         private void CreateRuleGV()
@@ -238,23 +238,23 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeMenuItems()
         {
-            itemViewInfo = CreateMenuItem("查看資訊", ItemViewInfo_Click, SvgImageCatalog.View);
-            itemSetReplacement = CreateMenuItem("設定替代料", ItemSetReplacement_Click, SvgImageCatalog.Edit);
-            itemClearReplacement = CreateMenuItem("清除替代料", ItemClearReplacement_Click, SvgImageCatalog.Remove);
-            itemViewReplacementChain = CreateMenuItem("查看替代鏈", ItemViewReplacementChain_Click, SvgImageCatalog.Search);
-            itemUploadPhoto = CreateMenuItem("上傳圖片", ItemUploadPhoto_Click, SvgImageCatalog.UploadFile);
-            itemViewPhoto = CreateMenuItem("查看圖片", ItemViewPhoto_Click, SvgImageCatalog.Search);
-            itemUpdatePrice = CreateMenuItem("更新單價", ItemUpdatePrice_Click, SvgImageCatalog.Money);
+            itemViewInfo = CreateMenuItem("查看資訊", ItemViewInfo_Click, SvgIconCatalog.View);
+            itemSetReplacement = CreateMenuItem("設定替代料", ItemSetReplacement_Click, SvgIconCatalog.Edit);
+            itemClearReplacement = CreateMenuItem("清除替代料", ItemClearReplacement_Click, SvgIconCatalog.Delete);
+            itemViewReplacementChain = CreateMenuItem("查看替代鏈", ItemViewReplacementChain_Click, SvgIconCatalog.Search);
+            itemUploadPhoto = CreateMenuItem("上傳圖片", ItemUploadPhoto_Click, SvgIconCatalog.Upload);
+            itemViewPhoto = CreateMenuItem("查看圖片", ItemViewPhoto_Click, SvgIconCatalog.Search);
+            itemUpdatePrice = CreateMenuItem("更新單價", ItemUpdatePrice_Click, SvgIconCatalog.Cost);
 
-            itemMaterialIn = CreateMenuItem("收料", ItemMaterialIn_Click, SvgImageCatalog.Num1);
-            itemMaterialOut = CreateMenuItem("領用", ItemMaterialOut_Click, SvgImageCatalog.Num2);
-            itemMaterialTransfer = CreateMenuItem("轉庫", ItemMaterialTransfer_Click, SvgImageCatalog.Num3);
-            itemMaterialGetFromOther = CreateMenuItem("調撥", ItemMaterialGetFromOther_Click, SvgImageCatalog.Num4);
+            itemMaterialIn = CreateMenuItem("收料", ItemMaterialIn_Click, SvgIconCatalog.Step1);
+            itemMaterialOut = CreateMenuItem("領用", ItemMaterialOut_Click, SvgIconCatalog.Step2);
+            itemMaterialTransfer = CreateMenuItem("轉庫", ItemMaterialTransfer_Click, SvgIconCatalog.Step3);
+            itemMaterialGetFromOther = CreateMenuItem("調撥", ItemMaterialGetFromOther_Click, SvgIconCatalog.Step4);
 
-            itemDisable = CreateMenuItem("停用", ItemDisable_Click, SvgImageCatalog.Disable);
-            itemEnable = CreateMenuItem("啟用", ItemEnable_Click, SvgImageCatalog.Confirm);
-            itemMultiselect = CreateMenuItem("啟用多選", ItemMultiselect_Click, SvgImageCatalog.CheckedRadio);
-            itemPrintStamp = CreateMenuItem("執行列印", ItemPrintStamp_Click, SvgImageCatalog.Print);
+            itemDisable = CreateMenuItem("停用", ItemDisable_Click, SvgIconCatalog.Disabled);
+            itemEnable = CreateMenuItem("啟用", ItemEnable_Click, SvgIconCatalog.Confirm);
+            itemMultiselect = CreateMenuItem("啟用多選", ItemMultiselect_Click, SvgIconCatalog.Selected);
+            itemPrintStamp = CreateMenuItem("執行列印", ItemPrintStamp_Click, SvgIconCatalog.Print);
         }
 
         private dynamic GetFocusedDisplayRow()
@@ -784,13 +784,13 @@ namespace Winform4System.Forms.SpareParts
                 itemDisable.BeginGroup = true;
                 itemMultiselect.BeginGroup = true;
 
-                DXSubMenuItem replacementMenu = new DXSubMenuItem("替代設定") { SvgImage = SvgImageCatalog.Transfer };
+                DXSubMenuItem replacementMenu = new DXSubMenuItem("替代設定") { SvgImage = SvgIconCatalog.Transfer };
                 replacementMenu.ImageOptions.SvgImageSize = new Size(24, 24);
                 replacementMenu.Items.Add(itemViewReplacementChain);
                 replacementMenu.Items.Add(itemSetReplacement);
                 replacementMenu.Items.Add(itemClearReplacement);
 
-                DXSubMenuItem photoMenu = new DXSubMenuItem("圖片") { SvgImage = SvgImageCatalog.Attach };
+                DXSubMenuItem photoMenu = new DXSubMenuItem("圖片") { SvgImage = SvgIconCatalog.Attachment };
                 photoMenu.ImageOptions.SvgImageSize = new Size(24, 24);
 
                 e.Menu.Items.Add(itemViewInfo);
@@ -808,7 +808,7 @@ namespace Winform4System.Forms.SpareParts
                     e.Menu.Items.Add(photoMenu);
                     e.Menu.Items.Add(itemUpdatePrice);
 
-                    DXSubMenuItem dXSubMenuReports = new DXSubMenuItem("庫存作業") { SvgImage = SvgImageCatalog.PersonnelChanges };
+                    DXSubMenuItem dXSubMenuReports = new DXSubMenuItem("庫存作業") { SvgImage = SvgIconCatalog.UserTransfer };
                     dXSubMenuReports.ImageOptions.SvgImageSize = new Size(24, 24);
 
                     dXSubMenuReports.Items.Add(itemMaterialIn);

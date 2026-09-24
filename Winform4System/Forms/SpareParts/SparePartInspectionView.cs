@@ -60,9 +60,9 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnAdd.ImageOptions.SvgImage = SvgImageCatalog.Add;
-            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
-            btnExportExcel.ImageOptions.SvgImage = SvgImageCatalog.Excel;
+            btnAdd.ImageOptions.SvgImage = SvgIconCatalog.Add;
+            btnReload.ImageOptions.SvgImage = SvgIconCatalog.Refresh;
+            btnExportExcel.ImageOptions.SvgImage = SvgIconCatalog.ExportExcel;
         }
 
         private void CreateRuleGV()
@@ -124,16 +124,16 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeMenuItems()
         {
-            itemUpdateRemainDate = CreateMenuItem("延時提醒", ItemUpdateRemainDate_Click, SvgImageCatalog.DateAdd);
-            itemCancelBatch = CreateMenuItem("取消批次", ItemCancelBatch_Click, SvgImageCatalog.Remove);
-            itemViewCheckPhoto = CreateMenuItem("查看圖片", ItemViewCheckPhoto_Click, SvgImageCatalog.Search);
-            //itemUpdatePrice = CreateMenuItem("更新單價", ItemUpdatePrice_Click, SvgImageCatalog.Money);
+            itemUpdateRemainDate = CreateMenuItem("延時提醒", ItemUpdateRemainDate_Click, SvgIconCatalog.CalendarAdd);
+            itemCancelBatch = CreateMenuItem("取消批次", ItemCancelBatch_Click, SvgIconCatalog.Delete);
+            itemViewCheckPhoto = CreateMenuItem("查看圖片", ItemViewCheckPhoto_Click, SvgIconCatalog.Search);
+            //itemUpdatePrice = CreateMenuItem("更新單價", ItemUpdatePrice_Click, SvgIconCatalog.Cost);
 
-            //itemMaterialIn = CreateMenuItem("收料", ItemMaterialIn_Click, SvgImageCatalog.Num1);
-            //itemMaterialOut = CreateMenuItem("領用", ItemMaterialOut_Click, SvgImageCatalog.Num2);
-            //itemMaterialTransfer = CreateMenuItem("轉庫", ItemMaterialTransfer_Click, SvgImageCatalog.Num3);
-            //itemMaterialCheck = CreateMenuItem("盤點", ItemMaterialCheck_Click, SvgImageCatalog.Num4);
-            //itemMaterialGetFromOther = CreateMenuItem("調撥", ItemMaterialGetFromOther_Click, SvgImageCatalog.Num5);
+            //itemMaterialIn = CreateMenuItem("收料", ItemMaterialIn_Click, SvgIconCatalog.Step1);
+            //itemMaterialOut = CreateMenuItem("領用", ItemMaterialOut_Click, SvgIconCatalog.Step2);
+            //itemMaterialTransfer = CreateMenuItem("轉庫", ItemMaterialTransfer_Click, SvgIconCatalog.Step3);
+            //itemMaterialCheck = CreateMenuItem("盤點", ItemMaterialCheck_Click, SvgIconCatalog.Step4);
+            //itemMaterialGetFromOther = CreateMenuItem("調撥", ItemMaterialGetFromOther_Click, SvgIconCatalog.Step5);
         }
 
         private bool IsBatchCancelled(SparePartInspectionBatch batch)

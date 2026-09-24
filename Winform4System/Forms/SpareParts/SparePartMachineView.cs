@@ -64,13 +64,13 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnAdd.ImageOptions.SvgImage = SvgImageCatalog.Add;
-            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
-            barExport.ImageOptions.SvgImage = SvgImageCatalog.Excel;
-            barCbbDept.ImageOptions.SvgImage = SvgImageCatalog.Dept;
+            btnAdd.ImageOptions.SvgImage = SvgIconCatalog.Add;
+            btnReload.ImageOptions.SvgImage = SvgIconCatalog.Refresh;
+            barExport.ImageOptions.SvgImage = SvgIconCatalog.ExportExcel;
+            barCbbDept.ImageOptions.SvgImage = SvgIconCatalog.Department;
 
-            btnMachineList.ImageOptions.SvgImage = SvgImageCatalog.Num1;
-            btnSummary.ImageOptions.SvgImage = SvgImageCatalog.Num2;
+            btnMachineList.ImageOptions.SvgImage = SvgIconCatalog.Step1;
+            btnSummary.ImageOptions.SvgImage = SvgIconCatalog.Step2;
         }
 
         DXMenuItem CreateMenuItem(string caption, EventHandler clickEvent, SvgImage svgImage)
@@ -88,7 +88,7 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeMenuItems()
         {
-            itemViewInfo = CreateMenuItem("查看資訊", ItemViewInfo_Click, SvgImageCatalog.View);
+            itemViewInfo = CreateMenuItem("查看資訊", ItemViewInfo_Click, SvgIconCatalog.View);
         }
 
         private void ItemViewInfo_Click(object sender, EventArgs e)

@@ -59,26 +59,26 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
-            btnViewIssue.ImageOptions.SvgImage = SvgImageCatalog.View;
-            btnDownloadGuide.ImageOptions.SvgImage = SvgImageCatalog.Attach;
-            btnManageGuide.ImageOptions.SvgImage = SvgImageCatalog.Edit;
-            btnUploadEvidence.ImageOptions.SvgImage = SvgImageCatalog.UploadFile;
-            btnViewEvidence.ImageOptions.SvgImage = SvgImageCatalog.Search;
-            btnUpdateTime.ImageOptions.SvgImage = SvgImageCatalog.Schedule;
-            btnConfirmComplete.ImageOptions.SvgImage = SvgImageCatalog.Confirm;
-            btnCancelTicket.ImageOptions.SvgImage = SvgImageCatalog.Remove;
-            barCbbDept.ImageOptions.SvgImage = SvgImageCatalog.Dept;
+            btnReload.ImageOptions.SvgImage = SvgIconCatalog.Refresh;
+            btnViewIssue.ImageOptions.SvgImage = SvgIconCatalog.View;
+            btnDownloadGuide.ImageOptions.SvgImage = SvgIconCatalog.Attachment;
+            btnManageGuide.ImageOptions.SvgImage = SvgIconCatalog.Edit;
+            btnUploadEvidence.ImageOptions.SvgImage = SvgIconCatalog.Upload;
+            btnViewEvidence.ImageOptions.SvgImage = SvgIconCatalog.Search;
+            btnUpdateTime.ImageOptions.SvgImage = SvgIconCatalog.Schedule;
+            btnConfirmComplete.ImageOptions.SvgImage = SvgIconCatalog.Confirm;
+            btnCancelTicket.ImageOptions.SvgImage = SvgIconCatalog.Delete;
+            barCbbDept.ImageOptions.SvgImage = SvgIconCatalog.Department;
         }
 
         private void InitializeMenuItems()
         {
-            itemViewIssue = CreateMenuItem("查看領用", ItemViewIssueMenu_Click, SvgImageCatalog.View);
-            itemUploadEvidence = CreateMenuItem("上傳證明", ItemUploadEvidenceMenu_Click, SvgImageCatalog.UploadFile);
-            itemViewEvidence = CreateMenuItem("查看證明", ItemViewEvidenceMenu_Click, SvgImageCatalog.Search);
-            itemUpdateTime = CreateMenuItem("更新日期", ItemUpdateTimeMenu_Click, SvgImageCatalog.Schedule);
-            itemConfirmComplete = CreateMenuItem("確認完成", ItemConfirmCompleteMenu_Click, SvgImageCatalog.Confirm);
-            itemCancelTicket = CreateMenuItem("取消單", ItemCancelTicketMenu_Click, SvgImageCatalog.Remove);
+            itemViewIssue = CreateMenuItem("查看領用", ItemViewIssueMenu_Click, SvgIconCatalog.View);
+            itemUploadEvidence = CreateMenuItem("上傳證明", ItemUploadEvidenceMenu_Click, SvgIconCatalog.Upload);
+            itemViewEvidence = CreateMenuItem("查看證明", ItemViewEvidenceMenu_Click, SvgIconCatalog.Search);
+            itemUpdateTime = CreateMenuItem("更新日期", ItemUpdateTimeMenu_Click, SvgIconCatalog.Schedule);
+            itemConfirmComplete = CreateMenuItem("確認完成", ItemConfirmCompleteMenu_Click, SvgIconCatalog.Confirm);
+            itemCancelTicket = CreateMenuItem("取消單", ItemCancelTicketMenu_Click, SvgIconCatalog.Delete);
         }
 
         private DXMenuItem CreateMenuItem(string caption, EventHandler clickEvent, DevExpress.Utils.Svg.SvgImage svgImage)

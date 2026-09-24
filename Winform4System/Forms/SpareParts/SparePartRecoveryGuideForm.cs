@@ -35,10 +35,10 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnUpload.ImageOptions.SvgImage = SvgImageCatalog.UploadFile;
-            btnView.ImageOptions.SvgImage = SvgImageCatalog.View;
-            btnDelete.ImageOptions.SvgImage = SvgImageCatalog.Remove;
-            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
+            btnUpload.ImageOptions.SvgImage = SvgIconCatalog.Upload;
+            btnView.ImageOptions.SvgImage = SvgIconCatalog.View;
+            btnDelete.ImageOptions.SvgImage = SvgIconCatalog.Delete;
+            btnReload.ImageOptions.SvgImage = SvgIconCatalog.Refresh;
         }
 
         private void ConfigureGrid()

@@ -102,9 +102,9 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnReload.ImageOptions.SvgImage = SvgImageCatalog.Reload;
-            btnExportExcel.ImageOptions.SvgImage = SvgImageCatalog.Excel;
-            barCbbDept.ImageOptions.SvgImage = SvgImageCatalog.Dept;
+            btnReload.ImageOptions.SvgImage = SvgIconCatalog.Refresh;
+            btnExportExcel.ImageOptions.SvgImage = SvgIconCatalog.ExportExcel;
+            barCbbDept.ImageOptions.SvgImage = SvgIconCatalog.Department;
         }
 
         private void CreateRuleGV()
@@ -166,12 +166,12 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeMenuItems()
         {
-            itemDownCheckFile = CreateMenuItem("下載盤點表", ItemDownCheckFile_Click, SvgImageCatalog.Excel);
-            itemUpdateCheckFile = CreateMenuItem("上傳盤點表", ItemUpdateCheckFile_Click, SvgImageCatalog.UploadFile);
+            itemDownCheckFile = CreateMenuItem("下載盤點表", ItemDownCheckFile_Click, SvgIconCatalog.ExportExcel);
+            itemUpdateCheckFile = CreateMenuItem("上傳盤點表", ItemUpdateCheckFile_Click, SvgIconCatalog.Upload);
 
-            itemDownCheckFileProxy = CreateMenuItem("下載盤點表(代理)", ItemDownCheckFileProxy_Click, SvgImageCatalog.Excel);
-            itemUpdateCheckFileProxy = CreateMenuItem("上傳盤點表(代理)", ItemUpdateCheckFileProxy_Click, SvgImageCatalog.UploadFile);
-            itemViewCheckPhoto = CreateMenuItem("查看圖片", ItemViewCheckPhoto_Click, SvgImageCatalog.Search);
+            itemDownCheckFileProxy = CreateMenuItem("下載盤點表(代理)", ItemDownCheckFileProxy_Click, SvgIconCatalog.ExportExcel);
+            itemUpdateCheckFileProxy = CreateMenuItem("上傳盤點表(代理)", ItemUpdateCheckFileProxy_Click, SvgIconCatalog.Upload);
+            itemViewCheckPhoto = CreateMenuItem("查看圖片", ItemViewCheckPhoto_Click, SvgIconCatalog.Search);
         }
 
         private bool IsBatchCancelled(SparePartInspectionBatch batch)

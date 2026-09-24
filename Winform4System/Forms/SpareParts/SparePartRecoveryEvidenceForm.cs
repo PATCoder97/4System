@@ -34,12 +34,12 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnConfirm.ImageOptions.SvgImage = SvgImageCatalog.Confirm;
-            btnCancel.ImageOptions.SvgImage = SvgImageCatalog.Cancel;
+            btnConfirm.ImageOptions.SvgImage = SvgIconCatalog.Confirm;
+            btnCancel.ImageOptions.SvgImage = SvgIconCatalog.Cancel;
 
-            btnAddFile.ImageOptions.SvgImage = SvgImageCatalog.Add;
-            btnViewFile.ImageOptions.SvgImage = SvgImageCatalog.View;
-            btnRemoveFile.ImageOptions.SvgImage = SvgImageCatalog.Remove;
+            btnAddFile.ImageOptions.SvgImage = SvgIconCatalog.Add;
+            btnViewFile.ImageOptions.SvgImage = SvgIconCatalog.View;
+            btnRemoveFile.ImageOptions.SvgImage = SvgIconCatalog.Delete;
         }
 
         private void InitializeForm(DateTime? actualDisposeDate, string resultNote)

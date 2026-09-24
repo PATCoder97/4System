@@ -30,7 +30,7 @@ namespace Winform4System.Forms.SpareParts
 
         private void InitializeIcon()
         {
-            btnClose.ImageOptions.SvgImage = SvgImageCatalog.Close;
+            btnClose.ImageOptions.SvgImage = SvgIconCatalog.Close;
         }
 
         private void ConfigureGrid()
