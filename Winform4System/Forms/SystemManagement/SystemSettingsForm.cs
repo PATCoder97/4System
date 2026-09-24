@@ -9,29 +9,36 @@ namespace Winform4System.Forms.SystemManagement
         public SystemSettingsForm()
             : base("系統管理", "systemSettings")
         {
-            var settingsGroup = AddNavigationGroup("系統管理");
+            bool canViewEmployees = CurrentAuthorization.HasPermission("SYSTEM.USER.VIEW");
+            bool canViewEmployeePermissions = CurrentAuthorization.HasPermission("SYSTEM.USER.PERMISSION.VIEW");
+            bool canViewDepartments = CurrentAuthorization.HasPermission("SYSTEM.DEPARTMENT.VIEW");
+            bool canViewJobTitles = CurrentAuthorization.HasPermission("SYSTEM.JOB_TITLE.VIEW");
+            bool canViewGroups = CurrentAuthorization.HasPermission("SYSTEM.GROUP.VIEW");
+            bool canViewRoles = CurrentAuthorization.HasPermission("SYSTEM.ROLE.VIEW");
+            bool canViewAuditLogs = CurrentAuthorization.HasPermission("SYSTEM.AUDIT.VIEW");
+            bool canViewFunctions = CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.VIEW");
+
+            var peopleGroup = canViewEmployees || canViewDepartments || canViewJobTitles
+                ? AddNavigationGroup("人員與組織", "人員、部門與職稱")
+                : null;
+            var authorizationGroup = canViewEmployeePermissions || canViewGroups || canViewRoles
+                ? AddNavigationGroup("權限與安全", "人員權限、群組與角色")
+                : null;
+            var governanceGroup = canViewAuditLogs || canViewFunctions
+                ? AddNavigationGroup("稽核與設定", "稽核記錄與功能設定")
+                : null;
             bool initialTabRegistered = false;
 
-            if (CurrentAuthorization.HasPermission("SYSTEM.USER.VIEW"))
+            if (canViewEmployees)
             {
-                AddNavigationItem(settingsGroup, "employees", "人員管理", SvgIconCatalog.ChangeUser, () => new EmployeeManagementView());
+                AddNavigationItem(peopleGroup, "employees", "人員管理", SvgIconCatalog.ChangeUser, () => new EmployeeManagementView());
                 Shown += (sender, args) => OpenTab("employees", "人員管理", () => new EmployeeManagementView());
                 initialTabRegistered = true;
             }
 
-            if (CurrentAuthorization.HasPermission("SYSTEM.USER.PERMISSION.VIEW"))
+            if (canViewDepartments)
             {
-                AddNavigationItem(settingsGroup, "employee-permissions", "人員權限", SvgIconCatalog.AddUserGroup, () => new EmployeePermissionView());
-                if (!initialTabRegistered)
-                {
-                    Shown += (sender, args) => OpenTab("employee-permissions", "人員權限", () => new EmployeePermissionView());
-                    initialTabRegistered = true;
-                }
-            }
-
-            if (CurrentAuthorization.HasPermission("SYSTEM.DEPARTMENT.VIEW"))
-            {
-                AddNavigationItem(settingsGroup, "departments", "部門管理", SvgIconCatalog.Department, () => new DepartmentManagementView());
+                AddNavigationItem(peopleGroup, "departments", "部門管理", SvgIconCatalog.Department, () => new DepartmentManagementView());
                 if (!initialTabRegistered)
                 {
                     Shown += (sender, args) => OpenTab("departments", "部門管理", () => new DepartmentManagementView());
@@ -39,9 +46,9 @@ namespace Winform4System.Forms.SystemManagement
                 }
             }
 
-            if (CurrentAuthorization.HasPermission("SYSTEM.JOB_TITLE.VIEW"))
+            if (canViewJobTitles)
             {
-                AddNavigationItem(settingsGroup, "job-titles", "職稱管理", SvgIconCatalog.Promote, () => new JobTitleManagementView());
+                AddNavigationItem(peopleGroup, "job-titles", "職稱管理", SvgIconCatalog.Promote, () => new JobTitleManagementView());
                 if (!initialTabRegistered)
                 {
                     Shown += (sender, args) => OpenTab("job-titles", "職稱管理", () => new JobTitleManagementView());
@@ -49,9 +56,19 @@ namespace Winform4System.Forms.SystemManagement
                 }
             }
 
-            if (CurrentAuthorization.HasPermission("SYSTEM.GROUP.VIEW"))
+            if (canViewEmployeePermissions)
             {
-                AddNavigationItem(settingsGroup, "security-groups", "安全性群組管理", SvgIconCatalog.AddUserGroup, () => new SecurityGroupManagementView());
+                AddNavigationItem(authorizationGroup, "employee-permissions", "人員權限", SvgIconCatalog.AddUserGroup, () => new EmployeePermissionView());
+                if (!initialTabRegistered)
+                {
+                    Shown += (sender, args) => OpenTab("employee-permissions", "人員權限", () => new EmployeePermissionView());
+                    initialTabRegistered = true;
+                }
+            }
+
+            if (canViewGroups)
+            {
+                AddNavigationItem(authorizationGroup, "security-groups", "安全性群組管理", SvgIconCatalog.AddUserGroup, () => new SecurityGroupManagementView());
                 if (!initialTabRegistered)
                 {
                     Shown += (sender, args) => OpenTab("security-groups", "安全性群組管理", () => new SecurityGroupManagementView());
@@ -59,9 +76,9 @@ namespace Winform4System.Forms.SystemManagement
                 }
             }
 
-            if (CurrentAuthorization.HasPermission("SYSTEM.ROLE.VIEW"))
+            if (canViewRoles)
             {
-                AddNavigationItem(settingsGroup, "roles-permissions", "角色與權限管理", SvgIconCatalog.SelectionChecked, () => new RolePermissionManagementView());
+                AddNavigationItem(authorizationGroup, "roles-permissions", "角色與權限管理", SvgIconCatalog.SelectionChecked, () => new RolePermissionManagementView());
                 if (!initialTabRegistered)
                 {
                     Shown += (sender, args) => OpenTab("roles-permissions", "角色與權限管理", () => new RolePermissionManagementView());
@@ -69,9 +86,9 @@ namespace Winform4System.Forms.SystemManagement
                 }
             }
 
-            if (CurrentAuthorization.HasPermission("SYSTEM.AUDIT.VIEW"))
+            if (canViewAuditLogs)
             {
-                AddNavigationItem(settingsGroup, "audit-logs", "稽核記錄", SvgIconCatalog.View, () => new AuditLogView());
+                AddNavigationItem(governanceGroup, "audit-logs", "稽核記錄", SvgIconCatalog.View, () => new AuditLogView());
                 if (!initialTabRegistered)
                 {
                     Shown += (sender, args) => OpenTab("audit-logs", "稽核記錄", () => new AuditLogView());
@@ -79,10 +96,10 @@ namespace Winform4System.Forms.SystemManagement
                 }
             }
 
-            if (CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.VIEW"))
+            if (canViewFunctions)
             {
                 AddNavigationItem(
-                    settingsGroup,
+                    governanceGroup,
                     "function-cards",
                     "功能卡管理",
                     SvgIconCatalog.Equipment,
