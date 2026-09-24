@@ -34,10 +34,10 @@ Nhân viên/Tài khoản
 Mức ưu tiên: **Khẩn cấp**
 
 - [x] Sửa `CurrentAuthorization.HasPermission` để `ASSET.SPARE_PART.ADMIN` chỉ có hiệu lực với `ASSET.SPARE_PART.*`, không trở thành quyền admin toàn hệ thống.
-- [ ] Thêm kiểm thử phạm vi permission, bao gồm quyền hệ thống, phụ tùng và quyền không liên quan.
-- [ ] Chống quản trị viên tự vô hiệu hóa tài khoản đang đăng nhập.
-- [ ] Chống gỡ người cuối cùng khỏi nhóm quản trị hệ thống.
-- [ ] Bổ sung kiểm soát concurrency bằng `RowVersion` cho các bảng quản trị quan trọng.
+- [x] Thêm kiểm thử phạm vi permission, bao gồm quyền hệ thống, phụ tùng và quyền không liên quan.
+- [x] Chống quản trị viên tự vô hiệu hóa tài khoản đang đăng nhập.
+- [x] Chống gỡ người cuối cùng khỏi nhóm quản trị hệ thống.
+- [x] Bổ sung kiểm soát concurrency bằng `RowVersion` cho các bảng quản trị quan trọng.
 
 Tiêu chí hoàn thành:
 

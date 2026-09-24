@@ -36,7 +36,7 @@ namespace Winform4System.Forms.SystemManagement
                 using (var form = new EmployeePermissionForm(item, _service.GetDetail(item.UserId)))
                 {
                     if (form.ShowDialog(FindForm()) != DialogResult.OK) return;
-                    _service.SaveGroups(item.UserId, form.SelectedGroupIds);
+                    _service.SaveGroups(item.UserId, form.SelectedGroupIds, form.OriginalGroupIds);
                     XtraMessageBox.Show("人員權限已更新。重新登入後將套用新權限。", "儲存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }

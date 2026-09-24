@@ -33,5 +33,8 @@ namespace Winform4System.DataAccess.Entities
         public bool IsWide { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }

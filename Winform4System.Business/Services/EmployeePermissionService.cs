@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using Winform4System.Core.Security;
@@ -51,18 +52,29 @@ namespace Winform4System.Business.Services
             }
         }
 
-        public void SaveGroups(string userId, IEnumerable<int> groupIds)
+        public void SaveGroups(string userId, IEnumerable<int> groupIds, IEnumerable<int> originalGroupIds)
         {
             CurrentAuthorization.Demand("SYSTEM.USER.PERMISSION.ADMIN");
             var selected = new HashSet<int>(groupIds ?? Enumerable.Empty<int>());
+            var original = new HashSet<int>(originalGroupIds ?? Enumerable.Empty<int>());
             using (var context = new Winform4SystemDbContext(_connectionString))
-            using (var transaction = context.Database.BeginTransaction())
+            using (var transaction = context.Database.BeginTransaction(IsolationLevel.Serializable))
             {
                 if (!context.UserAccounts.Any(x => x.UserId == userId)) throw new InvalidOperationException("找不到所選人員帳號。");
                 var validIds = new HashSet<int>(context.SecurityGroups.Where(x => x.IsActive).Select(x => x.GroupId));
                 if (selected.Any(x => !validIds.Contains(x))) throw new InvalidOperationException("所選安全性群組無效。");
                 var mappings = context.UserGroups.Where(x => x.UserId == userId).ToList();
                 var beforeIds = new HashSet<int>(mappings.Where(x => x.IsActive && (!x.ExpiresAt.HasValue || x.ExpiresAt > DateTime.UtcNow)).Select(x => x.GroupId));
+                if (!beforeIds.SetEquals(original))
+                    throw new InvalidOperationException("此人員的群組資料已由其他使用者更新，請重新載入後再試。");
+                int? administratorGroupId = context.SecurityGroups.Where(x => x.GroupCode == "SYSTEM_ADMINISTRATORS" && x.IsActive).Select(x => (int?)x.GroupId).FirstOrDefault();
+                if (administratorGroupId.HasValue && beforeIds.Contains(administratorGroupId.Value) && !selected.Contains(administratorGroupId.Value))
+                {
+                    bool hasAnotherAdministrator = context.UserGroups.Any(x => x.UserId != userId && x.GroupId == administratorGroupId.Value && x.IsActive && (!x.ExpiresAt.HasValue || x.ExpiresAt > DateTime.UtcNow)
+                        && context.UserAccounts.Any(account => account.UserId == x.UserId && account.IsActive));
+                    if (!hasAnotherAdministrator)
+                        throw new InvalidOperationException("系統必須保留至少一位有效的管理員，無法將最後一位管理員移出系統管理員群組。");
+                }
                 var relevantIds = beforeIds.Union(selected).ToList();
                 var groupCodes = context.SecurityGroups.Where(x => relevantIds.Contains(x.GroupId)).ToDictionary(x => x.GroupId, x => x.GroupCode);
                 foreach (var mapping in mappings)

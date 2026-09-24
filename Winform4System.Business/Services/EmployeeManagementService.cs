@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -47,7 +48,9 @@ namespace Winform4System.Business.Services
                             AuthenticationType = account == null ? null : account.AuthenticationType,
                             DomainAccount = account == null ? null : account.DomainAccount,
                             IsAccountActive = account != null && account.IsActive,
-                            HasAccount = account != null
+                            HasAccount = account != null,
+                            EmployeeRowVersion = employee.RowVersion,
+                            AccountRowVersion = account == null ? null : account.RowVersion
                         }).ToList();
             }
         }
@@ -70,7 +73,7 @@ namespace Winform4System.Business.Services
             Validate(model);
             string userId = model.UserId.Trim().ToUpperInvariant();
             using (var context = new Winform4SystemDbContext(_connectionString))
-            using (var transaction = context.Database.BeginTransaction())
+            using (var transaction = context.Database.BeginTransaction(IsolationLevel.Serializable))
             {
                 var employee = model.EmployeeProfileId.HasValue
                     ? context.EmployeeProfiles.FirstOrDefault(x => x.EmployeeProfileId == model.EmployeeProfileId.Value)
@@ -80,6 +83,10 @@ namespace Winform4System.Business.Services
                 var before = isNew ? null : CreateAuditSnapshot(employee, existingAccount);
                 if (model.EmployeeProfileId.HasValue && employee == null)
                     throw new InvalidOperationException("找不到需要更新的人員資料。");
+                if (employee != null && !RowVersionMatches(employee.RowVersion, model.EmployeeRowVersion))
+                    throw new InvalidOperationException("此人員資料已由其他使用者更新，請重新載入後再試。");
+                if (existingAccount != null && !RowVersionMatches(existingAccount.RowVersion, model.AccountRowVersion))
+                    throw new InvalidOperationException("此登入帳號已由其他使用者更新，請重新載入後再試。");
                 if (employee == null)
                 {
                     if (context.EmployeeProfiles.Any(x => x.EmployeeCode == userId))
@@ -111,6 +118,7 @@ namespace Winform4System.Business.Services
                 account.EmployeeProfileId = employee.EmployeeProfileId;
                 account.AuthenticationType = model.AuthenticationType;
                 account.DomainAccount = model.AuthenticationType == "WINDOWS" ? Normalize(model.DomainAccount) : null;
+                if (!model.IsAccountActive) EnsureCanDisableAccount(context, userId);
                 account.IsActive = model.IsAccountActive;
                 account.UpdatedAt = DateTime.UtcNow;
                 if (!string.IsNullOrWhiteSpace(model.NewPassword)) account.PasswordHash = _passwordHasher.Hash(model.NewPassword);
@@ -132,15 +140,18 @@ namespace Winform4System.Business.Services
             }
         }
 
-        public void Deactivate(string userId)
+        public void Deactivate(string userId, byte[] employeeRowVersion, byte[] accountRowVersion)
         {
             CurrentAuthorization.Demand("SYSTEM.USER.ADMIN");
             using (var context = new Winform4SystemDbContext(_connectionString))
-            using (var transaction = context.Database.BeginTransaction())
+            using (var transaction = context.Database.BeginTransaction(IsolationLevel.Serializable))
             {
                 var account = context.UserAccounts.FirstOrDefault(x => x.UserId == userId);
                 var employee = context.EmployeeProfiles.FirstOrDefault(x => x.EmployeeCode == userId);
                 if (employee == null) throw new InvalidOperationException("找不到所選人員。");
+                if (!RowVersionMatches(employee.RowVersion, employeeRowVersion)) throw new InvalidOperationException("此人員資料已由其他使用者更新，請重新載入後再試。");
+                if (account != null && !RowVersionMatches(account.RowVersion, accountRowVersion)) throw new InvalidOperationException("此登入帳號已由其他使用者更新，請重新載入後再試。");
+                EnsureCanDisableAccount(context, userId);
                 byte previousEmploymentStatus = employee.EmploymentStatus;
                 bool? previousAccountStatus = account?.IsActive;
                 employee.EmploymentStatus = 0;
@@ -179,6 +190,28 @@ namespace Winform4System.Business.Services
 
         private static string Normalize(string value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
 
+        private static bool RowVersionMatches(byte[] current, byte[] original)
+        {
+            return current != null && original != null && current.SequenceEqual(original);
+        }
+
+        private static void EnsureCanDisableAccount(Winform4SystemDbContext context, string userId)
+        {
+            if (string.Equals(userId, CurrentAuthorization.UserId, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("不可停用目前登入的帳號。請由其他管理員執行此操作。");
+
+            int? administratorGroupId = context.SecurityGroups
+                .Where(x => x.GroupCode == "SYSTEM_ADMINISTRATORS" && x.IsActive)
+                .Select(x => (int?)x.GroupId).FirstOrDefault();
+            if (!administratorGroupId.HasValue) return;
+            bool isAdministrator = context.UserGroups.Any(x => x.UserId == userId && x.GroupId == administratorGroupId.Value && x.IsActive && (!x.ExpiresAt.HasValue || x.ExpiresAt > DateTime.UtcNow));
+            if (!isAdministrator) return;
+            bool hasAnotherAdministrator = context.UserGroups.Any(x => x.UserId != userId && x.GroupId == administratorGroupId.Value && x.IsActive && (!x.ExpiresAt.HasValue || x.ExpiresAt > DateTime.UtcNow)
+                && context.UserAccounts.Any(account => account.UserId == x.UserId && account.IsActive));
+            if (!hasAnotherAdministrator)
+                throw new InvalidOperationException("系統必須保留至少一個有效的管理員帳號，無法停用最後一位管理員。");
+        }
+
         private static Dictionary<string, string> CreateAuditSnapshot(EmployeeProfile employee, UserAccount account)
         {
             if (employee == null) return null;
@@ -212,6 +245,8 @@ namespace Winform4System.Business.Services
         public string DomainAccount { get; set; }
         public bool IsAccountActive { get; set; }
         public bool HasAccount { get; set; }
+        public byte[] EmployeeRowVersion { get; set; }
+        public byte[] AccountRowVersion { get; set; }
         public string EmploymentStatusDisplay
         {
             get
@@ -243,6 +278,8 @@ namespace Winform4System.Business.Services
         public string DomainAccount { get; set; }
         public string NewPassword { get; set; }
         public bool IsAccountActive { get; set; }
+        public byte[] EmployeeRowVersion { get; set; }
+        public byte[] AccountRowVersion { get; set; }
     }
 
     public sealed class DepartmentOption

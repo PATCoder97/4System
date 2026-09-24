@@ -56,6 +56,10 @@ namespace Winform4System.Business.Services
                     .FirstOrDefault(candidate => candidate.FunctionId == item.FunctionId);
                 if (existing == null)
                     throw new InvalidOperationException("找不到需要更新的功能資料。");
+                if (existing.RowVersion == null || item.RowVersion == null || !existing.RowVersion.SequenceEqual(item.RowVersion))
+                    throw new InvalidOperationException("此功能資料已由其他使用者更新，請重新載入後再試。");
+
+                var before = CreateAuditSnapshot(existing);
 
                 if (item.ParentFunctionId.HasValue)
                 {
@@ -77,6 +81,17 @@ namespace Winform4System.Business.Services
                 existing.DevelopmentStatus = item.DevelopmentStatus.Trim().ToUpperInvariant();
                 existing.IsWide = item.IsWide;
                 existing.UpdatedAt = DateTime.UtcNow;
+
+                context.AuditLogs.Add(new AuditLog
+                {
+                    UserId = CurrentAuthorization.UserId,
+                    ActionCode = "SYSTEM.FUNCTION.UPDATE",
+                    EntityName = "app_Function",
+                    EntityId = existing.FunctionId.ToString(),
+                    Description = "更新功能設定 " + existing.FunctionCode,
+                    MachineName = Environment.MachineName,
+                    DataJson = AuditDataJson.Change(before, CreateAuditSnapshot(existing))
+                });
 
                 context.SaveChanges();
                 transaction.Commit();
@@ -130,6 +145,21 @@ namespace Winform4System.Business.Services
         private static string NormalizeOptionalText(string value)
         {
             return string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+        }
+
+        private static Dictionary<string, string> CreateAuditSnapshot(ApplicationFunction item)
+        {
+            return new Dictionary<string, string>
+            {
+                { "parentFunctionId", item.ParentFunctionId?.ToString() },
+                { "displayName", item.DisplayName },
+                { "navigationTarget", item.NavigationTarget },
+                { "sortOrder", item.SortOrder.ToString() },
+                { "developmentStatus", item.DevelopmentStatus },
+                { "isWide", item.IsWide.ToString() },
+                { "isVisible", item.IsVisible.ToString() },
+                { "isActive", item.IsActive.ToString() }
+            };
         }
     }
 }

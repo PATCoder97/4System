@@ -10,12 +10,14 @@ namespace Winform4System.Forms.SystemManagement
     public sealed partial class EmployeePermissionForm : XtraForm
     {
         public IReadOnlyList<int> SelectedGroupIds { get; private set; }
+        public IReadOnlyList<int> OriginalGroupIds { get; private set; }
         public EmployeePermissionForm(EmployeeListItem employee, EmployeePermissionDetail detail)
         {
             InitializeComponent();
             Text = "人員權限 - " + (!string.IsNullOrWhiteSpace(employee.DisplayNameTW) ? employee.DisplayNameTW : employee.DisplayNameVN) + " (" + employee.UserId + ")";
             checkedGroups.DataSource = detail.Groups.ToList(); checkedGroups.DisplayMember = "GroupName"; checkedGroups.ValueMember = "GroupId";
             for (int index = 0; index < detail.Groups.Count; index++) checkedGroups.SetItemChecked(index, detail.Groups[index].IsAssigned);
+            OriginalGroupIds = detail.Groups.Where(x => x.IsAssigned).Select(x => x.GroupId).ToList();
             memoRoles.Text = detail.Roles.Count == 0 ? "（無）" : string.Join(Environment.NewLine, detail.Roles);
             gridPermissions.DataSource = detail.Permissions.ToList();
         }

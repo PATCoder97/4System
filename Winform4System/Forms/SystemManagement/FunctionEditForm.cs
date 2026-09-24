@@ -91,7 +91,8 @@ namespace Winform4System.Forms.SystemManagement
                 DevelopmentStatus = GetStatusCode(cbbDevelopmentStatus.Text),
                 IsWide = chkWide.Checked,
                 IsVisible = chkVisible.Checked,
-                IsActive = chkActive.Checked
+                IsActive = chkActive.Checked,
+                RowVersion = _source.RowVersion
             };
 
             DialogResult = DialogResult.OK;

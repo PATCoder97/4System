@@ -65,7 +65,7 @@ namespace Winform4System.Forms.SystemManagement
             var item = GetSelected();
             if (item == null) return;
             if (XtraMessageBox.Show($"確定要停用人員「{GetName(item)}」及其登入帳號嗎？", "停用確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
-            try { _service.Deactivate(item.UserId); LoadData(item.UserId); }
+            try { _service.Deactivate(item.UserId, item.EmployeeRowVersion, item.AccountRowVersion); LoadData(item.UserId); }
             catch (Exception ex) { ShowError(ex.Message, "停用人員失敗"); }
         }
 

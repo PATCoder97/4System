@@ -93,6 +93,12 @@ namespace Winform4System.Business.Services
 
                 var validRoleIds = new HashSet<int>(context.Roles.Where(x => x.IsActive).Select(x => x.RoleId));
                 if (selectedRoles.Any(x => !validRoleIds.Contains(x))) throw new InvalidOperationException("所選角色無效或已停用。");
+                if (string.Equals(code, "SYSTEM_ADMINISTRATORS", StringComparison.OrdinalIgnoreCase))
+                {
+                    int? securityAdministratorRoleId = context.Roles.Where(x => x.RoleCode == "SECURITY_ADMIN" && x.IsActive).Select(x => (int?)x.RoleId).FirstOrDefault();
+                    if (!securityAdministratorRoleId.HasValue || !selectedRoles.Contains(securityAdministratorRoleId.Value))
+                        throw new InvalidOperationException("系統管理員群組必須保留安全性管理員角色。");
+                }
                 group.GroupName = model.GroupName.Trim();
                 group.Description = Normalize(model.Description);
                 group.UpdatedAt = DateTime.UtcNow;

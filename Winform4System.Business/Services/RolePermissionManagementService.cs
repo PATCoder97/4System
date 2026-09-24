@@ -14,6 +14,12 @@ namespace Winform4System.Business.Services
     {
         private static readonly Regex CodePattern = new Regex("^[A-Z][A-Z0-9_]{2,79}$", RegexOptions.Compiled);
         private static readonly string[] Actions = { "ACCESS", "VIEW", "CREATE", "UPDATE", "DELETE", "APPROVE", "EXPORT", "ADMIN" };
+        private static readonly string[] SecurityAdministratorPermissions =
+        {
+            "SYSTEM.ACCESS", "SYSTEM.USER.VIEW", "SYSTEM.USER.ADMIN",
+            "SYSTEM.USER.PERMISSION.VIEW", "SYSTEM.USER.PERMISSION.ADMIN",
+            "SYSTEM.GROUP.VIEW", "SYSTEM.GROUP.ADMIN", "SYSTEM.ROLE.VIEW", "SYSTEM.ROLE.ADMIN"
+        };
         private readonly string _connectionString;
 
         public RolePermissionManagementService(ConnectionStringProvider provider)
@@ -101,6 +107,12 @@ namespace Winform4System.Business.Services
 
                 var validIds = new HashSet<int>(context.Permissions.Where(x => x.IsActive).Select(x => x.PermissionId));
                 if (selectedIds.Any(x => !validIds.Contains(x))) throw new InvalidOperationException("所選權限無效或已停用。");
+                if (string.Equals(code, "SECURITY_ADMIN", StringComparison.OrdinalIgnoreCase))
+                {
+                    var requiredPermissionIds = context.Permissions.Where(x => SecurityAdministratorPermissions.Contains(x.PermissionCode) && x.IsActive).Select(x => x.PermissionId).ToList();
+                    if (requiredPermissionIds.Count != SecurityAdministratorPermissions.Length || requiredPermissionIds.Any(x => !selectedIds.Contains(x)))
+                        throw new InvalidOperationException("安全性管理員角色必須保留系統管理所需的核心權限。");
+                }
                 role.RoleName = model.RoleName.Trim(); role.Description = Normalize(model.Description); role.UpdatedAt = DateTime.UtcNow;
                 context.SaveChanges();
                 var mappings = context.RolePermissions.Where(x => x.RoleId == role.RoleId).ToList();
