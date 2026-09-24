@@ -121,6 +121,30 @@
     <Compile Include="Forms\SystemManagement\FunctionManagementView.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Forms\SystemManagement\EmployeeManagementView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\EmployeeManagementView.Designer.cs">
+      <DependentUpon>EmployeeManagementView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\EmployeeEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\EmployeeEditForm.Designer.cs">
+      <DependentUpon>EmployeeEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\EmployeePermissionView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\EmployeePermissionView.Designer.cs">
+      <DependentUpon>EmployeePermissionView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\EmployeePermissionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\EmployeePermissionForm.Designer.cs">
+      <DependentUpon>EmployeePermissionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SystemManagement\FunctionManagementView.Designer.cs">
       <DependentUpon>FunctionManagementView.cs</DependentUpon>
     </Compile>
@@ -248,6 +272,7 @@
     <Compile Include="Helpers\StoredFileNameGenerator.cs" />
     <Compile Include="Helpers\StoredFileWriter.cs" />
     <Compile Include="Helpers\TraditionalChineseTreeListLocalizer.cs" />
+    <Compile Include="Helpers\TraditionalChineseGridLocalizer.cs" />
     <Compile Include="Helpers\DevExpressGridViewHelper.cs" />
     <Compile Include="Forms\SpareParts\SparePartInspectionPhotoHelper.cs" />
     <Compile Include="Forms\SpareParts\SparePartHelper.cs" />

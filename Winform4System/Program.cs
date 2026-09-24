@@ -3,6 +3,7 @@ using DevExpress.Skins;
 using DevExpress.Utils;
 using DevExpress.UserSkins;
 using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Localization;
 using DevExpress.XtraTreeList.Localization;
 using System;
 using System.Drawing;
@@ -33,6 +34,7 @@ namespace Winform4System
             WindowsFormsSettings.DefaultFont = new Font("Microsoft JhengHei UI", 9F, FontStyle.Regular);
             AppearanceObject.DefaultMenuFont = new Font("Microsoft JhengHei UI", 12F, FontStyle.Regular);
             TreeListLocalizer.Active = new TraditionalChineseTreeListLocalizer();
+            GridLocalizer.Active = new TraditionalChineseGridLocalizer();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

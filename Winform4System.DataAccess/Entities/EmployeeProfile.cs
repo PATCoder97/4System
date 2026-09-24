@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,5 +20,17 @@ namespace Winform4System.DataAccess.Entities
         public string DisplayNameVN { get; set; }
 
         public int DepartmentId { get; set; }
+        public int? JobTitleId { get; set; }
+
+        [StringLength(200)]
+        public string WorkEmail { get; set; }
+
+        [StringLength(30)]
+        public string WorkPhone { get; set; }
+
+        public DateTime? HireDate { get; set; }
+        public DateTime? ResignDate { get; set; }
+        public byte EmploymentStatus { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

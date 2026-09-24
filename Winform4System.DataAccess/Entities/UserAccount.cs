@@ -14,6 +14,9 @@ namespace Winform4System.DataAccess.Entities
 
         public long? EmployeeProfileId { get; set; }
 
+        [StringLength(200)]
+        public string DomainAccount { get; set; }
+
         [Required, StringLength(20)]
         public string AuthenticationType { get; set; }
 

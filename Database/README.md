@@ -8,6 +8,8 @@ Run scripts in numeric order against a new SQL Server database:
 4. `004_standardize_user_id.sql`
 5. `005_standardize_employee_display_names.sql`
 6. `006_spare_part.sql`
+7. `007_function_card_management.sql`
+8. `008_employee_management.sql`
 
 Script `006` creates the spare-parts schema, registers the function and its permissions, and creates the `SPARE_PART_VIEWER`, `SPARE_PART_OPERATOR`, and `SPARE_PART_MANAGER` roles. Assign those roles through security groups; the script intentionally does not grant normal users access automatically.
 

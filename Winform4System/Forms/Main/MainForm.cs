@@ -143,7 +143,7 @@ namespace Winform4System.Forms.Main
                 if (!CurrentAuthorization.HasPermission("SYSTEM.SETTINGS.VIEW"))
                 {
                     XtraMessageBox.Show(
-                        "您沒有檢視系統設定的權限。",
+                        "您沒有檢視系統管理的權限。",
                         ApplicationMetadata.DisplayName,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);

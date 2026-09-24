@@ -76,6 +76,12 @@
     <None Include="..\Database\Scripts\006_spare_part.sql">
       <Link>Database\Scripts\006_spare_part.sql</Link>
     </None>
+    <None Include="..\Database\Scripts\007_function_card_management.sql">
+      <Link>Database\Scripts\007_function_card_management.sql</Link>
+    </None>
+    <None Include="..\Database\Scripts\008_employee_management.sql">
+      <Link>Database\Scripts\008_employee_management.sql</Link>
+    </None>
     <None Include="..\Database\README.md">
       <Link>Database\README.md</Link>
     </None>

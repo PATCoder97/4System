@@ -14,5 +14,7 @@ namespace Winform4System.DataAccess.Entities
 
         [Required, StringLength(200)]
         public string DepartmentName { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }
