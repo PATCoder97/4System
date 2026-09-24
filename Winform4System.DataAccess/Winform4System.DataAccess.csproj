@@ -94,6 +94,7 @@
     <None Include="..\Database\Scripts\014_authentication_policy_settings.sql"><Link>Database\Scripts\014_authentication_policy_settings.sql</Link></None>
     <None Include="..\Database\Scripts\015_department_management.sql"><Link>Database\Scripts\015_department_management.sql</Link></None>
     <None Include="..\Database\Scripts\016_job_title_management.sql"><Link>Database\Scripts\016_job_title_management.sql</Link></None>
+    <None Include="..\Database\Scripts\017_restore_user_account_created_at_default.sql"><Link>Database\Scripts\017_restore_user_account_created_at_default.sql</Link></None>
     <None Include="..\Database\README.md">
       <Link>Database\README.md</Link>
     </None>

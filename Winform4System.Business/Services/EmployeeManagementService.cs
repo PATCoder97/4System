@@ -128,7 +128,13 @@ namespace Winform4System.Business.Services
                 var account = existingAccount;
                 if (account == null)
                 {
-                    account = new UserAccount { UserId = userId, FailedLoginCount = 0, SecurityStamp = Guid.NewGuid() };
+                    account = new UserAccount
+                    {
+                        UserId = userId,
+                        FailedLoginCount = 0,
+                        SecurityStamp = Guid.NewGuid(),
+                        CreatedAt = DateTime.UtcNow
+                    };
                     context.UserAccounts.Add(account);
                 }
                 account.EmployeeProfileId = employee.EmployeeProfileId;

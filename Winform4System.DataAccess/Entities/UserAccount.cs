@@ -23,6 +23,7 @@ namespace Winform4System.DataAccess.Entities
         public DateTime? LockoutEndUtc { get; set; }
         public DateTime? LastLoginAt { get; set; }
         public bool IsActive { get; set; }
+        public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
         [Timestamp]
