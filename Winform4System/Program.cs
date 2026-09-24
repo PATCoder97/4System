@@ -65,7 +65,7 @@ namespace Winform4System
                         session = loginForm.Session;
                     }
 
-                    CurrentAuthorization.SetPermissions(session.PermissionCodes);
+                    CurrentAuthorization.SetIdentityAndPermissions(session.UserId, session.PermissionCodes);
 
                     IMainMenuService menuService = new EfMainMenuService(
                         new EfMainMenuRepository(new ConnectionStringProvider()),

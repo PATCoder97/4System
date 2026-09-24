@@ -33,6 +33,8 @@
     <Compile Include="Services\ApplicationFunctionService.cs" />
     <Compile Include="Services\EmployeeManagementService.cs" />
     <Compile Include="Services\EmployeePermissionService.cs" />
+    <Compile Include="Services\SecurityGroupManagementService.cs" />
+    <Compile Include="Services\RolePermissionManagementService.cs" />
     <Compile Include="Services\IMainMenuService.cs" />
     <Compile Include="Services\EfMainMenuService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

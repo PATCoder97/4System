@@ -8,23 +8,37 @@ namespace Winform4System.Core.Security
     {
         private static readonly object SyncRoot = new object();
         private static HashSet<string> _permissions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        private static string _userId;
 
-        public static void SetPermissions(IEnumerable<string> permissionCodes)
+        public static string UserId
+        {
+            get { lock (SyncRoot) return _userId; }
+        }
+
+        public static void SetIdentityAndPermissions(string userId, IEnumerable<string> permissionCodes)
         {
             lock (SyncRoot)
             {
-                _permissions = new HashSet<string>(
-                    permissionCodes ?? Enumerable.Empty<string>(),
-                    StringComparer.OrdinalIgnoreCase);
+                _userId = string.IsNullOrWhiteSpace(userId) ? null : userId.Trim().ToUpperInvariant();
+                _permissions = new HashSet<string>(permissionCodes ?? Enumerable.Empty<string>(), StringComparer.OrdinalIgnoreCase);
             }
+        }
+
+        public static void SetPermissions(IEnumerable<string> permissionCodes)
+        {
+            SetIdentityAndPermissions(null, permissionCodes);
         }
 
         public static bool HasPermission(string permissionCode)
         {
             lock (SyncRoot)
             {
-                return _permissions.Contains(permissionCode)
-                    || _permissions.Contains("ASSET.SPARE_PART.ADMIN");
+                if (_permissions.Contains(permissionCode))
+                    return true;
+
+                return !string.IsNullOrWhiteSpace(permissionCode)
+                    && permissionCode.StartsWith("ASSET.SPARE_PART.", StringComparison.OrdinalIgnoreCase)
+                    && _permissions.Contains("ASSET.SPARE_PART.ADMIN");
             }
         }
 

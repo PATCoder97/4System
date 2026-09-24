@@ -145,6 +145,22 @@
     <Compile Include="Forms\SystemManagement\EmployeePermissionForm.Designer.cs">
       <DependentUpon>EmployeePermissionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SystemManagement\SecurityGroupManagementView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\SecurityGroupManagementView.Designer.cs">
+      <DependentUpon>SecurityGroupManagementView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\SecurityGroupEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\SecurityGroupEditForm.Designer.cs">
+      <DependentUpon>SecurityGroupEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\RolePermissionManagementView.cs"><SubType>UserControl</SubType></Compile>
+    <Compile Include="Forms\SystemManagement\RolePermissionManagementView.Designer.cs"><DependentUpon>RolePermissionManagementView.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SystemManagement\RolePermissionEditForm.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\SystemManagement\RolePermissionEditForm.Designer.cs"><DependentUpon>RolePermissionEditForm.cs</DependentUpon></Compile>
     <Compile Include="Forms\SystemManagement\FunctionManagementView.Designer.cs">
       <DependentUpon>FunctionManagementView.cs</DependentUpon>
     </Compile>

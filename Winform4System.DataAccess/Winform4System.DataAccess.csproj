@@ -82,6 +82,10 @@
     <None Include="..\Database\Scripts\008_employee_management.sql">
       <Link>Database\Scripts\008_employee_management.sql</Link>
     </None>
+    <None Include="..\Database\Scripts\009_security_group_management.sql">
+      <Link>Database\Scripts\009_security_group_management.sql</Link>
+    </None>
+    <None Include="..\Database\Scripts\010_role_permission_management.sql"><Link>Database\Scripts\010_role_permission_management.sql</Link></None>
     <None Include="..\Database\README.md">
       <Link>Database\README.md</Link>
     </None>

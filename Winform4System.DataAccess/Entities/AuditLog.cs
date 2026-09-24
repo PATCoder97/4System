@@ -17,6 +17,12 @@ namespace Winform4System.DataAccess.Entities
         [Required, StringLength(100)]
         public string ActionCode { get; set; }
 
+        [StringLength(128)]
+        public string EntityName { get; set; }
+
+        [StringLength(100)]
+        public string EntityId { get; set; }
+
         [StringLength(1000)]
         public string Description { get; set; }
 

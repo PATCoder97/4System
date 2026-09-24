@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
 namespace Winform4System.DataAccess.Entities
 {
@@ -20,5 +21,9 @@ namespace Winform4System.DataAccess.Entities
 
         public bool IsSystemGroup { get; set; }
         public bool IsActive { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
     }
 }
