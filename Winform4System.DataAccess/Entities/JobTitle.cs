@@ -4,19 +4,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Winform4System.DataAccess.Entities
 {
-    [Table("dm_Department")]
-    public sealed class Department
+    [Table("dm_JobTitle")]
+    public sealed class JobTitle
     {
         [Key]
-        public int DepartmentId { get; set; }
+        public int JobTitleId { get; set; }
 
         [Required, StringLength(30)]
-        public string DepartmentCode { get; set; }
+        public string JobTitleCode { get; set; }
 
         [Required, StringLength(200)]
-        public string DepartmentName { get; set; }
+        public string JobTitleName { get; set; }
 
-        public int? ParentDepartmentId { get; set; }
         public int SortOrder { get; set; }
         public bool IsActive { get; set; }
         public DateTime? UpdatedAt { get; set; }

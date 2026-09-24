@@ -20,6 +20,7 @@ namespace Winform4System.DataAccess
         public DbSet<UserAccount> UserAccounts { get; set; }
         public DbSet<EmployeeProfile> EmployeeProfiles { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<JobTitle> JobTitles { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
         public DbSet<SecurityGroup> SecurityGroups { get; set; }
         public DbSet<GroupRole> GroupRoles { get; set; }
@@ -28,6 +29,7 @@ namespace Winform4System.DataAccess
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<ApplicationFunction> ApplicationFunctions { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
+        public DbSet<SystemSetting> SystemSettings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

@@ -28,6 +28,8 @@ namespace Winform4System.Business.Services
             {
                 return (from employee in context.EmployeeProfiles.AsNoTracking()
                         join department in context.Departments.AsNoTracking() on employee.DepartmentId equals department.DepartmentId
+                        join jobTitle in context.JobTitles.AsNoTracking() on employee.JobTitleId equals (int?)jobTitle.JobTitleId into jobTitles
+                        from jobTitle in jobTitles.DefaultIfEmpty()
                         join account in context.UserAccounts.AsNoTracking() on employee.EmployeeProfileId equals account.EmployeeProfileId into accounts
                         from account in accounts.DefaultIfEmpty()
                         orderby employee.EmployeeCode
@@ -39,6 +41,8 @@ namespace Winform4System.Business.Services
                             DisplayNameVN = employee.DisplayNameVN,
                             DepartmentId = employee.DepartmentId,
                             DepartmentName = department.DepartmentName,
+                            JobTitleId = employee.JobTitleId,
+                            JobTitleName = jobTitle == null ? null : jobTitle.JobTitleName,
                             WorkEmail = employee.WorkEmail,
                             WorkPhone = employee.WorkPhone,
                             HireDate = employee.HireDate,
@@ -62,6 +66,18 @@ namespace Winform4System.Business.Services
                 return context.Departments.AsNoTracking().Where(x => x.IsActive)
                     .OrderBy(x => x.DepartmentCode)
                     .Select(x => new DepartmentOption { DepartmentId = x.DepartmentId, DisplayName = x.DepartmentCode + " - " + x.DepartmentName })
+                    .ToList();
+            }
+        }
+
+        public IReadOnlyList<JobTitleOption> GetJobTitles()
+        {
+            CurrentAuthorization.Demand("SYSTEM.USER.VIEW");
+            using (var context = new Winform4SystemDbContext(_connectionString))
+            {
+                return context.JobTitles.AsNoTracking().Where(x => x.IsActive)
+                    .OrderBy(x => x.SortOrder).ThenBy(x => x.JobTitleCode)
+                    .Select(x => new JobTitleOption { JobTitleId = x.JobTitleId, DisplayName = x.JobTitleCode + " - " + x.JobTitleName })
                     .ToList();
             }
         }
@@ -101,6 +117,7 @@ namespace Winform4System.Business.Services
                 employee.DisplayNameTW = Normalize(model.DisplayNameTW);
                 employee.DisplayNameVN = model.DisplayNameVN.Trim();
                 employee.DepartmentId = model.DepartmentId;
+                employee.JobTitleId = model.JobTitleId;
                 employee.WorkEmail = Normalize(model.WorkEmail);
                 employee.WorkPhone = Normalize(model.WorkPhone);
                 employee.HireDate = model.HireDate;
@@ -298,6 +315,7 @@ namespace Winform4System.Business.Services
                 { "displayNameTW", employee.DisplayNameTW },
                 { "displayNameVN", employee.DisplayNameVN },
                 { "departmentId", employee.DepartmentId.ToString() },
+                { "jobTitleId", employee.JobTitleId?.ToString() },
                 { "employmentStatus", employee.EmploymentStatus.ToString() },
                 { "accountActive", account == null ? null : account.IsActive.ToString() }
             };
@@ -312,6 +330,8 @@ namespace Winform4System.Business.Services
         public string DisplayNameVN { get; set; }
         public int DepartmentId { get; set; }
         public string DepartmentName { get; set; }
+        public int? JobTitleId { get; set; }
+        public string JobTitleName { get; set; }
         public string WorkEmail { get; set; }
         public string WorkPhone { get; set; }
         public DateTime? HireDate { get; set; }
@@ -356,6 +376,7 @@ namespace Winform4System.Business.Services
         public string DisplayNameTW { get; set; }
         public string DisplayNameVN { get; set; }
         public int DepartmentId { get; set; }
+        public int? JobTitleId { get; set; }
         public string WorkEmail { get; set; }
         public string WorkPhone { get; set; }
         public DateTime? HireDate { get; set; }
@@ -368,6 +389,12 @@ namespace Winform4System.Business.Services
     public sealed class DepartmentOption
     {
         public int DepartmentId { get; set; }
+        public string DisplayName { get; set; }
+    }
+
+    public sealed class JobTitleOption
+    {
+        public int JobTitleId { get; set; }
         public string DisplayName { get; set; }
     }
 }

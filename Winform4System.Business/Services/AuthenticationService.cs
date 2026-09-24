@@ -9,19 +9,19 @@ namespace Winform4System.Business.Services
 {
     public sealed class AuthenticationService : IAuthenticationService
     {
-        private const int MaximumFailedAttempts = 5;
-        private const int LockoutMinutes = 15;
         private static readonly Regex UserIdPattern = new Regex(@"^VNW\d{7}$", RegexOptions.CultureInvariant);
 
         private readonly IUserAccountRepository _repository;
         private readonly IDomainCredentialValidator _domainCredentialValidator;
         private readonly PasswordHasher _passwordHasher;
+        private readonly AuthenticationPolicyService _policyService;
 
-        public AuthenticationService(IUserAccountRepository repository, IDomainCredentialValidator domainCredentialValidator, PasswordHasher passwordHasher)
+        public AuthenticationService(IUserAccountRepository repository, IDomainCredentialValidator domainCredentialValidator, PasswordHasher passwordHasher, AuthenticationPolicyService policyService)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _domainCredentialValidator = domainCredentialValidator ?? throw new ArgumentNullException(nameof(domainCredentialValidator));
             _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
+            _policyService = policyService ?? throw new ArgumentNullException(nameof(policyService));
         }
 
         public AuthenticationResult Authenticate(string userId, string password)
@@ -52,10 +52,11 @@ namespace Winform4System.Business.Services
 
             if (!valid)
             {
+                AuthenticationPolicy policy = _policyService.GetForAuthentication();
                 DateTime? lockoutEnd = _repository.RecordFailedLogin(
                     normalizedUserId,
-                    MaximumFailedAttempts,
-                    LockoutMinutes);
+                    policy.MaximumFailedAttempts,
+                    policy.LockoutMinutes);
 
                 return AuthenticationResult.Failure(
                     lockoutEnd.HasValue ? AuthenticationFailureReason.LockedOut : AuthenticationFailureReason.InvalidCredentials);

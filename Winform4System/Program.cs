@@ -50,7 +50,8 @@ namespace Winform4System
                 var authenticationService = new AuthenticationService(
                     new EfUserAccountRepository(new ConnectionStringProvider()),
                     new WindowsDomainCredentialValidator(),
-                    new PasswordHasher());
+                    new PasswordHasher(),
+                    new AuthenticationPolicyService(new ConnectionStringProvider()));
 
                 while (true)
                 {

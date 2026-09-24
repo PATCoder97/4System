@@ -11,7 +11,9 @@ Tài liệu này dùng làm backlog triển khai dần cho module `系統管理`
 - [x] `安全性群組管理`: quản lý nhóm, vai trò của nhóm và xem thành viên.
 - [x] `角色與權限管理`: quản lý vai trò, ma trận quyền và phạm vi ảnh hưởng.
 - [x] `稽核記錄`: tra cứu, xem chi tiết và xuất nhật ký theo quyền.
-- [ ] Quản trị vòng đời và bảo mật tài khoản chưa đầy đủ.
+- [x] Quản trị vòng đời và bảo mật tài khoản domain.
+- [x] `部門管理`: duy trì cây phòng ban và chuyển nhân viên khi tái cấu trúc.
+- [x] `職稱管理`: duy trì chức danh và gán chức danh trong hồ sơ nhân viên.
 
 ## Nguyên tắc phân quyền
 
@@ -130,7 +132,7 @@ Tên giao diện có thể tích hợp vào `人員管理` và menu chuột ph�
 - [x] Bật/tắt tài khoản độc lập với trạng thái hồ sơ nhân viên khi nghiệp vụ yêu cầu.
 - [x] Thu hồi phiên đăng nhập bằng `SecurityStamp` hoặc cơ chế phiên tương đương.
 - [x] Không quản lý hoặc buộc đổi mật khẩu domain trong ứng dụng; chỉ lưu hash để kiểm tra ngoại tuyến.
-- [ ] Chính sách số lần đăng nhập sai và thời hạn khóa từ tham số hệ thống.
+- [x] Chính sách số lần đăng nhập sai và thời hạn khóa từ tham số hệ thống.
 - [x] Hiển thị lần đăng nhập cuối và trạng thái khóa.
 - [x] Xác nhận và audit mọi thao tác bảo mật.
 
@@ -152,11 +154,11 @@ Permission đề xuất:
 
 Phạm vi:
 
-- [ ] Cây phòng ban bằng `TreeList`.
-- [ ] Thêm, sửa, sắp xếp và ngừng sử dụng phòng ban.
-- [ ] Quản lý chức danh.
-- [ ] Không cho ngừng danh mục đang được nhân viên hoạt động sử dụng nếu chưa chuyển dữ liệu.
-- [ ] Dialog chuyển nhân viên khi tái cấu trúc phòng ban.
+- [x] Cây phòng ban bằng `TreeList`.
+- [x] Thêm, sửa, sắp xếp và ngừng sử dụng phòng ban.
+- [x] Quản lý chức danh.
+- [x] Không cho ngừng phòng ban/chức danh đang được nhân viên hoạt động sử dụng nếu chưa chuyển dữ liệu.
+- [x] Dialog chuyển nhân viên khi tái cấu trúc phòng ban.
 
 Tiêu chí hoàn thành:
 

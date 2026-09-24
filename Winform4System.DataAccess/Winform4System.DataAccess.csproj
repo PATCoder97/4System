@@ -25,10 +25,12 @@
     <Compile Include="Entities\Department.cs" />
     <Compile Include="Entities\EmployeeProfile.cs" />
     <Compile Include="Entities\GroupRole.cs" />
+    <Compile Include="Entities\JobTitle.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\RolePermission.cs" />
     <Compile Include="Entities\SecurityGroup.cs" />
+    <Compile Include="Entities\SystemSetting.cs" />
     <Compile Include="Entities\UserAccount.cs" />
     <Compile Include="Entities\UserGroup.cs" />
     <Compile Include="Models\UserAccountRecord.cs" />
@@ -89,6 +91,9 @@
     <None Include="..\Database\Scripts\011_audit_log_management.sql"><Link>Database\Scripts\011_audit_log_management.sql</Link></None>
     <None Include="..\Database\Scripts\012_domain_authentication.sql"><Link>Database\Scripts\012_domain_authentication.sql</Link></None>
     <None Include="..\Database\Scripts\013_simplify_domain_account.sql"><Link>Database\Scripts\013_simplify_domain_account.sql</Link></None>
+    <None Include="..\Database\Scripts\014_authentication_policy_settings.sql"><Link>Database\Scripts\014_authentication_policy_settings.sql</Link></None>
+    <None Include="..\Database\Scripts\015_department_management.sql"><Link>Database\Scripts\015_department_management.sql</Link></None>
+    <None Include="..\Database\Scripts\016_job_title_management.sql"><Link>Database\Scripts\016_job_title_management.sql</Link></None>
     <None Include="..\Database\README.md">
       <Link>Database\README.md</Link>
     </None>

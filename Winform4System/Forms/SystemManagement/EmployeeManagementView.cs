@@ -14,6 +14,7 @@ namespace Winform4System.Forms.SystemManagement
     public sealed partial class EmployeeManagementView : XtraUserControl
     {
         private readonly EmployeeManagementService _service = new EmployeeManagementService(new ConnectionStringProvider());
+        private readonly AuthenticationPolicyService _policyService = new AuthenticationPolicyService(new ConnectionStringProvider());
         private readonly DXMenuItem _editItem;
         private readonly DXMenuItem _deactivateItem;
         private readonly DXMenuItem _accountStatusItem;
@@ -29,6 +30,7 @@ namespace Winform4System.Forms.SystemManagement
             _unlockAccountItem = CreateMenuItem("解除帳號鎖定", UnlockAccount, SvgIconCatalog.Confirm);
             _revokeSessionsItem = CreateMenuItem("撤銷登入工作階段", RevokeSessions, SvgIconCatalog.Denied);
             btnAdd.Visibility = CurrentAuthorization.HasPermission("SYSTEM.USER.ADMIN") ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
+            btnSecuritySettings.Visibility = CurrentAuthorization.HasPermission("SYSTEM.USER.ADMIN") ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
         }
 
         private static DXMenuItem CreateMenuItem(string caption, EventHandler handler, DevExpress.Utils.Svg.SvgImage image)
@@ -41,6 +43,20 @@ namespace Winform4System.Forms.SystemManagement
         private void EmployeeManagementView_Load(object sender, EventArgs e) { LoadData(); }
         private void btnReload_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) { LoadData(); }
         private void btnAdd_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e) { OpenEditor(null); }
+
+        private void btnSecuritySettings_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                using (var form = new AuthenticationPolicyForm(_policyService.GetForManagement()))
+                {
+                    if (form.ShowDialog(FindForm()) != DialogResult.OK) return;
+                    _policyService.Save(form.Value);
+                    XtraMessageBox.Show("帳號安全設定已儲存。", "儲存成功", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex) { ShowError(ex.Message, "儲存帳號安全設定失敗"); }
+        }
 
         private void gridViewEmployees_PopupMenuShowing(object sender, DevExpress.XtraGrid.Views.Grid.PopupMenuShowingEventArgs e)
         {
@@ -69,7 +85,7 @@ namespace Winform4System.Forms.SystemManagement
 
         private void OpenEditor(EmployeeListItem item)
         {
-            using (var form = new EmployeeEditForm(item, _service.GetDepartments()))
+            using (var form = new EmployeeEditForm(item, _service.GetDepartments(), _service.GetJobTitles()))
             {
                 if (form.ShowDialog(FindForm()) != DialogResult.OK) return;
                 try { _service.Save(form.Value); LoadData(form.Value.UserId); }

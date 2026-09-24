@@ -29,6 +29,26 @@ namespace Winform4System.Forms.SystemManagement
                 }
             }
 
+            if (CurrentAuthorization.HasPermission("SYSTEM.DEPARTMENT.VIEW"))
+            {
+                AddNavigationItem(settingsGroup, "departments", "部門管理", SvgIconCatalog.Department, () => new DepartmentManagementView());
+                if (!initialTabRegistered)
+                {
+                    Shown += (sender, args) => OpenTab("departments", "部門管理", () => new DepartmentManagementView());
+                    initialTabRegistered = true;
+                }
+            }
+
+            if (CurrentAuthorization.HasPermission("SYSTEM.JOB_TITLE.VIEW"))
+            {
+                AddNavigationItem(settingsGroup, "job-titles", "職稱管理", SvgIconCatalog.Promote, () => new JobTitleManagementView());
+                if (!initialTabRegistered)
+                {
+                    Shown += (sender, args) => OpenTab("job-titles", "職稱管理", () => new JobTitleManagementView());
+                    initialTabRegistered = true;
+                }
+            }
+
             if (CurrentAuthorization.HasPermission("SYSTEM.GROUP.VIEW"))
             {
                 AddNavigationItem(settingsGroup, "security-groups", "安全性群組管理", SvgIconCatalog.AddUserGroup, () => new SecurityGroupManagementView());

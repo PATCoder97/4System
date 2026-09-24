@@ -127,6 +127,42 @@
     <Compile Include="Forms\SystemManagement\EmployeeManagementView.Designer.cs">
       <DependentUpon>EmployeeManagementView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SystemManagement\AuthenticationPolicyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\AuthenticationPolicyForm.Designer.cs">
+      <DependentUpon>AuthenticationPolicyForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\DepartmentManagementView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\DepartmentManagementView.Designer.cs">
+      <DependentUpon>DepartmentManagementView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\DepartmentEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\DepartmentEditForm.Designer.cs">
+      <DependentUpon>DepartmentEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\EmployeeDepartmentTransferForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\EmployeeDepartmentTransferForm.Designer.cs">
+      <DependentUpon>EmployeeDepartmentTransferForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\JobTitleManagementView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\JobTitleManagementView.Designer.cs">
+      <DependentUpon>JobTitleManagementView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\JobTitleEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\JobTitleEditForm.Designer.cs">
+      <DependentUpon>JobTitleEditForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SystemManagement\EmployeeEditForm.cs">
       <SubType>Form</SubType>
     </Compile>
