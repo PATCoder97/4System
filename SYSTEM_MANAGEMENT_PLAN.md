@@ -125,8 +125,8 @@ Tiêu chí hoàn thành:
 Tên giao diện có thể tích hợp vào `人員管理` và menu chuột phải.
 
 - [ ] Mở khóa tài khoản và đặt lại `FailedLoginCount`.
-- [ ] Đặt lại mật khẩu LOCAL bằng dialog riêng.
-- [ ] Chuyển đổi LOCAL/Windows với kiểm tra dữ liệu bắt buộc.
+- [x] Chỉ sử dụng xác thực domain `vn.fpg.com` theo `7system`, không phân loại LOCAL/Windows trên giao diện.
+- [x] Cho phép xác thực bằng hash của lần đăng nhập domain thành công gần nhất khi domain controller không khả dụng.
 - [ ] Bật/tắt tài khoản độc lập với trạng thái hồ sơ nhân viên khi nghiệp vụ yêu cầu.
 - [ ] Thu hồi phiên đăng nhập bằng `SecurityStamp` hoặc cơ chế phiên tương đương.
 - [ ] Buộc đổi mật khẩu ở lần đăng nhập tiếp theo.

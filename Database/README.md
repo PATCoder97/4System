@@ -13,6 +13,7 @@ Run scripts in numeric order against a new SQL Server database:
 9. `009_security_group_management.sql`
 10. `010_role_permission_management.sql`
 11. `011_audit_log_management.sql`
+12. `012_domain_authentication.sql`
 
 Script `006` creates the spare-parts schema, registers the function and its permissions, and creates the `SPARE_PART_VIEWER`, `SPARE_PART_OPERATOR`, and `SPARE_PART_MANAGER` roles. Assign those roles through security groups; the script intentionally does not grant normal users access automatically.
 
@@ -48,13 +49,13 @@ Use `dbo.vw_auth_UserEffectivePermission` to inspect where a user receives a per
 
 ## Bootstrap tài khoản đăng nhập
 
-Ứng dụng hiện xác thực tài khoản `LOCAL` bằng PBKDF2-SHA256. Không seed tài khoản hoặc mật khẩu mặc định vào source. Sau khi chạy hai script schema, tạo quản trị viên đầu tiên bằng PowerShell; công cụ sẽ hỏi mật khẩu hai lần và không ghi mật khẩu ra console:
+Ứng dụng chỉ xác thực `UserId` thuộc domain `vn.fpg.com`, giống `7system`, và không lưu mật khẩu dạng rõ trong database. Trên máy đã join đúng domain này, mật khẩu được xác thực bằng domain controller; sau mỗi lần thành công, ứng dụng cập nhật PBKDF2 hash của mật khẩu vừa dùng. Khi máy không join `vn.fpg.com` hoặc domain controller tạm thời không khả dụng, ứng dụng so sánh mật khẩu với hash của lần xác thực domain thành công gần nhất.
 
 ```powershell
-.\Database\Tools\New-LocalUser.ps1 -UserId VNW0014732 -SystemAdministrator
+.\Database\Tools\New-DomainUser.ps1 -UserId VNW0014732 -SystemAdministrator
 ```
 
-Bỏ `-SystemAdministrator` để tạo tài khoản thuộc nhóm `STANDARD_USERS`. Mật khẩu phải có ít nhất 8 ký tự. Sau khi có module quản lý người dùng, việc tạo tài khoản và đổi mật khẩu nên được thực hiện trên giao diện đó thay vì dùng công cụ bootstrap.
+Bỏ `-SystemAdministrator` để tạo tài khoản thuộc nhóm `STANDARD_USERS`. Tài khoản mới phải đăng nhập thành công ít nhất một lần trên máy thuộc `vn.fpg.com` trước khi có thể dùng mật khẩu dự phòng trên máy ngoài domain.
 
 ## Local connection string
 

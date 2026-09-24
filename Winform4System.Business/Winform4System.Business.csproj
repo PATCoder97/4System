@@ -20,6 +20,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.2\lib\net45\EntityFramework.dll</HintPath>
@@ -28,6 +29,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Security\PasswordHasher.cs" />
+    <Compile Include="Security\IDomainCredentialValidator.cs" />
+    <Compile Include="Security\WindowsDomainCredentialValidator.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\ApplicationFunctionService.cs" />

@@ -14,14 +14,14 @@ namespace Winform4System.Business.Services
         private static readonly Regex UserIdPattern = new Regex(@"^VNW\d{7}$", RegexOptions.CultureInvariant);
 
         private readonly IUserAccountRepository _repository;
+        private readonly IDomainCredentialValidator _domainCredentialValidator;
         private readonly PasswordHasher _passwordHasher;
-        private readonly string _dummyPasswordHash;
 
-        public AuthenticationService(IUserAccountRepository repository, PasswordHasher passwordHasher)
+        public AuthenticationService(IUserAccountRepository repository, IDomainCredentialValidator domainCredentialValidator, PasswordHasher passwordHasher)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _domainCredentialValidator = domainCredentialValidator ?? throw new ArgumentNullException(nameof(domainCredentialValidator));
             _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
-            _dummyPasswordHash = _passwordHasher.Hash("Dummy password used only to balance authentication timing.");
         }
 
         public AuthenticationResult Authenticate(string userId, string password)
@@ -34,19 +34,21 @@ namespace Winform4System.Business.Services
                 ? _repository.FindByUserId(normalizedUserId)
                 : null;
             if (account != null && account.LockoutEndUtc.HasValue && account.LockoutEndUtc.Value > DateTime.UtcNow)
-            {
-                _passwordHasher.Verify(password, _dummyPasswordHash);
                 return AuthenticationResult.Failure(AuthenticationFailureReason.LockedOut);
+
+            DomainCredentialValidationResult domainResult = _domainCredentialValidator.Validate(normalizedUserId, password);
+            bool validatedByDomain = domainResult == DomainCredentialValidationResult.Valid;
+            bool validatedByCache = domainResult == DomainCredentialValidationResult.Unavailable
+                && account != null
+                && account.IsActive
+                && _passwordHasher.Verify(password, account.CachedDomainPasswordHash);
+            if (domainResult == DomainCredentialValidationResult.Unavailable && !validatedByCache)
+            {
+                if (account == null || string.IsNullOrWhiteSpace(account.CachedDomainPasswordHash))
+                    return AuthenticationResult.Failure(AuthenticationFailureReason.DomainUnavailable);
             }
 
-            bool eligible = account != null
-                && account.IsActive
-                && string.Equals(account.AuthenticationType, "LOCAL", StringComparison.OrdinalIgnoreCase)
-                && !string.IsNullOrWhiteSpace(account.PasswordHash);
-            bool passwordValid = _passwordHasher.Verify(
-                password,
-                eligible ? account.PasswordHash : _dummyPasswordHash);
-            bool valid = eligible && passwordValid;
+            bool valid = account != null && account.IsActive && (validatedByDomain || validatedByCache);
 
             if (!valid)
             {
@@ -58,6 +60,9 @@ namespace Winform4System.Business.Services
                 return AuthenticationResult.Failure(
                     lockoutEnd.HasValue ? AuthenticationFailureReason.LockedOut : AuthenticationFailureReason.InvalidCredentials);
             }
+
+            if (validatedByDomain)
+                _repository.UpdateDomainCredentialCache(account.UserId, _passwordHasher.Hash(password));
 
             if (!_repository.RecordSuccessfulLogin(account.UserId))
                 return AuthenticationResult.Failure(AuthenticationFailureReason.LockedOut);

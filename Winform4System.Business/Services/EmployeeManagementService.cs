@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Winform4System.Business.Security;
 using Winform4System.Core.Security;
 using Winform4System.DataAccess;
 using Winform4System.DataAccess.Configuration;
@@ -16,7 +15,6 @@ namespace Winform4System.Business.Services
     {
         private static readonly Regex UserIdPattern = new Regex("^VNW[0-9]{7}$", RegexOptions.Compiled);
         private readonly string _connectionString;
-        private readonly PasswordHasher _passwordHasher = new PasswordHasher();
 
         public EmployeeManagementService(ConnectionStringProvider provider)
         {
@@ -45,8 +43,6 @@ namespace Winform4System.Business.Services
                             WorkPhone = employee.WorkPhone,
                             HireDate = employee.HireDate,
                             EmploymentStatus = employee.EmploymentStatus,
-                            AuthenticationType = account == null ? null : account.AuthenticationType,
-                            DomainAccount = account == null ? null : account.DomainAccount,
                             IsAccountActive = account != null && account.IsActive,
                             HasAccount = account != null,
                             EmployeeRowVersion = employee.RowVersion,
@@ -116,15 +112,11 @@ namespace Winform4System.Business.Services
                     context.UserAccounts.Add(account);
                 }
                 account.EmployeeProfileId = employee.EmployeeProfileId;
-                account.AuthenticationType = model.AuthenticationType;
-                account.DomainAccount = model.AuthenticationType == "WINDOWS" ? Normalize(model.DomainAccount) : null;
+                account.AuthenticationType = "WINDOWS";
+                account.DomainAccount = userId;
                 if (!model.IsAccountActive) EnsureCanDisableAccount(context, userId);
                 account.IsActive = model.IsAccountActive;
                 account.UpdatedAt = DateTime.UtcNow;
-                if (!string.IsNullOrWhiteSpace(model.NewPassword)) account.PasswordHash = _passwordHasher.Hash(model.NewPassword);
-                if (model.AuthenticationType == "LOCAL" && string.IsNullOrWhiteSpace(account.PasswordHash))
-                    throw new InvalidOperationException("本機帳號必須設定密碼。");
-
                 context.AuditLogs.Add(new AuditLog
                 {
                     UserId = CurrentAuthorization.UserId,
@@ -183,9 +175,6 @@ namespace Winform4System.Business.Services
             if (string.IsNullOrWhiteSpace(model.DisplayNameVN)) throw new InvalidOperationException("請輸入越文姓名。");
             if (model.DepartmentId <= 0) throw new InvalidOperationException("請選擇部門。");
             if (model.EmploymentStatus > 3) throw new InvalidOperationException("任職狀態無效。");
-            if (model.AuthenticationType != "LOCAL" && model.AuthenticationType != "WINDOWS") throw new InvalidOperationException("驗證方式無效。");
-            if (model.AuthenticationType == "WINDOWS" && string.IsNullOrWhiteSpace(model.DomainAccount)) throw new InvalidOperationException("Windows 驗證必須輸入網域帳號。");
-            if (!string.IsNullOrEmpty(model.NewPassword) && model.NewPassword.Length < 8) throw new InvalidOperationException("密碼至少需要 8 個字元。");
         }
 
         private static string Normalize(string value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
@@ -221,8 +210,6 @@ namespace Winform4System.Business.Services
                 { "displayNameVN", employee.DisplayNameVN },
                 { "departmentId", employee.DepartmentId.ToString() },
                 { "employmentStatus", employee.EmploymentStatus.ToString() },
-                { "authenticationType", account?.AuthenticationType },
-                { "domainAccount", account?.DomainAccount },
                 { "accountActive", account == null ? null : account.IsActive.ToString() }
             };
         }
@@ -240,9 +227,6 @@ namespace Winform4System.Business.Services
         public string WorkPhone { get; set; }
         public DateTime? HireDate { get; set; }
         public byte EmploymentStatus { get; set; }
-        public string AuthenticationType { get; set; }
-        public string AuthenticationTypeDisplay => AuthenticationType == "WINDOWS" ? "Windows 網域" : AuthenticationType == "LOCAL" ? "本機密碼" : "未建立";
-        public string DomainAccount { get; set; }
         public bool IsAccountActive { get; set; }
         public bool HasAccount { get; set; }
         public byte[] EmployeeRowVersion { get; set; }
@@ -274,9 +258,6 @@ namespace Winform4System.Business.Services
         public string WorkPhone { get; set; }
         public DateTime? HireDate { get; set; }
         public byte EmploymentStatus { get; set; }
-        public string AuthenticationType { get; set; }
-        public string DomainAccount { get; set; }
-        public string NewPassword { get; set; }
         public bool IsAccountActive { get; set; }
         public byte[] EmployeeRowVersion { get; set; }
         public byte[] AccountRowVersion { get; set; }

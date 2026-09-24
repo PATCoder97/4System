@@ -22,6 +22,7 @@ namespace Winform4System.DataAccess.Entities
 
         [StringLength(500)]
         public string PasswordHash { get; set; }
+        public DateTime? LastDomainValidatedAt { get; set; }
 
         public int FailedLoginCount { get; set; }
         public DateTime? LockoutEndUtc { get; set; }

@@ -44,8 +44,8 @@ namespace Winform4System.DataAccess.Repositories
                      select new
                      {
                          user.UserId,
-                         user.AuthenticationType,
                          user.PasswordHash,
+                         user.LastDomainValidatedAt,
                          user.IsActive,
                          user.LockoutEndUtc,
                          DisplayNameTW = employee == null ? null : employee.DisplayNameTW,
@@ -104,8 +104,8 @@ namespace Winform4System.DataAccess.Repositories
                 return new UserAccountRecord
                 {
                     UserId = accountData.UserId,
-                    AuthenticationType = accountData.AuthenticationType,
-                    PasswordHash = accountData.PasswordHash,
+                    CachedDomainPasswordHash = accountData.PasswordHash,
+                    LastDomainValidatedAt = accountData.LastDomainValidatedAt,
                     IsActive = accountData.IsActive,
                     LockoutEndUtc = accountData.LockoutEndUtc.HasValue
                         ? DateTime.SpecifyKind(accountData.LockoutEndUtc.Value, DateTimeKind.Utc)
@@ -156,6 +156,22 @@ namespace Winform4System.DataAccess.Repositories
                 context.SaveChanges();
                 transaction.Commit();
                 return lockoutEndUtc;
+            }
+        }
+
+        public void UpdateDomainCredentialCache(string userId, string passwordHash)
+        {
+            using (var context = CreateContext())
+            using (var transaction = context.Database.BeginTransaction())
+            {
+                UserAccount account = context.UserAccounts.SingleOrDefault(item => item.UserId == userId);
+                if (account == null || !account.IsActive) return;
+                account.PasswordHash = passwordHash;
+                account.LastDomainValidatedAt = DateTime.UtcNow;
+                account.UpdatedAt = DateTime.UtcNow;
+                context.AuditLogs.Add(CreateAuditLog(account.UserId, account.UserId, "AUTH.DOMAIN.CACHE.REFRESHED", "已更新離線登入驗證資料。"));
+                context.SaveChanges();
+                transaction.Commit();
             }
         }
 

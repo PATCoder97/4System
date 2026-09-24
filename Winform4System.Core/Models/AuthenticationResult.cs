@@ -5,7 +5,8 @@ namespace Winform4System.Core.Models
         None,
         MissingCredentials,
         InvalidCredentials,
-        LockedOut
+        LockedOut,
+        DomainUnavailable
     }
 
     public sealed class AuthenticationResult

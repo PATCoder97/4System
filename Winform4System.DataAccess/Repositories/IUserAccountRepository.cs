@@ -6,6 +6,7 @@ namespace Winform4System.DataAccess.Repositories
     public interface IUserAccountRepository
     {
         UserAccountRecord FindByUserId(string userId);
+        void UpdateDomainCredentialCache(string userId, string passwordHash);
         DateTime? RecordFailedLogin(string userId, int maximumAttempts, int lockoutMinutes);
         bool RecordSuccessfulLogin(string userId);
     }

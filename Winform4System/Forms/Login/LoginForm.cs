@@ -106,6 +106,16 @@ namespace Winform4System.Forms.Login
         private void ShowAuthenticationFailure(AuthenticationFailureReason reason)
         {
             _logger.Info(nameof(LoginForm), $"Login rejected: {UserId}; reason: {reason}");
+            if (reason == AuthenticationFailureReason.DomainUnavailable)
+            {
+                XtraMessageBox.Show(
+                    "目前無法連線至公司網域。請確認公司網路或 VPN 連線後再試一次。",
+                    ApplicationMetadata.DisplayName,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                txtPassword.Focus();
+                return;
+            }
             XtraMessageBox.Show(
                 "帳號或密碼不正確，或此帳號目前無法登入。",
                 ApplicationMetadata.DisplayName,
@@ -134,10 +144,6 @@ namespace Winform4System.Forms.Login
         {
             txtUserId.Focus();
 
-#if DEBUG
-            txtUserId.Text = "VNW0014732";
-            txtPassword.Text = "Ab123456";
-#endif
         }
 
         private void LoginForm_MouseDown(object sender, MouseEventArgs e)
