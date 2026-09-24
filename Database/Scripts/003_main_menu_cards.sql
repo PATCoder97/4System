@@ -50,8 +50,8 @@ BEGIN TRY
         ('SYSTEM.USER',             'SYSTEM',   N'使用者管理', N'帳號與部門管理',           'UserManagementForm',       10,  1, 'NOT_STARTED', 1),
         ('SYSTEM.GROUP',            'SYSTEM',   N'安全性群組', N'使用者群組管理',           'SecurityGroupManagementForm', 20, 0, 'NOT_STARTED', 1),
         ('SYSTEM.ROLE',             'SYSTEM',   N'角色與權限', N'功能存取權限管理',         'RoleManagementForm',       30,  1, 'NOT_STARTED', 1),
-        ('SYSTEM.FUNCTION',         'SYSTEM',   N'功能清單',   N'系統功能與導覽設定',       'FunctionManagementForm',   40,  0, 'NOT_STARTED', 1),
-        ('SYSTEM.SETTINGS',         'SYSTEM',   N'系統設定',   N'系統參數與一般設定',       'SystemSettingsForm',       50,  1, 'NOT_STARTED', 1),
+        ('SYSTEM.FUNCTION',         'SYSTEM',   N'功能卡管理', N'管理主畫面功能卡與群組設定', 'FunctionManagementView',   40,  0, 'COMPLETED',   1),
+        ('SYSTEM.SETTINGS',         'SYSTEM',   N'系統設定',   N'系統參數與功能卡設定',       'SystemSettingsForm',       50,  1, 'COMPLETED',   1),
         ('SYSTEM.MANUAL',           'SYSTEM',   N'操作手冊',   N'使用者操作說明',           'UserManualForm',           60,  1, 'NOT_STARTED', 1)
     ) AS source
         (FunctionCode, ParentCode, DisplayName, Description, NavigationTarget, SortOrder, IsVisible, DevelopmentStatus, IsWide)

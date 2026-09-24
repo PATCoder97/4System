@@ -9,6 +9,7 @@ using Winform4System.Business.Services;
 using Winform4System.Core.Models;
 using Winform4System.Logging;
 using Winform4System.Forms.SpareParts;
+using Winform4System.Forms.SystemManagement;
 using Winform4System.Core.Security;
 
 namespace Winform4System.Forms.Main
@@ -42,6 +43,16 @@ namespace Winform4System.Forms.Main
             lblSession.Text = $"{_session.UserId}  •  {_session.Department}  •  {_session.Role}";
             LayoutUserLinks();
 
+            LoadDashboardCards();
+
+            _logger.Info(nameof(MainForm), "Main dashboard initialized.");
+        }
+
+        private void LoadDashboardCards()
+        {
+            tileMain.Groups.Clear();
+            _menuByTile.Clear();
+
             IReadOnlyList<MenuItemDefinition> menuItems = _menuService.GetMenuItems();
             foreach (IGrouping<string, MenuItemDefinition> groupData in menuItems.GroupBy(item => item.Group))
             {
@@ -51,8 +62,6 @@ namespace Winform4System.Forms.Main
 
                 tileMain.Groups.Add(group);
             }
-
-            _logger.Info(nameof(MainForm), "Main dashboard initialized.");
         }
 
         private TileItem CreateMenuTile(MenuItemDefinition definition)
@@ -126,6 +135,25 @@ namespace Winform4System.Forms.Main
 
                 using (var form = new SparePartForm(_session))
                     form.ShowDialog(this);
+                return;
+            }
+
+            if (string.Equals(definition.Code, "SYSTEM.SETTINGS", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!CurrentAuthorization.HasPermission("SYSTEM.SETTINGS.VIEW"))
+                {
+                    XtraMessageBox.Show(
+                        "您沒有檢視系統設定的權限。",
+                        ApplicationMetadata.DisplayName,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                using (var form = new SystemSettingsForm())
+                    form.ShowDialog(this);
+
+                LoadDashboardCards();
                 return;
             }
 

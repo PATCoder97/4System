@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -30,5 +31,7 @@ namespace Winform4System.DataAccess.Entities
         public string DevelopmentStatus { get; set; }
 
         public bool IsWide { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
     }
 }
