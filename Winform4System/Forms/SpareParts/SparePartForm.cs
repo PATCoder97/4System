@@ -95,7 +95,7 @@ namespace Winform4System.Forms.SpareParts
             AddNavigationItem(group, "materials", "備品資料", SvgIconCatalog.View, () => new SparePartMaterialView());
             AddNavigationItem(group, "machines", "設備管理", SvgIconCatalog.Equipment, () => new SparePartMachineView());
             AddNavigationItem(group, "transactions", "進出庫管理", SvgIconCatalog.Transfer, () => new SparePartTransactionView());
-            AddNavigationItem(group, "inspection", "盤點批次", SvgIconCatalog.Selected, () => new SparePartInspectionView());
+            AddNavigationItem(group, "inspection", "盤點批次", SvgIconCatalog.SelectionChecked, () => new SparePartInspectionView());
             AddNavigationItem(group, "recheck", "複盤作業", SvgIconCatalog.Refresh, () => new SparePartRecheckView());
             AddNavigationItem(group, "cost", "成本計算", SvgIconCatalog.Cost, () => new SparePartCostView());
             AddNavigationItem(group, "recovery", "回收管理", SvgIconCatalog.Schedule, () => new SparePartRecoveryView());

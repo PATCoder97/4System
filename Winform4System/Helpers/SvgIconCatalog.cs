@@ -11,27 +11,51 @@ namespace Winform4System.Helpers
         private static readonly string StartupPath = AppDomain.CurrentDomain.BaseDirectory;
         private static readonly string IconsPath = ResolveIconsPath();
 
-        public static readonly SvgImage Selected = Load("selection-checked.svg");
+        public static readonly SvgImage SelectionChecked = Load("selection-checked.svg");
+        public static readonly SvgImage SelectionUnchecked = Load("selection-unchecked.svg");
         public static readonly SvgImage Add = Load("action-add.svg");
         public static readonly SvgImage Attachment = Load("action-attachment.svg");
         public static readonly SvgImage Cancel = Load("action-cancel.svg");
         public static readonly SvgImage Close = Load("action-close.svg");
         public static readonly SvgImage Confirm = Load("action-confirm.svg");
+        public static readonly SvgImage Copy = Load("action-copy.svg");
         public static readonly SvgImage Delete = Load("action-delete.svg");
         public static readonly SvgImage Edit = Load("action-edit.svg");
+        public static readonly SvgImage Filter = Load("action-filter.svg");
+        public static readonly SvgImage Info = Load("action-info.svg");
+        public static readonly SvgImage Learn = Load("action-learn.svg");
+        public static readonly SvgImage Plus = Load("action-plus.svg");
         public static readonly SvgImage Print = Load("action-print.svg");
         public static readonly SvgImage Refresh = Load("action-refresh.svg");
         public static readonly SvgImage Search = Load("action-search.svg");
+        public static readonly SvgImage Signature = Load("action-signature.svg");
         public static readonly SvgImage Transfer = Load("action-transfer.svg");
         public static readonly SvgImage Upload = Load("action-upload.svg");
         public static readonly SvgImage View = Load("action-view.svg");
 
+        public static readonly SvgImage ApprovalStamp = Load("approval-stamp.svg");
+        public static readonly SvgImage Bot = Load("automation-bot.svg");
+        public static readonly SvgImage Robot = Load("automation-robot.svg");
         public static readonly SvgImage CalendarAdd = Load("calendar-add.svg");
         public static readonly SvgImage Schedule = Load("calendar-schedule.svg");
+        public static readonly SvgImage SendEmail = Load("communication-email-send.svg");
         public static readonly SvgImage ExportExcel = Load("file-excel.svg");
+        public static readonly SvgImage GoogleForms = Load("file-google-forms.svg");
+        public static readonly SvgImage GoogleSheets = Load("file-google-sheets.svg");
+        public static readonly SvgImage Word = Load("file-word.svg");
         public static readonly SvgImage Cost = Load("finance-cost.svg");
+        public static readonly SvgImage Promote = Load("hierarchy-promote.svg");
+        public static readonly SvgImage GasStation = Load("location-gas-station.svg");
+        public static readonly SvgImage Equipment = Load("navigation-equipment.svg");
         public static readonly SvgImage Department = Load("organization-department.svg");
+        public static readonly SvgImage Progress = Load("process-progress.svg");
+        public static readonly SvgImage Denied = Load("status-denied.svg");
         public static readonly SvgImage Disabled = Load("status-disabled.svg");
+        public static readonly SvgImage Finished = Load("status-finished.svg");
+        public static readonly SvgImage StartTime = Load("time-start.svg");
+        public static readonly SvgImage ChangeUser = Load("user-change.svg");
+        public static readonly SvgImage AddUserGroup = Load("user-group-add.svg");
+        public static readonly SvgImage SuspendUser = Load("user-suspend.svg");
         public static readonly SvgImage UserTransfer = Load("user-transfer.svg");
 
         public static readonly SvgImage Step1 = Load("step-1.svg");
@@ -39,8 +63,7 @@ namespace Winform4System.Helpers
         public static readonly SvgImage Step3 = Load("step-3.svg");
         public static readonly SvgImage Step4 = Load("step-4.svg");
         public static readonly SvgImage Step5 = Load("step-5.svg");
-
-        public static SvgImage Equipment => Department;
+        public static readonly SvgImage Step6 = Load("step-6.svg");
 
         private static string ResolveIconsPath()
         {

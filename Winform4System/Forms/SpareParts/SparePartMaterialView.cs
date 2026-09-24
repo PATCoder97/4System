@@ -253,7 +253,7 @@ namespace Winform4System.Forms.SpareParts
 
             itemDisable = CreateMenuItem("停用", ItemDisable_Click, SvgIconCatalog.Disabled);
             itemEnable = CreateMenuItem("啟用", ItemEnable_Click, SvgIconCatalog.Confirm);
-            itemMultiselect = CreateMenuItem("啟用多選", ItemMultiselect_Click, SvgIconCatalog.Selected);
+            itemMultiselect = CreateMenuItem("啟用多選", ItemMultiselect_Click, SvgIconCatalog.SelectionChecked);
             itemPrintStamp = CreateMenuItem("執行列印", ItemPrintStamp_Click, SvgIconCatalog.Print);
         }
 
