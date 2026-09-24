@@ -14,7 +14,6 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraLayout;
 using Winform4System.Forms.SpareParts;
-using System.Threading;
 
 using Winform4System.Helpers;
 
@@ -668,19 +667,31 @@ namespace Winform4System.Forms.SpareParts
                         return;
                     }
 
-                    transaction.TransactionType = "transfer";
-                    transaction.Quantity = -quantity;
-                    transaction.StorageId = (int)cbbStorageFrom.EditValue;
+                    var transferTransactions = new List<SparePartTransaction>
+                    {
+                        new SparePartTransaction
+                        {
+                            MaterialId = idMaterial,
+                            CreatedDate = transaction.CreatedDate,
+                            Desc = transaction.Desc,
+                            UserDo = transaction.UserDo,
+                            TransactionType = "transfer",
+                            Quantity = -quantity,
+                            StorageId = (int)cbbStorageFrom.EditValue
+                        },
+                        new SparePartTransaction
+                        {
+                            MaterialId = idMaterial,
+                            CreatedDate = transaction.CreatedDate,
+                            Desc = transaction.Desc,
+                            UserDo = transaction.UserDo,
+                            TransactionType = "transfer",
+                            Quantity = quantity,
+                            StorageId = (int)cbbStorageTo.EditValue
+                        }
+                    };
 
-                    result = SparePartTransactionService.Instance.Add(transaction);
-
-                    Thread.Sleep(200);
-
-                    transaction.TransactionType = "transfer";
-                    transaction.Quantity = quantity;
-                    transaction.StorageId = (int)cbbStorageTo.EditValue;
-
-                    result = SparePartTransactionService.Instance.Add(transaction);
+                    result = SparePartTransactionService.Instance.AddRange(transferTransactions);
 
                     break;
 

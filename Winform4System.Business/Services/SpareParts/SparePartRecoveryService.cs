@@ -3,6 +3,7 @@ using Winform4System.DataAccess.Entities.SpareParts;
 using Winform4System.Business.Services.SpareParts;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using Winform4System.Core.Security;
@@ -300,7 +301,7 @@ namespace Winform4System.Business.Services.SpareParts
             {
                 Winform4System.Core.Security.CurrentAuthorization.Demand("ASSET.SPARE_PART.CREATE");
                 using (var context = new SparePartDbContext())
-                using (var tran = context.Database.BeginTransaction())
+                using (var tran = context.Database.BeginTransaction(IsolationLevel.Serializable))
                 {
                     try
                     {
@@ -347,7 +348,7 @@ namespace Winform4System.Business.Services.SpareParts
                             Desc = NormalizeText(desc)
                         };
 
-                        context.Transactions.Add(issueTransaction);
+                        SparePartTransactionService.AddToContext(context, issueTransaction);
                         context.SaveChanges();
 
                         if (normalizedOption == RecoveryOptionNone)
@@ -382,7 +383,7 @@ namespace Winform4System.Business.Services.SpareParts
                                 Desc = $"回收入庫 / 原物料:{oldBaseMaterial.Code}"
                             };
 
-                            context.Transactions.Add(restockTransaction);
+                            SparePartTransactionService.AddToContext(context, restockTransaction);
                             context.SaveChanges();
 
                             ticketStatus = RecoveryStatusCompleted;

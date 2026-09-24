@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Winform4System.DataAccess;
 using Winform4System.DataAccess.Entities.SpareParts;
-using Winform4System.Business.Services.SpareParts;
 
 namespace Winform4System.Business.Services.SpareParts
 {
@@ -110,9 +108,11 @@ namespace Winform4System.Business.Services.SpareParts
             try
             {
                 using (var _context = new SparePartDbContext())
+                using (var transaction = _context.Database.BeginTransaction(IsolationLevel.Serializable))
                 {
-                    _context.Transactions.Add(item);
+                    AddToContext(_context, item);
                     int affectedRecords = _context.SaveChanges();
+                    transaction.Commit();
                     return affectedRecords > 0;
                 }
             }
@@ -128,9 +128,16 @@ namespace Winform4System.Business.Services.SpareParts
             try
             {
                 using (var _context = new SparePartDbContext())
+                using (var transaction = _context.Database.BeginTransaction(IsolationLevel.Serializable))
                 {
-                    _context.Transactions.AddRange(items);
+                    if (items == null || items.Count == 0)
+                        return false;
+
+                    foreach (var item in items)
+                        AddToContext(_context, item);
+
                     int affectedRecords = _context.SaveChanges();
+                    transaction.Commit();
                     return affectedRecords > 0;
                 }
             }
@@ -139,6 +146,86 @@ namespace Winform4System.Business.Services.SpareParts
                 logger.Error(MethodBase.GetCurrentMethod().ReflectedType.Name, ex.ToString());
                 return false;
             }
+        }
+
+        internal static void AddToContext(SparePartDbContext context, SparePartTransaction item)
+        {
+            if (context == null)
+                throw new ArgumentNullException(nameof(context));
+            if (item == null)
+                throw new ArgumentNullException(nameof(item));
+
+            string transactionType = (item.TransactionType ?? string.Empty).Trim().ToLowerInvariant();
+            if (transactionType != "in"
+                && transactionType != "out"
+                && transactionType != "transfer"
+                && transactionType != "check")
+            {
+                throw new InvalidOperationException("備品交易類型無效。");
+            }
+
+            if (item.StorageId != 1 && item.StorageId != 2)
+                throw new InvalidOperationException("備品倉庫無效。");
+
+            var material = context.Materials.FirstOrDefault(candidate => candidate.Id == item.MaterialId);
+            if (material == null)
+                throw new InvalidOperationException("找不到需要更新庫存的物料。");
+
+            double previousQuantity = item.StorageId == 1
+                ? material.QuantityInMachine
+                : material.QuantityInStorage;
+            double updatedQuantity;
+            double savedQuantity;
+
+            switch (transactionType)
+            {
+                case "in":
+                    EnsurePositiveQuantity(item.Quantity);
+                    updatedQuantity = previousQuantity + item.Quantity;
+                    savedQuantity = item.Quantity;
+                    break;
+
+                case "out":
+                    EnsurePositiveQuantity(item.Quantity);
+                    updatedQuantity = previousQuantity - item.Quantity;
+                    if (updatedQuantity < 0)
+                        throw new InvalidOperationException("領用數量大於目前庫存數量。");
+                    savedQuantity = -item.Quantity;
+                    break;
+
+                case "transfer":
+                    if (item.Quantity == 0)
+                        throw new InvalidOperationException("轉庫數量不得為零。");
+                    updatedQuantity = previousQuantity + item.Quantity;
+                    if (updatedQuantity < 0)
+                        throw new InvalidOperationException("轉庫數量大於目前庫存數量。");
+                    savedQuantity = item.Quantity;
+                    break;
+
+                default:
+                    if (item.Quantity < 0)
+                        throw new InvalidOperationException("盤點數量不得小於零。");
+                    updatedQuantity = item.Quantity;
+                    savedQuantity = updatedQuantity - previousQuantity;
+                    break;
+            }
+
+            if (item.StorageId == 1)
+                material.QuantityInMachine = updatedQuantity;
+            else
+                material.QuantityInStorage = updatedQuantity;
+
+            item.TransactionType = transactionType;
+            item.Quantity = savedQuantity;
+            item.AftQuantity = updatedQuantity;
+            item.TotalQuantity = material.QuantityInMachine + material.QuantityInStorage;
+            context.Transactions.Add(item);
+        }
+
+        private static void EnsurePositiveQuantity(double quantity)
+        {
+            if (quantity <= 0)
+                throw new InvalidOperationException("交易數量需大於零。");
         }
 
         public bool AddOrUpdate(SparePartTransaction item)
@@ -180,4 +267,3 @@ namespace Winform4System.Business.Services.SpareParts
         }
     }
 }
-
