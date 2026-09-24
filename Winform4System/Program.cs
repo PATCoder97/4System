@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Winform4System.Business.Security;
 using Winform4System.Business.Services;
 using Winform4System.Core.Models;
+using Winform4System.Core.Security;
 using Winform4System.DataAccess.Configuration;
 using Winform4System.DataAccess.Repositories;
 using Winform4System.Forms.Login;
@@ -56,6 +57,8 @@ namespace Winform4System
 
                         session = loginForm.Session;
                     }
+
+                    CurrentAuthorization.SetPermissions(session.PermissionCodes);
 
                     IMainMenuService menuService = new EfMainMenuService(
                         new EfMainMenuRepository(new ConnectionStringProvider()),

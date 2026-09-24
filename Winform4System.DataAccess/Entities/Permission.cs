@@ -13,6 +13,9 @@ namespace Winform4System.DataAccess.Entities
         [Required, StringLength(30)]
         public string ActionCode { get; set; }
 
+        [Required, StringLength(150)]
+        public string PermissionCode { get; set; }
+
         public bool IsActive { get; set; }
     }
 }

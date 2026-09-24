@@ -50,7 +50,8 @@ namespace Winform4System.DataAccess.Repositories
                          user.LockoutEndUtc,
                          DisplayNameTW = employee == null ? null : employee.DisplayNameTW,
                          DisplayNameVN = employee == null ? null : employee.DisplayNameVN,
-                         DepartmentName = department == null ? null : department.DepartmentName
+                         DepartmentName = department == null ? null : department.DepartmentName,
+                         DepartmentCode = department == null ? null : department.DepartmentCode
                      })
                     .SingleOrDefault();
 
@@ -76,6 +77,30 @@ namespace Winform4System.DataAccess.Repositories
                     .Distinct()
                     .ToArray();
 
+                string[] permissionCodes =
+                    (from userGroup in context.UserGroups.AsNoTracking()
+                     join securityGroup in context.SecurityGroups.AsNoTracking()
+                         on userGroup.GroupId equals securityGroup.GroupId
+                     join groupRole in context.GroupRoles.AsNoTracking()
+                         on securityGroup.GroupId equals groupRole.GroupId
+                     join role in context.Roles.AsNoTracking()
+                         on groupRole.RoleId equals role.RoleId
+                     join rolePermission in context.RolePermissions.AsNoTracking()
+                         on role.RoleId equals rolePermission.RoleId
+                     join permission in context.Permissions.AsNoTracking()
+                         on rolePermission.PermissionId equals permission.PermissionId
+                     where userGroup.UserId == accountData.UserId
+                           && userGroup.IsActive
+                           && securityGroup.IsActive
+                           && groupRole.IsActive
+                           && role.IsActive
+                           && rolePermission.IsActive
+                           && permission.IsActive
+                           && (!userGroup.ExpiresAt.HasValue || userGroup.ExpiresAt > utcNow)
+                     select permission.PermissionCode)
+                    .Distinct()
+                    .ToArray();
+
                 return new UserAccountRecord
                 {
                     UserId = accountData.UserId,
@@ -88,7 +113,9 @@ namespace Winform4System.DataAccess.Repositories
                     DisplayNameTW = accountData.DisplayNameTW,
                     DisplayNameVN = accountData.DisplayNameVN,
                     Department = accountData.DepartmentName ?? string.Empty,
-                    Roles = string.Join("、", roleNames)
+                    DepartmentCode = accountData.DepartmentCode ?? string.Empty,
+                    Roles = string.Join("、", roleNames),
+                    PermissionCodes = permissionCodes
                 };
             }
         }

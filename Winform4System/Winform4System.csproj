@@ -37,9 +37,16 @@
     <Reference Include="DevExpress.BonusSkins.v22.1" />
     <Reference Include="DevExpress.Data.Desktop.v22.1" />
     <Reference Include="DevExpress.Data.v22.1" />
+    <Reference Include="DevExpress.Drawing.v22.1" />
+    <Reference Include="DevExpress.Images.v22.1" />
     <Reference Include="DevExpress.Utils.v22.1" />
     <Reference Include="DevExpress.Sparkline.v22.1.Core" />
     <Reference Include="DevExpress.XtraEditors.v22.1" />
+    <Reference Include="DevExpress.XtraBars.v22.1" />
+    <Reference Include="DevExpress.XtraGrid.v22.1" />
+    <Reference Include="DevExpress.XtraLayout.v22.1" />
+    <Reference Include="DevExpress.XtraPrinting.v22.1" />
+    <Reference Include="DevExpress.XtraReports.v22.1" />
     <Reference Include="DevExpress.Printing.v22.1.Core" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.2\lib\net45\EntityFramework.dll</HintPath>
@@ -49,6 +56,35 @@
       <HintPath>..\packages\EntityFramework.6.5.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\packages\EPPlus.7.0.4\lib\net462\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces">
+      <HintPath>..\packages\EPPlus.Interfaces.6.1.1\lib\net462\EPPlus.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EPPlus.System.Drawing">
+      <HintPath>..\packages\EPPlus.System.Drawing.6.1.1\lib\net462\EPPlus.System.Drawing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ExcelDataReader">
+      <HintPath>..\packages\ExcelDataReader.3.6.0\lib\net45\ExcelDataReader.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet">
+      <HintPath>..\packages\ExcelDataReader.DataSet.3.6.0\lib\net35\ExcelDataReader.DataSet.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.1.4.1\lib\net46\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -57,6 +93,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -75,6 +115,53 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Forms\SpareParts\dt309_RecoveryConst.cs"></Compile>
+    <Compile Include="Forms\SpareParts\SparePartForm.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\SpareParts\dt309_RecoveryTicketGridRow.cs"></Compile>
+    <Compile Include="Forms\SpareParts\f309_Machine_Info.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\SpareParts\f309_Machine_Info.Designer.cs"><DependentUpon>f309_Machine_Info.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\f309_MaterialReplacementChain.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\SpareParts\f309_MaterialReplacementChain.Designer.cs"><DependentUpon>f309_MaterialReplacementChain.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\f309_MaterialReplacement_Info.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\SpareParts\f309_MaterialReplacement_Info.Designer.cs"><DependentUpon>f309_MaterialReplacement_Info.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\f309_Material_Info.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\SpareParts\f309_Material_Info.Designer.cs"><DependentUpon>f309_Material_Info.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\f309_ReCheckInfo.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\SpareParts\f309_ReCheckInfo.Designer.cs"><DependentUpon>f309_ReCheckInfo.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\f309_RecoveryEvidenceUpload.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\SpareParts\f309_RecoveryEvidenceUpload.Designer.cs"><DependentUpon>f309_RecoveryEvidenceUpload.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\f309_RecoveryGuideMgmt.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\SpareParts\f309_RecoveryGuideMgmt.Designer.cs"><DependentUpon>f309_RecoveryGuideMgmt.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\f309_RecoverySchedule.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\SpareParts\f309_RecoverySchedule.Designer.cs"><DependentUpon>f309_RecoverySchedule.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\f309_Transaction_Info.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="Forms\SpareParts\f309_Transaction_Info.Designer.cs"><DependentUpon>f309_Transaction_Info.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\Material309RecoveryHelper.cs"></Compile>
+    <Compile Include="Forms\SpareParts\uc309_ChooseDate.cs"><SubType>UserControl</SubType></Compile>
+    <Compile Include="Forms\SpareParts\uc309_ChooseDate.Designer.cs"><DependentUpon>uc309_ChooseDate.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\uc309_CostCalculation.cs"><SubType>UserControl</SubType></Compile>
+    <Compile Include="Forms\SpareParts\uc309_CostCalculation.Designer.cs"><DependentUpon>uc309_CostCalculation.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\uc309_InOutMgmt.cs"><SubType>UserControl</SubType></Compile>
+    <Compile Include="Forms\SpareParts\uc309_InOutMgmt.Designer.cs"><DependentUpon>uc309_InOutMgmt.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\uc309_InspectionBatch.cs"><SubType>UserControl</SubType></Compile>
+    <Compile Include="Forms\SpareParts\uc309_InspectionBatch.Designer.cs"><DependentUpon>uc309_InspectionBatch.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\uc309_MachineMgmt.cs"><SubType>UserControl</SubType></Compile>
+    <Compile Include="Forms\SpareParts\uc309_MachineMgmt.Designer.cs"><DependentUpon>uc309_MachineMgmt.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\uc309_RecheckBatch.cs"><SubType>UserControl</SubType></Compile>
+    <Compile Include="Forms\SpareParts\uc309_RecheckBatch.Designer.cs"><DependentUpon>uc309_RecheckBatch.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\uc309_RecoveryMgmt.cs"><SubType>UserControl</SubType></Compile>
+    <Compile Include="Forms\SpareParts\uc309_RecoveryMgmt.Designer.cs"><DependentUpon>uc309_RecoveryMgmt.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SpareParts\uc309_RecoveryTask.cs"><SubType>UserControl</SubType></Compile>
+    <Compile Include="Forms\SpareParts\uc309_SparePartMain.cs"><SubType>UserControl</SubType></Compile>
+    <Compile Include="Forms\SpareParts\uc309_SparePartMain.Designer.cs"><DependentUpon>uc309_SparePartMain.cs</DependentUpon></Compile>
+    <Compile Include="Helpers\EncryptionHelper.cs" />
+    <Compile Include="Helpers\GridControlHelper.cs" />
+    <Compile Include="Helpers\Material309CheckPhotoHelper.cs" />
+    <Compile Include="Helpers\Material309Helper.cs" />
+    <Compile Include="Helpers\RefreshHelper.cs" />
+    <Compile Include="Helpers\TPConfigs.cs" />
+    <Compile Include="Helpers\TPSvgimages.cs" />
+    <Compile Include="Helpers\SparePartPermissionUi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Main\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -83,6 +170,17 @@
       <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Forms\SpareParts\f309_Machine_Info.resx"><DependentUpon>f309_Machine_Info.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\f309_Material_Info.resx"><DependentUpon>f309_Material_Info.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\f309_ReCheckInfo.resx"><DependentUpon>f309_ReCheckInfo.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\f309_Transaction_Info.resx"><DependentUpon>f309_Transaction_Info.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\uc309_ChooseDate.resx"><DependentUpon>uc309_ChooseDate.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\uc309_CostCalculation.resx"><DependentUpon>uc309_CostCalculation.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\uc309_InOutMgmt.resx"><DependentUpon>uc309_InOutMgmt.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\uc309_InspectionBatch.resx"><DependentUpon>uc309_InspectionBatch.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\uc309_MachineMgmt.resx"><DependentUpon>uc309_MachineMgmt.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\uc309_RecheckBatch.resx"><DependentUpon>uc309_RecheckBatch.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="Forms\SpareParts\uc309_SparePartMain.resx"><DependentUpon>uc309_SparePartMain.cs</DependentUpon></EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -97,6 +195,9 @@
     <None Include="Assets\Images\login-background.png" />
     <None Include="Assets\Icons\app-icon-source.png" />
     <None Include="Assets\Icons\app-icon.ico" />
+    <Content Include="Images\*.svg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="connectionStrings.example.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

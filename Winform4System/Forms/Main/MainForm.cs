@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using Winform4System.Business.Services;
 using Winform4System.Core.Models;
 using Winform4System.Logging;
+using Winform4System.Forms.SpareParts;
+using Winform4System.Core.Security;
 
 namespace Winform4System.Forms.Main
 {
@@ -36,7 +38,7 @@ namespace Winform4System.Forms.Main
 
         private void InitializeDashboard()
         {
-            lblWelcome.Text = _session.DisplayName;
+            lblWelcome.Text = $"您好，{_session.DisplayName}，";
             lblSession.Text = $"{_session.UserId}  •  {_session.Department}  •  {_session.Role}";
             LayoutUserLinks();
 
@@ -110,6 +112,23 @@ namespace Winform4System.Forms.Main
                 return;
 
             _logger.Info(nameof(MainForm), $"Menu selected: {definition.Code} - {definition.Title}");
+            if (string.Equals(definition.Code, "ASSET.SPARE_PART", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!CurrentAuthorization.HasPermission("ASSET.SPARE_PART.VIEW"))
+                {
+                    XtraMessageBox.Show(
+                        "您沒有檢視此功能的權限。",
+                        ApplicationMetadata.DisplayName,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                using (var form = new SparePartForm(_session))
+                    form.ShowDialog(this);
+                return;
+            }
+
             XtraMessageBox.Show(
                 $"「{definition.Title}」功能已完成介面配置。\n\n業務功能將於下一階段連接。",
                 ApplicationMetadata.DisplayName,
@@ -131,12 +150,17 @@ namespace Winform4System.Forms.Main
         private void LayoutUserLinks()
         {
             const int rightMargin = 28;
-            const int top = 10;
+            const int top = 8;
+            const int linkGap = 8;
+            const int appNameGap = 24;
             int right = headerPanel.ClientSize.Width - rightMargin;
 
             lblLogout.Location = new Point(right - lblLogout.Width, top);
-            lblWelcome.Location = new Point(lblLogout.Left - lblWelcome.Width, top);
-            lblGreeting.Location = new Point(lblWelcome.Left - lblGreeting.Width, top);
+
+            int welcomeLeft = lblAppName.Right + appNameGap;
+            int welcomeRight = lblLogout.Left - linkGap;
+            lblWelcome.Location = new Point(welcomeLeft, top);
+            lblWelcome.Size = new Size(Math.Max(0, welcomeRight - welcomeLeft), 22);
         }
 
         private void lblLogout_Click(object sender, EventArgs e)

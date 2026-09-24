@@ -5,7 +5,6 @@ namespace Winform4System.Forms.Main
         private System.ComponentModel.IContainer components = null;
         private DevExpress.XtraEditors.PanelControl headerPanel;
         private DevExpress.XtraEditors.LabelControl lblAppName;
-        private DevExpress.XtraEditors.LabelControl lblGreeting;
         private DevExpress.XtraEditors.LabelControl lblWelcome;
         private DevExpress.XtraEditors.LabelControl lblSession;
         private DevExpress.XtraEditors.LabelControl lblLogout;
@@ -23,7 +22,6 @@ namespace Winform4System.Forms.Main
             this.components = new System.ComponentModel.Container();
             this.headerPanel = new DevExpress.XtraEditors.PanelControl();
             this.lblAppName = new DevExpress.XtraEditors.LabelControl();
-            this.lblGreeting = new DevExpress.XtraEditors.LabelControl();
             this.lblWelcome = new DevExpress.XtraEditors.LabelControl();
             this.lblSession = new DevExpress.XtraEditors.LabelControl();
             this.lblLogout = new DevExpress.XtraEditors.LabelControl();
@@ -38,7 +36,6 @@ namespace Winform4System.Forms.Main
             this.headerPanel.Appearance.Options.UseBackColor = true;
             this.headerPanel.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.headerPanel.Controls.Add(this.lblAppName);
-            this.headerPanel.Controls.Add(this.lblGreeting);
             this.headerPanel.Controls.Add(this.lblWelcome);
             this.headerPanel.Controls.Add(this.lblLogout);
             this.headerPanel.Controls.Add(this.lblSession);
@@ -64,19 +61,6 @@ namespace Winform4System.Forms.Main
             this.lblAppName.TabIndex = 0;
             this.lblAppName.Text = global::Winform4System.ApplicationMetadata.DisplayName;
             // 
-            // lblGreeting
-            // 
-            this.lblGreeting.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblGreeting.Appearance.Font = new System.Drawing.Font("DFKai-SB", 11F, System.Drawing.FontStyle.Bold);
-            this.lblGreeting.Appearance.ForeColor = System.Drawing.Color.White;
-            this.lblGreeting.Appearance.Options.UseFont = true;
-            this.lblGreeting.Appearance.Options.UseForeColor = true;
-            this.lblGreeting.Location = new System.Drawing.Point(1172, 10);
-            this.lblGreeting.Name = "lblGreeting";
-            this.lblGreeting.Size = new System.Drawing.Size(38, 18);
-            this.lblGreeting.TabIndex = 1;
-            this.lblGreeting.Text = "您好，";
-            // 
             // lblWelcome
             // 
             this.lblWelcome.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -84,12 +68,17 @@ namespace Winform4System.Forms.Main
             this.lblWelcome.Appearance.ForeColor = System.Drawing.Color.White;
             this.lblWelcome.Appearance.Options.UseFont = true;
             this.lblWelcome.Appearance.Options.UseForeColor = true;
+            this.lblWelcome.Appearance.Options.UseTextOptions = true;
+            this.lblWelcome.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lblWelcome.Appearance.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
+            this.lblWelcome.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.lblWelcome.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblWelcome.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblWelcome.Location = new System.Drawing.Point(1210, 10);
+            this.lblWelcome.Location = new System.Drawing.Point(402, 8);
             this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(84, 18);
+            this.lblWelcome.Size = new System.Drawing.Size(884, 22);
             this.lblWelcome.TabIndex = 1;
-            this.lblWelcome.Text = "使用者";
+            this.lblWelcome.Text = "您好，使用者";
             this.lblWelcome.Click += new System.EventHandler(this.lblWelcome_Click);
             // 
             // lblSession
@@ -116,12 +105,16 @@ namespace Winform4System.Forms.Main
             this.lblLogout.Appearance.ForeColor = System.Drawing.Color.LightCoral;
             this.lblLogout.Appearance.Options.UseFont = true;
             this.lblLogout.Appearance.Options.UseForeColor = true;
+            this.lblLogout.Appearance.Options.UseTextOptions = true;
+            this.lblLogout.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.lblLogout.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+            this.lblLogout.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblLogout.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblLogout.Location = new System.Drawing.Point(1294, 10);
+            this.lblLogout.Location = new System.Drawing.Point(1284, 8);
             this.lblLogout.Name = "lblLogout";
-            this.lblLogout.Size = new System.Drawing.Size(38, 18);
+            this.lblLogout.Size = new System.Drawing.Size(48, 22);
             this.lblLogout.TabIndex = 2;
-            this.lblLogout.Text = "，登出";
+            this.lblLogout.Text = "登出";
             this.lblLogout.Click += new System.EventHandler(this.lblLogout_Click);
             // 
             // tileMain

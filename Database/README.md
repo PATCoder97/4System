@@ -7,6 +7,11 @@ Run scripts in numeric order against a new SQL Server database:
 3. `003_main_menu_cards.sql`
 4. `004_standardize_user_id.sql`
 5. `005_standardize_employee_display_names.sql`
+6. `006_spare_part_309.sql`
+
+Script `006` creates the 309 spare-parts schema, registers the function and its permissions, and creates the `SPARE_PART_VIEWER`, `SPARE_PART_OPERATOR`, and `SPARE_PART_MANAGER` roles. Assign those roles through security groups; the script intentionally does not grant normal users access automatically.
+
+Set `SparePartDataPath` in `Winform4System/App.config` to the shared 7system data root if the existing 309 photos, recovery evidence, and report templates must remain available. When left blank, the application uses the current user's Documents folder.
 
 The SQL files are UTF-8. If a PowerShell runner is used, read them explicitly with `Get-Content -Encoding UTF8` so Traditional Chinese seed values are not corrupted.
 

@@ -11,6 +11,8 @@ namespace Winform4System.Core.Models
                 ? DisplayNameVN
                 : UserId;
         public string Department { get; set; }
+        public string DepartmentCode { get; set; }
         public string Role { get; set; }
+        public string[] PermissionCodes { get; set; } = new string[0];
     }
 }

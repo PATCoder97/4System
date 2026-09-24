@@ -68,7 +68,9 @@ namespace Winform4System.Business.Services
                 DisplayNameTW = account.DisplayNameTW,
                 DisplayNameVN = account.DisplayNameVN,
                 Department = string.IsNullOrWhiteSpace(account.Department) ? "未設定部門" : account.Department,
-                Role = string.IsNullOrWhiteSpace(account.Roles) ? "一般使用者" : account.Roles
+                DepartmentCode = account.DepartmentCode,
+                Role = string.IsNullOrWhiteSpace(account.Roles) ? "一般使用者" : account.Roles,
+                PermissionCodes = account.PermissionCodes ?? new string[0]
             });
         }
     }

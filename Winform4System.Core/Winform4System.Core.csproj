@@ -32,6 +32,7 @@
   <ItemGroup>
     <Compile Include="Models\MenuItemDefinition.cs" />
     <Compile Include="Models\UserSession.cs" />
+    <Compile Include="Security\CurrentAuthorization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

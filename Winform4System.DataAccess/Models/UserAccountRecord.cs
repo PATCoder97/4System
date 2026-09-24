@@ -12,6 +12,8 @@ namespace Winform4System.DataAccess.Models
         public string DisplayNameTW { get; set; }
         public string DisplayNameVN { get; set; }
         public string Department { get; set; }
+        public string DepartmentCode { get; set; }
         public string Roles { get; set; }
+        public string[] PermissionCodes { get; set; }
     }
 }

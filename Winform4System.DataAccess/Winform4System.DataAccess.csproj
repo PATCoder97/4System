@@ -38,6 +38,25 @@
     <Compile Include="Repositories\IUserAccountRepository.cs" />
     <Compile Include="Repositories\EfUserAccountRepository.cs" />
     <Compile Include="Winform4SystemDbContext.cs" />
+    <Compile Include="SparePartDbContext.cs" />
+    <Compile Include="Entities\SpareParts\dm_Attachment.cs" />
+    <Compile Include="Entities\SpareParts\dm_Departments.cs" />
+    <Compile Include="Entities\SpareParts\dm_Group.cs" />
+    <Compile Include="Entities\SpareParts\dm_GroupUser.cs" />
+    <Compile Include="Entities\SpareParts\dm_User.cs" />
+    <Compile Include="Entities\SpareParts\dt309_InspectionBatch.cs" />
+    <Compile Include="Entities\SpareParts\dt309_InspectionBatchMaterial.cs" />
+    <Compile Include="Entities\SpareParts\dt309_MachineMaterials.cs" />
+    <Compile Include="Entities\SpareParts\dt309_Machines.cs" />
+    <Compile Include="Entities\SpareParts\dt309_MaterialPhoto.cs" />
+    <Compile Include="Entities\SpareParts\dt309_Materials.cs" />
+    <Compile Include="Entities\SpareParts\dt309_Prices.cs" />
+    <Compile Include="Entities\SpareParts\dt309_RecoveryEvidence.cs" />
+    <Compile Include="Entities\SpareParts\dt309_RecoveryGuides.cs" />
+    <Compile Include="Entities\SpareParts\dt309_RecoveryTickets.cs" />
+    <Compile Include="Entities\SpareParts\dt309_Storages.cs" />
+    <Compile Include="Entities\SpareParts\dt309_Transactions.cs" />
+    <Compile Include="Entities\SpareParts\dt309_Units.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -56,9 +75,18 @@
     <None Include="..\Database\Scripts\005_standardize_employee_display_names.sql">
       <Link>Database\Scripts\005_standardize_employee_display_names.sql</Link>
     </None>
+    <None Include="..\Database\Scripts\006_spare_part_309.sql">
+      <Link>Database\Scripts\006_spare_part_309.sql</Link>
+    </None>
     <None Include="..\Database\README.md">
       <Link>Database\README.md</Link>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Winform4System.Core\Winform4System.Core.csproj">
+      <Project>{DFE30F37-6945-4CB3-A243-958BA7886A35}</Project>
+      <Name>Winform4System.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
