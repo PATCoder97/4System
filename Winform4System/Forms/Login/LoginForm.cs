@@ -144,6 +144,10 @@ namespace Winform4System.Forms.Login
         {
             txtUserId.Focus();
 
+#if DEBUG
+            txtUserId.Text = "VNW0014732";
+            txtPassword.Text = "Ab123456";
+#endif
         }
 
         private void LoginForm_MouseDown(object sender, MouseEventArgs e)
