@@ -20,6 +20,9 @@ namespace Winform4System.Forms.SystemManagement
             OriginalGroupIds = detail.Groups.Where(x => x.IsAssigned).Select(x => x.GroupId).ToList();
             memoRoles.Text = detail.Roles.Count == 0 ? "（無）" : string.Join(Environment.NewLine, detail.Roles);
             gridPermissions.DataSource = detail.Permissions.ToList();
+            tabGroups.Text = "安全性群組（已選 " + OriginalGroupIds.Count + "）";
+            tabRoles.Text = "有效角色（" + detail.Roles.Count + "）";
+            tabPermissions.Text = "有效權限（" + detail.Permissions.Count + "）";
         }
         private void btnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {

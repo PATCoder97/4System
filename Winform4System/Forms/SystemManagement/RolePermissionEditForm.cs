@@ -13,6 +13,9 @@ namespace Winform4System.Forms.SystemManagement
         public RolePermissionEditForm(RoleListItem source, RolePermissionDetail detail)
         {
             _source = source; InitializeComponent(); gridMatrix.DataSource = detail.Matrix.ToList(); gridGroups.DataSource = detail.Groups.ToList(); gridUsers.DataSource = detail.Users.ToList();
+            tabMatrix.Text = "權限矩陣（已選 " + detail.Matrix.SelectMany(x => x.GetSelectedIds()).Distinct().Count() + "）";
+            tabGroups.Text = "受影響群組（" + detail.Groups.Count + "）";
+            tabUsers.Text = "受影響人員（" + detail.Users.Count + "）";
             if (source == null) { Text = "新增角色"; return; }
             Text = "編輯角色與權限"; txbCode.Text = source.RoleCode; txbCode.ReadOnly = true; txbName.Text = source.RoleName; memoDescription.Text = source.Description; lblSystemRole.Text = source.IsSystemRole ? "系統角色：是" : "系統角色：否";
         }

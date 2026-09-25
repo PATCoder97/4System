@@ -18,6 +18,8 @@ namespace Winform4System.Forms.SystemManagement
             checkedRoles.DataSource = detail.Roles.ToList(); checkedRoles.DisplayMember = "RoleName"; checkedRoles.ValueMember = "RoleId";
             for (int i = 0; i < detail.Roles.Count; i++) checkedRoles.SetItemChecked(i, detail.Roles[i].IsAssigned);
             gridMembers.DataSource = detail.Members.ToList();
+            tabRoles.Text = "指派角色（" + detail.Roles.Count(x => x.IsAssigned) + "）";
+            tabMembers.Text = "群組成員（" + detail.Members.Count + "）";
             if (source == null) { Text = "新增安全性群組"; return; }
             Text = "編輯安全性群組"; txbCode.Text = source.GroupCode; txbCode.ReadOnly = true; txbName.Text = source.GroupName; memoDescription.Text = source.Description; lblSystemGroup.Text = source.IsSystemGroup ? "系統群組：是" : "系統群組：否";
         }
