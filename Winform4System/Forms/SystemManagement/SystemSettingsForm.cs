@@ -17,6 +17,8 @@ namespace Winform4System.Forms.SystemManagement
             bool canViewRoles = CurrentAuthorization.HasPermission("SYSTEM.ROLE.VIEW");
             bool canViewAuditLogs = CurrentAuthorization.HasPermission("SYSTEM.AUDIT.VIEW");
             bool canViewFunctions = CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.VIEW");
+            bool canViewSettings = CurrentAuthorization.HasPermission("SYSTEM.SETTING.VIEW");
+            bool canViewHealth = CurrentAuthorization.HasPermission("SYSTEM.HEALTH.VIEW");
 
             var peopleGroup = canViewEmployees || canViewDepartments || canViewJobTitles
                 ? AddNavigationGroup("人員與組織", "人員、部門與職稱")
@@ -24,7 +26,7 @@ namespace Winform4System.Forms.SystemManagement
             var authorizationGroup = canViewEmployeePermissions || canViewGroups || canViewRoles
                 ? AddNavigationGroup("權限與安全", "人員權限、群組與角色")
                 : null;
-            var governanceGroup = canViewAuditLogs || canViewFunctions
+            var governanceGroup = canViewAuditLogs || canViewFunctions || canViewSettings || canViewHealth
                 ? AddNavigationGroup("稽核與設定", "稽核記錄與功能設定")
                 : null;
             bool initialTabRegistered = false;
@@ -109,6 +111,25 @@ namespace Winform4System.Forms.SystemManagement
                 {
                     Shown += (sender, args) => OpenTab("function-cards", "功能卡管理", () => new FunctionManagementView());
                     initialTabRegistered = true;
+                }
+            }
+
+            if (canViewSettings)
+            {
+                AddNavigationItem(governanceGroup, "system-settings", "系統參數", SvgIconCatalog.Edit, () => new SystemSettingManagementView());
+                if (!initialTabRegistered)
+                {
+                    Shown += (sender, args) => OpenTab("system-settings", "系統參數", () => new SystemSettingManagementView());
+                    initialTabRegistered = true;
+                }
+            }
+
+            if (canViewHealth)
+            {
+                AddNavigationItem(governanceGroup, "system-health", "系統狀態", SvgIconCatalog.Info, () => new SystemHealthView());
+                if (!initialTabRegistered)
+                {
+                    Shown += (sender, args) => OpenTab("system-health", "系統狀態", () => new SystemHealthView());
                 }
             }
         }

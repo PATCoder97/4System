@@ -34,6 +34,8 @@
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\AuthenticationPolicyService.cs" />
+    <Compile Include="Services\SystemSettingService.cs" />
+    <Compile Include="Services\SystemHealthService.cs" />
     <Compile Include="Services\DepartmentManagementService.cs" />
     <Compile Include="Services\JobTitleManagementService.cs" />
     <Compile Include="Services\ApplicationFunctionService.cs" />

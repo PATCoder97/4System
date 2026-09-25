@@ -14,6 +14,8 @@ Tài liệu này dùng làm backlog triển khai dần cho module `系統管理`
 - [x] Quản trị vòng đời và bảo mật tài khoản domain.
 - [x] `部門管理`: duy trì cây phòng ban và chuyển nhân viên khi tái cấu trúc.
 - [x] `職稱管理`: duy trì chức danh và gán chức danh trong hồ sơ nhân viên.
+- [x] `系統參數`: quản lý tham số không nhạy cảm với kiểm tra kiểu, concurrency và audit.
+- [x] `系統狀態`: kiểm tra database, phiên bản, môi trường, thư mục dùng chung và lưu trữ.
 
 ## Nguyên tắc phân quyền
 
@@ -178,12 +180,12 @@ Permission đề xuất:
 
 Phạm vi:
 
-- [ ] Quản lý tham số không nhạy cảm: giới hạn upload, thời gian khóa, đường dẫn nghiệp vụ và cấu hình cảnh báo.
-- [ ] Không hiển thị hoặc lưu bí mật ở dạng rõ trên UI.
-- [ ] Kiểm tra kết nối database và thư mục chia sẻ.
-- [ ] Hiển thị phiên bản ứng dụng, phiên bản schema và môi trường.
-- [ ] Hiển thị tình trạng lưu trữ và các lỗi cấu hình quan trọng.
-- [ ] Ghi audit khi thay đổi tham số.
+- [x] Quản lý tham số không nhạy cảm: giới hạn upload, thời gian khóa, đường dẫn nghiệp vụ và cấu hình cảnh báo.
+- [x] Không hiển thị hoặc lưu bí mật ở dạng rõ trên UI.
+- [x] Kiểm tra kết nối database và thư mục chia sẻ.
+- [x] Hiển thị phiên bản ứng dụng, phiên bản schema và môi trường.
+- [x] Hiển thị tình trạng lưu trữ và các lỗi cấu hình quan trọng.
+- [x] Ghi audit khi thay đổi tham số.
 
 ## Giai đoạn 7 — Khôi phục và vận hành
 
