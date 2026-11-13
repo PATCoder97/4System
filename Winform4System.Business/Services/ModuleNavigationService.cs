@@ -21,7 +21,6 @@ namespace Winform4System.Business.Services
 
         public IReadOnlyList<ApplicationFunction> GetFunctions(string moduleCode)
         {
-            CurrentAuthorization.Demand(moduleCode + ".VIEW");
             using (var context = new Winform4SystemDbContext(connectionString))
             {
                 var available = context.ApplicationFunctions.AsNoTracking()
@@ -29,25 +28,37 @@ namespace Winform4System.Business.Services
                 var root = available.SingleOrDefault(x => x.FunctionCode == moduleCode);
                 if (root == null) return new List<ApplicationFunction>();
                 var rootTarget = FunctionCatalog.Find(root.NavigationTarget);
-                if (rootTarget == null || !rootTarget.IsModule) return new List<ApplicationFunction>();
-                CurrentAuthorization.Demand(rootTarget.RequiredPermission);
+                bool isGroup = string.IsNullOrWhiteSpace(root.NavigationTarget);
+                if (!isGroup && (rootTarget == null || !rootTarget.IsModule)) return new List<ApplicationFunction>();
+                if (!isGroup)
+                {
+                    CurrentAuthorization.Demand(moduleCode + ".VIEW");
+                    CurrentAuthorization.Demand(rootTarget.RequiredPermission);
+                }
                 var ancestors = new HashSet<int> { root.FunctionId };
                 var parentId = root.ParentFunctionId;
                 while (parentId.HasValue)
                 {
                     var parent = available.SingleOrDefault(x => x.FunctionId == parentId.Value);
                     if (parent == null || !ancestors.Add(parent.FunctionId)) return new List<ApplicationFunction>();
+                    var parentTarget = FunctionCatalog.Find(parent.NavigationTarget);
+                    if (parentTarget?.IsModule == true)
+                    {
+                        CurrentAuthorization.Demand(parent.FunctionCode + ".VIEW");
+                        CurrentAuthorization.Demand(parentTarget.RequiredPermission);
+                    }
                     parentId = parent.ParentFunctionId;
                 }
                 var result = new List<ApplicationFunction> { root };
                 var visited = new HashSet<int> { root.FunctionId };
-                AddChildren(root, available, result, visited, rootTarget.Key);
+                AddChildren(root, available, result, visited);
+                if (isGroup && result.Count == 1) return new List<ApplicationFunction>();
                 return result;
             }
         }
 
         private static void AddChildren(ApplicationFunction parent, IList<ApplicationFunction> available,
-            ICollection<ApplicationFunction> result, ISet<int> visited, string host)
+            ICollection<ApplicationFunction> result, ISet<int> visited)
         {
             foreach (var child in available.Where(x => x.ParentFunctionId == parent.FunctionId))
             {
@@ -55,14 +66,15 @@ namespace Winform4System.Business.Services
                 if (string.IsNullOrWhiteSpace(child.NavigationTarget))
                 {
                     var children = new List<ApplicationFunction>();
-                    AddChildren(child, available, children, visited, host);
+                    AddChildren(child, available, children, visited);
                     if (children.Count == 0) continue;
                     result.Add(child);
                     foreach (var item in children) result.Add(item);
                 }
                 else if (CurrentAuthorization.HasPermission(child.FunctionCode + ".VIEW")
                     && FunctionCatalog.Find(child.NavigationTarget) != null
-                    && FunctionCatalog.Find(child.NavigationTarget).Host == host
+                    && !FunctionCatalog.Find(child.NavigationTarget).IsModule
+                    && CurrentAuthorization.HasPermission(FunctionCatalog.Find(FunctionCatalog.Find(child.NavigationTarget).Host).RequiredPermission)
                     && CurrentAuthorization.HasPermission(FunctionCatalog.Find(child.NavigationTarget).RequiredPermission))
                 {
                     result.Add(child);

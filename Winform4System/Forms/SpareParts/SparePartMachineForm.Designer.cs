@@ -62,9 +62,9 @@ namespace Winform4System.Forms.SpareParts
             ((System.ComponentModel.ISupportInitialize)(this.lcImpLvl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcDisplayName)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // barManagerTP
-            // 
+            //
             this.barManagerTP.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
             this.barManagerTP.DockControls.Add(this.barDockControlTop);
@@ -78,9 +78,9 @@ namespace Winform4System.Forms.SpareParts
             this.btnConfirm});
             this.barManagerTP.MainMenu = this.bar2;
             this.barManagerTP.MaxItemId = 4;
-            // 
+            //
             // bar2
-            // 
+            //
             this.bar2.BarAppearance.Disabled.Font = new System.Drawing.Font("Microsoft JhengHei UI", 12F);
             this.bar2.BarAppearance.Disabled.Options.UseFont = true;
             this.bar2.BarAppearance.Hovered.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
@@ -109,66 +109,66 @@ namespace Winform4System.Forms.SpareParts
             this.bar2.OptionsBar.MultiLine = true;
             this.bar2.OptionsBar.UseWholeRow = true;
             this.bar2.Text = "主選單";
-            // 
+            //
             // btnEdit
-            // 
+            //
             this.btnEdit.Caption = "編輯";
             this.btnEdit.Id = 0;
             this.btnEdit.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnEdit.ImageOptions.SvgImage")));
             this.btnEdit.ImageOptions.SvgImageSize = new System.Drawing.Size(32, 32);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnEdit_ItemClick);
-            // 
+            //
             // btnDelete
-            // 
+            //
             this.btnDelete.Caption = "刪除";
             this.btnDelete.Id = 1;
             this.btnDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(32, 32);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnDelete_ItemClick);
-            // 
+            //
             // btnConfirm
-            // 
+            //
             this.btnConfirm.Caption = "確認";
             this.btnConfirm.Id = 2;
             this.btnConfirm.ImageOptions.SvgImageSize = new System.Drawing.Size(32, 32);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnConfirm_ItemClick);
-            // 
+            //
             // barDockControlTop
-            // 
+            //
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManagerTP;
-            this.barDockControlTop.Size = new System.Drawing.Size(567, 49);
-            // 
+            this.barDockControlTop.Size = new System.Drawing.Size(640, 49);
+            //
             // barDockControlBottom
-            // 
+            //
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.barDockControlBottom.Location = new System.Drawing.Point(0, 141);
             this.barDockControlBottom.Manager = this.barManagerTP;
-            this.barDockControlBottom.Size = new System.Drawing.Size(567, 0);
-            // 
+            this.barDockControlBottom.Size = new System.Drawing.Size(640, 0);
+            //
             // barDockControlLeft
-            // 
+            //
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 49);
             this.barDockControlLeft.Manager = this.barManagerTP;
             this.barDockControlLeft.Size = new System.Drawing.Size(0, 92);
-            // 
+            //
             // barDockControlRight
-            // 
+            //
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(567, 49);
             this.barDockControlRight.Manager = this.barManagerTP;
             this.barDockControlRight.Size = new System.Drawing.Size(0, 92);
-            // 
+            //
             // layoutControl1
-            // 
+            //
             this.layoutControl1.AllowCustomization = false;
             this.layoutControl1.Controls.Add(this.txbDisplayName);
             this.layoutControl1.Controls.Add(this.txbLocation);
@@ -179,12 +179,12 @@ namespace Winform4System.Forms.SpareParts
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(433, 0, 650, 400);
             this.layoutControl1.Root = this.Root;
-            this.layoutControl1.Size = new System.Drawing.Size(567, 92);
+            this.layoutControl1.Size = new System.Drawing.Size(640, 92);
             this.layoutControl1.TabIndex = 11;
             this.layoutControl1.Text = "layoutControl1";
-            // 
+            //
             // txbDisplayName
-            // 
+            //
             this.txbDisplayName.Location = new System.Drawing.Point(100, 12);
             this.txbDisplayName.Name = "txbDisplayName";
             this.txbDisplayName.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
@@ -194,9 +194,9 @@ namespace Winform4System.Forms.SpareParts
             this.txbDisplayName.Size = new System.Drawing.Size(455, 32);
             this.txbDisplayName.StyleController = this.layoutControl1;
             this.txbDisplayName.TabIndex = 9;
-            // 
+            //
             // txbLocation
-            // 
+            //
             this.txbLocation.Location = new System.Drawing.Point(100, 48);
             this.txbLocation.Name = "txbLocation";
             this.txbLocation.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
@@ -206,9 +206,9 @@ namespace Winform4System.Forms.SpareParts
             this.txbLocation.Size = new System.Drawing.Size(142, 32);
             this.txbLocation.StyleController = this.layoutControl1;
             this.txbLocation.TabIndex = 9;
-            // 
+            //
             // txbQuantity
-            // 
+            //
             this.txbQuantity.EditValue = "0";
             this.txbQuantity.Location = new System.Drawing.Point(289, 48);
             this.txbQuantity.Name = "txbQuantity";
@@ -223,9 +223,9 @@ namespace Winform4System.Forms.SpareParts
             this.txbQuantity.Size = new System.Drawing.Size(77, 32);
             this.txbQuantity.StyleController = this.layoutControl1;
             this.txbQuantity.TabIndex = 9;
-            // 
+            //
             // cbbImpLvl
-            // 
+            //
             this.cbbImpLvl.Location = new System.Drawing.Point(458, 48);
             this.cbbImpLvl.Name = "cbbImpLvl";
             this.cbbImpLvl.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
@@ -240,9 +240,9 @@ namespace Winform4System.Forms.SpareParts
             this.cbbImpLvl.Size = new System.Drawing.Size(97, 32);
             this.cbbImpLvl.StyleController = this.layoutControl1;
             this.cbbImpLvl.TabIndex = 9;
-            // 
+            //
             // Root
-            // 
+            //
             this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.Root.GroupBordersVisible = false;
             this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
@@ -251,11 +251,11 @@ namespace Winform4System.Forms.SpareParts
             this.lcImpLvl,
             this.lcDisplayName});
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(567, 92);
+            this.Root.Size = new System.Drawing.Size(640, 92);
             this.Root.TextVisible = false;
-            // 
+            //
             // lcLocation
-            // 
+            //
             this.lcLocation.AllowHtmlStringInCaption = true;
             this.lcLocation.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcLocation.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
@@ -268,12 +268,12 @@ namespace Winform4System.Forms.SpareParts
             this.lcLocation.CustomizationFormText = "中文名稱";
             this.lcLocation.Location = new System.Drawing.Point(0, 36);
             this.lcLocation.Name = "lcLocation";
-            this.lcLocation.Size = new System.Drawing.Size(234, 36);
+            this.lcLocation.Size = new System.Drawing.Size(265, 36);
             this.lcLocation.Text = "位置";
             this.lcLocation.TextSize = new System.Drawing.Size(76, 24);
-            // 
+            //
             // lcQuantity
-            // 
+            //
             this.lcQuantity.AllowHtmlStringInCaption = true;
             this.lcQuantity.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcQuantity.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
@@ -284,16 +284,16 @@ namespace Winform4System.Forms.SpareParts
             this.lcQuantity.Control = this.txbQuantity;
             this.lcQuantity.ControlAlignment = System.Drawing.ContentAlignment.TopLeft;
             this.lcQuantity.CustomizationFormText = "中文名稱";
-            this.lcQuantity.Location = new System.Drawing.Point(234, 36);
+            this.lcQuantity.Location = new System.Drawing.Point(265, 36);
             this.lcQuantity.Name = "lcQuantity";
-            this.lcQuantity.Size = new System.Drawing.Size(124, 36);
+            this.lcQuantity.Size = new System.Drawing.Size(141, 36);
             this.lcQuantity.Text = "數量";
             this.lcQuantity.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.lcQuantity.TextSize = new System.Drawing.Size(38, 24);
             this.lcQuantity.TextToControlDistance = 5;
-            // 
+            //
             // lcImpLvl
-            // 
+            //
             this.lcImpLvl.AllowHtmlStringInCaption = true;
             this.lcImpLvl.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcImpLvl.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
@@ -304,16 +304,16 @@ namespace Winform4System.Forms.SpareParts
             this.lcImpLvl.Control = this.cbbImpLvl;
             this.lcImpLvl.ControlAlignment = System.Drawing.ContentAlignment.TopLeft;
             this.lcImpLvl.CustomizationFormText = "中文名稱";
-            this.lcImpLvl.Location = new System.Drawing.Point(358, 36);
+            this.lcImpLvl.Location = new System.Drawing.Point(406, 36);
             this.lcImpLvl.Name = "lcImpLvl";
-            this.lcImpLvl.Size = new System.Drawing.Size(189, 36);
+            this.lcImpLvl.Size = new System.Drawing.Size(214, 36);
             this.lcImpLvl.Text = "重要等級";
             this.lcImpLvl.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.lcImpLvl.TextSize = new System.Drawing.Size(76, 24);
             this.lcImpLvl.TextToControlDistance = 12;
-            // 
+            //
             // lcDisplayName
-            // 
+            //
             this.lcDisplayName.AllowHtmlStringInCaption = true;
             this.lcDisplayName.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcDisplayName.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
@@ -326,15 +326,15 @@ namespace Winform4System.Forms.SpareParts
             this.lcDisplayName.CustomizationFormText = "考試名稱<color=red>*</color>";
             this.lcDisplayName.Location = new System.Drawing.Point(0, 0);
             this.lcDisplayName.Name = "lcDisplayName";
-            this.lcDisplayName.Size = new System.Drawing.Size(547, 36);
+            this.lcDisplayName.Size = new System.Drawing.Size(620, 36);
             this.lcDisplayName.Text = "設備名稱";
             this.lcDisplayName.TextSize = new System.Drawing.Size(76, 24);
-            // 
+            //
             // SparePartMachineForm
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(567, 141);
+            this.ClientSize = new System.Drawing.Size(640, 141);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);

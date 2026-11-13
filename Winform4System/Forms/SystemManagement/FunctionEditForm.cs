@@ -7,9 +7,13 @@ using System.Windows.Forms;
 using Winform4System.DataAccess.Entities;
 using Winform4System.Core.Models;
 using Winform4System.Helpers;
+using Winform4System.Business.Services;
+using Winform4System.Core.Security;
 
 namespace Winform4System.Forms.SystemManagement
 {
+    public enum FunctionEditMode { Create, View, Edit, Delete }
+
     public sealed partial class FunctionEditForm : XtraForm
     {
         private const string NotStartedText = "尚未開始";
@@ -18,15 +22,20 @@ namespace Winform4System.Forms.SystemManagement
 
         private readonly ApplicationFunction _source;
         private readonly Func<ApplicationFunction, int> save;
+        private readonly Action<ApplicationFunction> delete;
+        private FunctionEditMode mode;
+        private string deletionBlockReason;
         private List<ApplicationFunction> functions;
         public int SavedId { get; private set; }
 
         public ApplicationFunction Value { get; private set; }
 
-        public FunctionEditForm(ApplicationFunction source, IEnumerable<ApplicationFunction> allFunctions, Func<ApplicationFunction, int> saveAction = null, int? parentId = null)
+        public FunctionEditForm(ApplicationFunction source, IEnumerable<ApplicationFunction> allFunctions, Func<ApplicationFunction, int> saveAction = null, int? parentId = null,
+            FunctionEditMode mode = FunctionEditMode.Edit, Action<ApplicationFunction> deleteAction = null)
         {
             _source = source ?? new ApplicationFunction { ParentFunctionId = parentId, DevelopmentStatus = "NOT_STARTED", IsVisible = true, IsActive = true };
             save = saveAction;
+            delete = deleteAction;
             if (allFunctions == null)
                 throw new ArgumentNullException(nameof(allFunctions));
 
@@ -38,6 +47,53 @@ namespace Winform4System.Forms.SystemManagement
             txbCode.Properties.ReadOnly = _source.FunctionId > 0;
             ConfigureEditors(functions);
             LoadValues();
+            deletionBlockReason = ApplicationFunctionService.GetDeletionBlockReason(_source, functions.Any(x => x.ParentFunctionId == _source.FunctionId));
+            SetMode(_source.FunctionId == 0 ? FunctionEditMode.Create : mode);
+        }
+
+        private void SetMode(FunctionEditMode value)
+        {
+            mode = value;
+            bool canManage = CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.ADMIN");
+            bool editing = canManage && (mode == FunctionEditMode.Create || mode == FunctionEditMode.Edit);
+            foreach (BaseEdit editor in new BaseEdit[] { txbCode, txbDisplayName, cbbParent, txbNavigationTarget, cbbIcon,
+                speSortOrder, cbbDevelopmentStatus, memoDescription, chkWide, chkVisible, chkActive })
+                editor.Properties.ReadOnly = !editing;
+            txbCode.Properties.ReadOnly = !editing || _source.FunctionId > 0;
+            btnEdit.Visibility = mode == FunctionEditMode.View && canManage
+                ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
+            btnDelete.Visibility = mode == FunctionEditMode.View && canManage && delete != null
+                ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
+            btnDelete.Enabled = deletionBlockReason == null;
+            btnDelete.Hint = deletionBlockReason ?? "刪除此功能及其權限設定";
+            btnSave.Visibility = mode == FunctionEditMode.View ? DevExpress.XtraBars.BarItemVisibility.Never : DevExpress.XtraBars.BarItemVisibility.Always;
+            btnSave.Enabled = canManage && (mode != FunctionEditMode.Delete || (delete != null && deletionBlockReason == null));
+            btnSave.Caption = mode == FunctionEditMode.Delete ? "確認刪除" : "儲存";
+            btnSave.ImageOptions.SvgImage = mode == FunctionEditMode.Delete ? SvgIconCatalog.Delete : SvgIconCatalog.Confirm;
+            btnCancel.Caption = mode == FunctionEditMode.View ? "關閉" : "取消";
+            Text = mode == FunctionEditMode.Create ? "新增功能" : mode == FunctionEditMode.View ? "檢視功能" : mode == FunctionEditMode.Delete ? "刪除功能" : "編輯功能";
+        }
+
+        private void btnEdit_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.ADMIN")) SetMode(FunctionEditMode.Edit);
+        }
+
+        private void btnDelete_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.ADMIN") && delete != null && deletionBlockReason == null)
+                SetMode(FunctionEditMode.Delete);
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            layoutControl1.PerformLayout();
+            int spacing = (int)Math.Ceiling(8 * DeviceDpi / 96F);
+            ClientSize = new System.Drawing.Size(
+                Math.Max(ClientSize.Width, Root.MinSize.Width + ClientSize.Width - layoutControl1.ClientSize.Width + spacing),
+                Math.Max(ClientSize.Height, Root.MinSize.Height + ClientSize.Height - layoutControl1.ClientSize.Height + spacing));
+            DialogLayoutHelper.FitToWorkingArea(this);
         }
 
         private void ConfigureEditors(List<ApplicationFunction> allFunctions)
@@ -95,6 +151,23 @@ namespace Winform4System.Forms.SystemManagement
 
         private void btnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
+            if (!CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.ADMIN") || mode == FunctionEditMode.View) return;
+            if (mode == FunctionEditMode.Delete)
+            {
+                if (delete == null || deletionBlockReason != null) return;
+                if (XtraMessageBox.Show(this, $"確定永久刪除「{_source.DisplayName}」嗎？\n功能代碼：{_source.FunctionCode}\n\n相關權限及角色授權將一併移除，受影響使用者須重新登入。\n業務資料不會刪除。此操作無法復原。",
+                    "確認刪除功能", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes) return;
+                try { delete(_source); }
+                catch (Exception exception)
+                {
+                    XtraMessageBox.Show(this, exception.Message, "刪除功能失敗", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                SavedId = _source.ParentFunctionId ?? 0;
+                DialogResult = DialogResult.OK;
+                Close();
+                return;
+            }
             if (string.IsNullOrWhiteSpace(txbDisplayName.Text))
             {
                 XtraMessageBox.Show(
@@ -140,7 +213,7 @@ namespace Winform4System.Forms.SystemManagement
 
         private void cbbParent_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-            if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Clear) cbbParent.EditValue = null;
+            if (!cbbParent.Properties.ReadOnly && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Clear) cbbParent.EditValue = null;
         }
 
         private void UpdateTargets()
@@ -157,9 +230,9 @@ namespace Winform4System.Forms.SystemManagement
                 if (candidate?.IsModule == true) { host = candidate; break; }
                 parentId = parent.ParentFunctionId;
             }
-            var options = FunctionCatalog.Targets.Where(x => host == null ? x.IsModule : x.Host == host.Key)
+            var options = FunctionCatalog.Targets.Where(x => !x.IsModule || host == null)
                 .Select(x => new TargetOption { Key = x.Key, Caption = x.Caption }).ToList();
-            options.Insert(0, new TargetOption { Key = "", Caption = "群組（不開啟畫面）" });
+            options.Insert(0, new TargetOption { Key = "", Caption = "功能群組（顯示子功能）" });
             if (!string.IsNullOrWhiteSpace(_source.NavigationTarget) && FunctionCatalog.Find(_source.NavigationTarget) == null)
                 options.Add(new TargetOption { Key = _source.NavigationTarget, Caption = "既有待實作功能" });
             txbNavigationTarget.Properties.DataSource = options;

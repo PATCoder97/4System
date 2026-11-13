@@ -55,9 +55,9 @@ namespace Winform4System.Forms.SpareParts
             ((System.ComponentModel.ISupportInitialize)(this.lcAssignedUser)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcPlannedDisposeDate)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // barManagerTP
-            // 
+            //
             this.barManagerTP.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
             this.barManagerTP.DockControls.Add(this.barDockControlTop);
@@ -70,9 +70,9 @@ namespace Winform4System.Forms.SpareParts
             this.btnCancel});
             this.barManagerTP.MainMenu = this.bar2;
             this.barManagerTP.MaxItemId = 2;
-            // 
+            //
             // bar2
-            // 
+            //
             this.bar2.BarAppearance.Disabled.Font = new System.Drawing.Font("Microsoft JhengHei UI", 12F);
             this.bar2.BarAppearance.Disabled.Options.UseFont = true;
             this.bar2.BarAppearance.Hovered.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
@@ -100,57 +100,57 @@ namespace Winform4System.Forms.SpareParts
             this.bar2.OptionsBar.MultiLine = true;
             this.bar2.OptionsBar.UseWholeRow = true;
             this.bar2.Text = "主選單";
-            // 
+            //
             // btnConfirm
-            // 
+            //
             this.btnConfirm.Caption = "\u78ba\u8a8d";
             this.btnConfirm.Id = 0;
             this.btnConfirm.ImageOptions.SvgImageSize = new System.Drawing.Size(32, 32);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnConfirm_ItemClick);
-            // 
+            //
             // btnCancel
-            // 
+            //
             this.btnCancel.Caption = "\u53d6\u6d88";
             this.btnCancel.Id = 1;
             this.btnCancel.ImageOptions.SvgImageSize = new System.Drawing.Size(32, 32);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnCancel_ItemClick);
-            // 
+            //
             // barDockControlTop
-            // 
+            //
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManagerTP;
             this.barDockControlTop.Size = new System.Drawing.Size(560, 49);
-            // 
+            //
             // barDockControlBottom
-            // 
+            //
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.barDockControlBottom.Location = new System.Drawing.Point(0, 169);
             this.barDockControlBottom.Manager = this.barManagerTP;
             this.barDockControlBottom.Size = new System.Drawing.Size(560, 0);
-            // 
+            //
             // barDockControlLeft
-            // 
+            //
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 49);
             this.barDockControlLeft.Manager = this.barManagerTP;
             this.barDockControlLeft.Size = new System.Drawing.Size(0, 120);
-            // 
+            //
             // barDockControlRight
-            // 
+            //
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(560, 49);
             this.barDockControlRight.Manager = this.barManagerTP;
             this.barDockControlRight.Size = new System.Drawing.Size(0, 120);
-            // 
+            //
             // layoutControl1
-            // 
+            //
             this.layoutControl1.AllowCustomization = false;
             this.layoutControl1.Controls.Add(this.dePlannedDisposeDate);
             this.layoutControl1.Controls.Add(this.sleAssignedUser);
@@ -158,12 +158,12 @@ namespace Winform4System.Forms.SpareParts
             this.layoutControl1.Location = new System.Drawing.Point(0, 49);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.Root;
-            this.layoutControl1.Size = new System.Drawing.Size(560, 120);
+            this.layoutControl1.Size = new System.Drawing.Size(560, 96);
             this.layoutControl1.TabIndex = 4;
             this.layoutControl1.Text = "layoutControl1";
-            // 
+            //
             // dePlannedDisposeDate
-            // 
+            //
             this.dePlannedDisposeDate.EditValue = null;
             this.dePlannedDisposeDate.Location = new System.Drawing.Point(124, 48);
             this.dePlannedDisposeDate.MenuManager = this.barManagerTP;
@@ -182,9 +182,9 @@ namespace Winform4System.Forms.SpareParts
             this.dePlannedDisposeDate.Size = new System.Drawing.Size(424, 32);
             this.dePlannedDisposeDate.StyleController = this.layoutControl1;
             this.dePlannedDisposeDate.TabIndex = 5;
-            // 
+            //
             // sleAssignedUser
-            // 
+            //
             this.sleAssignedUser.Location = new System.Drawing.Point(124, 12);
             this.sleAssignedUser.MenuManager = this.barManagerTP;
             this.sleAssignedUser.Name = "sleAssignedUser";
@@ -201,9 +201,9 @@ namespace Winform4System.Forms.SpareParts
             this.sleAssignedUser.Size = new System.Drawing.Size(424, 32);
             this.sleAssignedUser.StyleController = this.layoutControl1;
             this.sleAssignedUser.TabIndex = 4;
-            // 
+            //
             // gvUserLookup
-            // 
+            //
             this.gvUserLookup.Appearance.HeaderPanel.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.gvUserLookup.Appearance.HeaderPanel.Options.UseFont = true;
             this.gvUserLookup.Appearance.Row.Font = new System.Drawing.Font("Microsoft JhengHei UI", 12F);
@@ -212,20 +212,20 @@ namespace Winform4System.Forms.SpareParts
             this.gvUserLookup.Name = "gvUserLookup";
             this.gvUserLookup.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gvUserLookup.OptionsView.ShowGroupPanel = false;
-            // 
+            //
             // Root
-            // 
+            //
             this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.Root.GroupBordersVisible = false;
             this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.lcAssignedUser,
             this.lcPlannedDisposeDate});
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(560, 120);
+            this.Root.Size = new System.Drawing.Size(560, 96);
             this.Root.TextVisible = false;
-            // 
+            //
             // lcAssignedUser
-            // 
+            //
             this.lcAssignedUser.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcAssignedUser.AppearanceItemCaption.Options.UseFont = true;
             this.lcAssignedUser.Control = this.sleAssignedUser;
@@ -234,23 +234,23 @@ namespace Winform4System.Forms.SpareParts
             this.lcAssignedUser.Size = new System.Drawing.Size(540, 36);
             this.lcAssignedUser.Text = "\u5831\u5ee2\u7d93\u8fa6";
             this.lcAssignedUser.TextSize = new System.Drawing.Size(109, 24);
-            // 
+            //
             // lcPlannedDisposeDate
-            // 
+            //
             this.lcPlannedDisposeDate.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcPlannedDisposeDate.AppearanceItemCaption.Options.UseFont = true;
             this.lcPlannedDisposeDate.Control = this.dePlannedDisposeDate;
             this.lcPlannedDisposeDate.Location = new System.Drawing.Point(0, 36);
             this.lcPlannedDisposeDate.Name = "lcPlannedDisposeDate";
-            this.lcPlannedDisposeDate.Size = new System.Drawing.Size(540, 64);
+            this.lcPlannedDisposeDate.Size = new System.Drawing.Size(540, 36);
             this.lcPlannedDisposeDate.Text = "\u9810\u8a08\u65e5\u671f";
             this.lcPlannedDisposeDate.TextSize = new System.Drawing.Size(109, 24);
-            // 
+            //
             // SparePartRecoveryScheduleForm
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(560, 169);
+            this.ClientSize = new System.Drawing.Size(560, 145);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);

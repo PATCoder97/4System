@@ -56,7 +56,7 @@ namespace Winform4System.DataAccess.Repositories
                     .Distinct();
 
                 var allFunctions = context.ApplicationFunctions.AsNoTracking().ToList();
-                return
+                var result =
                     (from functionData in context.ApplicationFunctions.AsNoTracking()
                      join parent in context.ApplicationFunctions.AsNoTracking()
                          on functionData.ParentFunctionId equals parent.FunctionId
@@ -82,8 +82,42 @@ namespace Winform4System.DataAccess.Repositories
                     .ToList().Where(x => (Winform4System.Core.Models.FunctionCatalog.Find(x.NavigationTarget)?.IsModule == true
                         || x.NavigationTarget == "MachineWarehouseForm") && HasVisibleAncestors(x.Code, allFunctions))
                     .ToList();
+                var authorizedIds = new HashSet<int>(authorizedFunctionIds.ToList());
+                foreach (var group in allFunctions.Where(x => string.IsNullOrWhiteSpace(x.NavigationTarget)
+                    && x.ParentFunctionId.HasValue && HasVisibleAncestors(x.FunctionCode, allFunctions)))
+                {
+                    var category = allFunctions.Single(x => x.FunctionId == group.ParentFunctionId.Value);
+                    if (category.ParentFunctionId.HasValue) continue;
+                    bool hasAuthorizedChild = allFunctions.Any(x => authorizedIds.Contains(x.FunctionId)
+                        && Winform4System.Core.Models.FunctionCatalog.Find(x.NavigationTarget)?.IsModule == false
+                        && HasVisibleAncestors(x.FunctionCode, allFunctions)
+                        && IsDescendantOf(x, group.FunctionId, allFunctions));
+                    if (!hasAuthorizedChild) continue;
+                    result.Add(new MainMenuItemRecord
+                    {
+                        Code = group.FunctionCode, NavigationTarget = group.NavigationTarget, IconKey = group.IconKey,
+                        GroupName = category.DisplayName, Title = group.DisplayName, Description = group.Description,
+                        DevelopmentStatus = group.DevelopmentStatus, IsWide = group.IsWide,
+                        GroupSortOrder = category.SortOrder, SortOrder = group.SortOrder
+                    });
+                }
+                return result.OrderBy(x => x.GroupSortOrder).ThenBy(x => x.SortOrder).ThenBy(x => x.Title).ToList();
             }
         }
+
+        private static bool IsDescendantOf(Winform4System.DataAccess.Entities.ApplicationFunction item, int ancestorId,
+            IList<Winform4System.DataAccess.Entities.ApplicationFunction> all)
+        {
+            var seen = new HashSet<int>();
+            int? parentId = item.ParentFunctionId;
+            while (parentId.HasValue && seen.Add(parentId.Value))
+            {
+                if (parentId.Value == ancestorId) return true;
+                parentId = all.SingleOrDefault(x => x.FunctionId == parentId.Value)?.ParentFunctionId;
+            }
+            return false;
+        }
+
         private static bool HasVisibleAncestors(string code, System.Collections.Generic.IList<Winform4System.DataAccess.Entities.ApplicationFunction> all)
         {
             var current = all.SingleOrDefault(x => x.FunctionCode == code);

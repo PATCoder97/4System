@@ -17,7 +17,6 @@ namespace Winform4System.Forms.SystemManagement
     public sealed partial class FunctionManagementView : XtraUserControl
     {
         private readonly ApplicationFunctionService _service;
-        private readonly DXMenuItem _itemEdit;
         private List<ApplicationFunction> _functions = new List<ApplicationFunction>();
 
         public FunctionManagementView()
@@ -26,13 +25,6 @@ namespace Winform4System.Forms.SystemManagement
             _service = new ApplicationFunctionService(new ConnectionStringProvider());
             btnAdd.Visibility = CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.ADMIN")
                 ? DevExpress.XtraBars.BarItemVisibility.Always : DevExpress.XtraBars.BarItemVisibility.Never;
-            _itemEdit = new DXMenuItem(
-                "編輯功能卡",
-                ItemEdit_Click,
-                SvgIconCatalog.Edit,
-                DXMenuItemPriority.Normal);
-            _itemEdit.ImageOptions.SvgImageSize = new Size(24, 24);
-            _itemEdit.AppearanceHovered.ForeColor = Color.Blue;
         }
 
         private void FunctionManagementView_Load(object sender, EventArgs e)
@@ -50,6 +42,11 @@ namespace Winform4System.Forms.SystemManagement
             EditSelected();
         }
 
+        private void ItemDelete_Click(object sender, EventArgs e)
+        {
+            EditSelected(FunctionEditMode.Delete);
+        }
+
         private void treeFunctions_PopupMenuShowing(
             object sender,
             DevExpress.XtraTreeList.PopupMenuShowingEventArgs e)
@@ -57,12 +54,21 @@ namespace Winform4System.Forms.SystemManagement
             if (e.Menu == null ||
                 e.MenuType != DevExpress.XtraTreeList.Menu.TreeListMenuType.Node ||
                 e.HitInfo.Node == null ||
-                !CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.ADMIN"))
+                !CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.VIEW"))
                 return;
 
             treeFunctions.FocusedNode = e.HitInfo.Node;
             _itemEdit.BeginGroup = e.Menu.Items.Count > 0;
             e.Menu.Items.Add(_itemEdit);
+            if (CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.ADMIN"))
+            {
+                var row = treeFunctions.GetDataRecordByNode(treeFunctions.FocusedNode) as FunctionTreeRow;
+                var selected = row == null ? null : _functions.FirstOrDefault(x => x.FunctionId == row.FunctionId);
+                _itemDelete.Enabled = ApplicationFunctionService.GetDeletionBlockReason(selected,
+                    selected != null && _functions.Any(x => x.ParentFunctionId == selected.FunctionId)) == null;
+                _itemDelete.BeginGroup = true;
+                e.Menu.Items.Add(_itemDelete);
+            }
         }
 
         private void LoadData(int? focusId = null)
@@ -101,9 +107,10 @@ namespace Winform4System.Forms.SystemManagement
             }
         }
 
-        private void EditSelected()
+        private void EditSelected(FunctionEditMode mode = FunctionEditMode.View)
         {
-            if (!CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.ADMIN"))
+            if (!CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.VIEW")
+                || (mode == FunctionEditMode.Delete && !CurrentAuthorization.HasPermission("SYSTEM.FUNCTION.ADMIN")))
             {
                 XtraMessageBox.Show(
                     "您沒有管理功能卡的權限。",
@@ -129,7 +136,8 @@ namespace Winform4System.Forms.SystemManagement
                 return;
             }
 
-            using (var form = new FunctionEditForm(selected, _functions, item => { _service.Update(item); return item.FunctionId; }))
+            using (var form = new FunctionEditForm(selected, _functions, item => { _service.Update(item); return item.FunctionId; },
+                mode: mode, deleteAction: _service.Delete))
             {
                 if (form.ShowDialog(FindForm()) == DialogResult.OK) LoadData(form.SavedId);
             }

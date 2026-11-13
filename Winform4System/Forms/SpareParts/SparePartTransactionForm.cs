@@ -30,7 +30,6 @@ namespace Winform4System.Forms.SpareParts
             InitializeComponent();
             SparePartPermissionUi.Apply(this);
             InitializeIcon();
-            InitializeRecoverySection();
         }
 
         public string eventInfo = "";
@@ -44,21 +43,6 @@ namespace Winform4System.Forms.SpareParts
         List<LayoutControlItem> lcImpControls;
         Dictionary<LayoutControlItem, string> lcBaseTexts = new Dictionary<LayoutControlItem, string>();
 
-        ImageComboBoxEdit cbbRecoveryOption;
-        SearchLookUpEdit sleAssignedUser;
-        GridView gvAssignedUserLookup;
-        DateEdit dePlannedDisposeDate;
-        LookUpEdit cbbRestockStorage;
-        MemoEdit memoRecoveryNote;
-        SimpleButton btnViewGuideDocs;
-
-        LayoutControlItem lcRecoveryOption;
-        LayoutControlItem lcAssignedUser;
-        LayoutControlItem lcPlannedDisposeDate;
-        LayoutControlItem lcRestockStorage;
-        LayoutControlItem lcRecoveryNote;
-        LayoutControlItem lcGuideDocs;
-
         private void InitializeIcon()
         {
             btnEdit.ImageOptions.SvgImage = SvgIconCatalog.Edit;
@@ -66,171 +50,26 @@ namespace Winform4System.Forms.SpareParts
             btnConfirm.ImageOptions.SvgImage = SvgIconCatalog.Confirm;
         }
 
-        private void InitializeRecoverySection()
+        protected override void OnShown(EventArgs e)
         {
-            cbbRecoveryOption = new ImageComboBoxEdit();
-            cbbRecoveryOption.Properties.Appearance.Font = SparePartConfiguration.fontUI14;
-            cbbRecoveryOption.Properties.Appearance.ForeColor = Color.Black;
-            cbbRecoveryOption.Properties.Appearance.Options.UseFont = true;
-            cbbRecoveryOption.Properties.Appearance.Options.UseForeColor = true;
-            cbbRecoveryOption.Properties.AppearanceDropDown.Font = SparePartConfiguration.fontUI14;
-            cbbRecoveryOption.Properties.AppearanceDropDown.Options.UseFont = true;
-            cbbRecoveryOption.Properties.Buttons.Clear();
-            cbbRecoveryOption.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
-            cbbRecoveryOption.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem("沒有舊品拆出", RecoveryOptionNoneValue, -1));
-            cbbRecoveryOption.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem("拆出後送報廢", RecoveryOptionScrapValue, -1));
-            cbbRecoveryOption.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem("拆出後回收入庫", RecoveryOptionRestockValue, -1));
-            cbbRecoveryOption.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            cbbRecoveryOption.EditValue = RecoveryOptionNoneValue;
-            cbbRecoveryOption.Enabled = false;
-            cbbRecoveryOption.EditValueChanged += cbbRecoveryOption_EditValueChanged;
-
-            sleAssignedUser = new SearchLookUpEdit();
-            sleAssignedUser.Properties.Appearance.Font = SparePartConfiguration.fontUI14;
-            sleAssignedUser.Properties.Appearance.ForeColor = Color.Black;
-            sleAssignedUser.Properties.Appearance.Options.UseFont = true;
-            sleAssignedUser.Properties.Appearance.Options.UseForeColor = true;
-            sleAssignedUser.Properties.AppearanceDropDown.Font = SparePartConfiguration.fontUI14;
-            sleAssignedUser.Properties.AppearanceDropDown.Options.UseFont = true;
-            sleAssignedUser.Properties.NullText = string.Empty;
-            sleAssignedUser.Properties.PopupView = CreateLookupView(out gvAssignedUserLookup,
-                ("Id", "工號"),
-                ("DisplayName", "姓名"),
-                ("IdDepartment", "單位"));
-            sleAssignedUser.Properties.DisplayMember = "DisplayName";
-            sleAssignedUser.Properties.ValueMember = "Id";
-
-            dePlannedDisposeDate = new DateEdit();
-            dePlannedDisposeDate.Properties.Appearance.Font = SparePartConfiguration.fontUI14;
-            dePlannedDisposeDate.Properties.Appearance.ForeColor = Color.Black;
-            dePlannedDisposeDate.Properties.Appearance.Options.UseFont = true;
-            dePlannedDisposeDate.Properties.Appearance.Options.UseForeColor = true;
-            dePlannedDisposeDate.Properties.Buttons.Clear();
-            dePlannedDisposeDate.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
-            dePlannedDisposeDate.Properties.CalendarTimeEditing = DevExpress.Utils.DefaultBoolean.False;
-            dePlannedDisposeDate.Properties.CalendarView = DevExpress.XtraEditors.Repository.CalendarView.TouchUI;
-            dePlannedDisposeDate.Properties.VistaDisplayMode = DevExpress.Utils.DefaultBoolean.False;
-            dePlannedDisposeDate.Properties.MaskSettings.Set("mask", "yyyy/MM/dd");
-            dePlannedDisposeDate.Properties.UseMaskAsDisplayFormat = true;
-            dePlannedDisposeDate.Properties.CalendarTimeProperties.Buttons.Clear();
-            dePlannedDisposeDate.Properties.CalendarTimeProperties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
-
-            cbbRestockStorage = new LookUpEdit();
-            cbbRestockStorage.Properties.Appearance.Font = SparePartConfiguration.fontUI14;
-            cbbRestockStorage.Properties.Appearance.ForeColor = Color.Black;
-            cbbRestockStorage.Properties.Appearance.Options.UseFont = true;
-            cbbRestockStorage.Properties.Appearance.Options.UseForeColor = true;
-            cbbRestockStorage.Properties.AppearanceDropDown.Font = SparePartConfiguration.fontUI14;
-            cbbRestockStorage.Properties.AppearanceDropDown.Options.UseFont = true;
-            cbbRestockStorage.Properties.Buttons.Clear();
-            cbbRestockStorage.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
-            cbbRestockStorage.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[]
-            {
-                new DevExpress.XtraEditors.Controls.LookUpColumnInfo("DisplayName", "倉庫")
-            });
-            cbbRestockStorage.Properties.DisplayMember = "DisplayName";
-            cbbRestockStorage.Properties.ValueMember = "Id";
-            cbbRestockStorage.Properties.NullText = string.Empty;
-            cbbRestockStorage.Properties.ShowHeader = false;
-            cbbRestockStorage.Properties.DropDownRows = 5;
-
-            memoRecoveryNote = new MemoEdit();
-            memoRecoveryNote.Properties.Appearance.Font = SparePartConfiguration.fontUI14;
-            memoRecoveryNote.Properties.Appearance.ForeColor = Color.Black;
-            memoRecoveryNote.Properties.Appearance.Options.UseFont = true;
-            memoRecoveryNote.Properties.Appearance.Options.UseForeColor = true;
-
-            btnViewGuideDocs = new SimpleButton();
-            btnViewGuideDocs.Appearance.Font = SparePartConfiguration.fontUI14;
-            btnViewGuideDocs.Appearance.Options.UseFont = true;
-            btnViewGuideDocs.Text = "查看報廢指引";
-            btnViewGuideDocs.Click += btnViewGuideDocs_Click;
-
-            layoutControl1.Controls.Add(cbbRecoveryOption);
-            layoutControl1.Controls.Add(sleAssignedUser);
-            layoutControl1.Controls.Add(dePlannedDisposeDate);
-            layoutControl1.Controls.Add(cbbRestockStorage);
-            layoutControl1.Controls.Add(memoRecoveryNote);
-            layoutControl1.Controls.Add(btnViewGuideDocs);
-
-            lcRecoveryOption = CreateRecoveryLayoutItem(cbbRecoveryOption, "舊品處理", 36);
-            lcAssignedUser = CreateRecoveryLayoutItem(sleAssignedUser, "報廢經辦", 36);
-            lcPlannedDisposeDate = CreateRecoveryLayoutItem(dePlannedDisposeDate, "預計日期", 36);
-            lcRestockStorage = CreateRecoveryLayoutItem(cbbRestockStorage, "回收倉庫", 36);
-            lcRecoveryNote = CreateRecoveryLayoutItem(memoRecoveryNote, "回收備註", 72);
-            lcRecoveryNote.SizeConstraintsType = SizeConstraintsType.Custom;
-            lcRecoveryNote.MinSize = new Size(200, 84);
-            lcRecoveryNote.MaxSize = new Size(0, 84);
-            lcGuideDocs = CreateRecoveryLayoutItem(btnViewGuideDocs, string.Empty, 36, false);
+            base.OnShown(e);
+            // BarManager chỉ hoàn tất chiều cao dock sau khi cửa sổ được hiển thị.
+            AdjustFormSize();
         }
 
-        private GridView CreateLookupView(out GridView view, params (string fieldName, string caption)[] columns)
+        private void AdjustFormSize()
         {
-            view = new GridView();
-            view.Appearance.HeaderPanel.Font = new Font("Microsoft JhengHei UI", 12F);
-            view.Appearance.HeaderPanel.ForeColor = Color.Black;
-            view.Appearance.HeaderPanel.Options.UseFont = true;
-            view.Appearance.HeaderPanel.Options.UseForeColor = true;
-            view.Appearance.HeaderPanel.Options.UseTextOptions = true;
-            view.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            view.Appearance.Row.Font = new Font("Microsoft JhengHei UI", 12F);
-            view.Appearance.Row.ForeColor = Color.Black;
-            view.Appearance.Row.Options.UseFont = true;
-            view.Appearance.Row.Options.UseForeColor = true;
-            view.FocusRectStyle = DrawFocusRectStyle.RowFocus;
-            view.OptionsSelection.EnableAppearanceFocusedCell = false;
-            view.OptionsView.EnableAppearanceOddRow = true;
-            view.OptionsView.ShowAutoFilterRow = true;
-            view.OptionsView.ShowGroupPanel = false;
-
-            foreach (var column in columns)
-            {
-                view.Columns.AddVisible(column.fieldName, column.caption);
-            }
-
-            return view;
-        }
-
-        private LayoutControlItem CreateRecoveryLayoutItem(Control control, string text, int minHeight, bool showCaption = true)
-        {
-            var item = new LayoutControlItem();
-            item.Control = control;
-            item.ControlAlignment = ContentAlignment.TopLeft;
-            item.Text = text;
-            item.TextVisible = showCaption;
-            item.AllowHtmlStringInCaption = true;
-            item.AppearanceItemCaption.Font = SparePartConfiguration.fontUI14;
-            item.AppearanceItemCaption.ForeColor = Color.Black;
-            item.AppearanceItemCaption.Options.UseFont = true;
-            item.AppearanceItemCaption.Options.UseForeColor = true;
-            item.AppearanceItemCaptionDisabled.ForeColor = Color.Black;
-            item.AppearanceItemCaptionDisabled.Options.UseForeColor = true;
-            item.TextSize = new Size(76, 24);
-            item.SizeConstraintsType = SizeConstraintsType.Custom;
-            item.MinSize = new Size(200, minHeight);
-            item.MaxSize = new Size(0, minHeight);
-            item.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            Root.Add(item);
-            return item;
-        }
-
-        private void AdjustIssueFormSize()
-        {
-            if (eventInfo != "領用" || lcControls == null || lcControls.Count == 0)
-            {
-                return;
-            }
-
+            if (lcControls == null || lcControls.Count == 0) return;
+            // Đo trên chiều rộng hiện tại sau khi các dòng theo nghiệp vụ đã được ẩn/hiện.
+            layoutControl1.PerformLayout();
             layoutControl1.Root.BestFit();
             layoutControl1.BestFit();
-            layoutControl1.PerformLayout();
-            layoutControl1.Update();
-
-            var preferredSize = layoutControl1.GetPreferredSize(new Size(layoutControl1.Width, 0));
-            int targetClientHeight = barDockControlTop.Height + preferredSize.Height;
-
-            Size = new Size(430, Height);
-            ClientSize = new Size(ClientSize.Width, targetClientHeight);
+            var preferred = layoutControl1.GetPreferredSize(new Size(layoutControl1.ClientSize.Width, 0));
+            int breathingRoom = Math.Max(8, (int)Math.Round(8 * DeviceDpi / 96f));
+            int naturalHeight = barDockControlTop.Height + Math.Max(preferred.Height, Root.MinSize.Height) + breathingRoom;
+            int availableHeight = Screen.FromControl(this).WorkingArea.Height - (Height - ClientSize.Height) - breathingRoom * 2;
+            ClientSize = new Size(ClientSize.Width, Math.Min(naturalHeight, availableHeight));
+            layoutControl1.AutoScroll = true;
         }
 
         private int GetSelectedRecoveryOptionValue()
@@ -322,7 +161,7 @@ namespace Winform4System.Forms.SpareParts
 
             RebuildRequiredItems();
             RefreshLayoutCaptions();
-            AdjustIssueFormSize();
+            AdjustFormSize();
         }
 
         private void RebuildRequiredItems()
@@ -412,7 +251,7 @@ namespace Winform4System.Forms.SpareParts
 
             lcPrice.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             lcExpDate.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-            Size = new Size(400, 245);
+
 
             switch (eventInfo)
             {
@@ -423,7 +262,7 @@ namespace Winform4System.Forms.SpareParts
 
                     lcPrice.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lcExpDate.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    Size = new Size(400, 315);
+
                     break;
 
                 case "調撥":
@@ -435,7 +274,7 @@ namespace Winform4System.Forms.SpareParts
                 case "領用":
                     cbbStorageFrom.Enabled = true;
                     cbbStorageTo.Enabled = false;
-                    Size = new Size(430, Size.Height);
+
                     break;
 
                 case "轉庫":

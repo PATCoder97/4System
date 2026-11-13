@@ -12,7 +12,8 @@ namespace Winform4System.Forms.SystemManagement
         public RoleEditModel Value { get; private set; }
         public RolePermissionEditForm(RoleListItem source, RolePermissionDetail detail)
         {
-            _source = source; InitializeComponent(); gridMatrix.DataSource = detail.Matrix.ToList(); gridGroups.DataSource = detail.Groups.ToList(); gridUsers.DataSource = detail.Users.ToList();
+            _source = source; InitializeComponent();
+            Load += (sender, args) => Winform4System.Helpers.DialogLayoutHelper.FitToWorkingArea(this); gridMatrix.DataSource = detail.Matrix.ToList(); gridGroups.DataSource = detail.Groups.ToList(); gridUsers.DataSource = detail.Users.ToList();
             tabMatrix.Text = "權限矩陣（已選 " + detail.Matrix.SelectMany(x => x.GetSelectedIds()).Distinct().Count() + "）";
             tabGroups.Text = "受影響群組（" + detail.Groups.Count + "）";
             tabUsers.Text = "受影響人員（" + detail.Users.Count + "）";

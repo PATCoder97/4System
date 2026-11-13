@@ -10,6 +10,8 @@ namespace Winform4System.Forms.SystemManagement
         private DevExpress.XtraBars.Bar barTools;
         private DevExpress.XtraBars.BarButtonItem btnReload;
         private DevExpress.XtraBars.BarButtonItem btnAdd;
+        private DevExpress.Utils.Menu.DXMenuItem _itemEdit;
+        private DevExpress.Utils.Menu.DXMenuItem _itemDelete;
         private DevExpress.XtraTreeList.Columns.TreeListColumn colIconCaption;
         private DevExpress.XtraTreeList.TreeList treeFunctions;
         private DevExpress.XtraTreeList.Columns.TreeListColumn colDisplayName;
@@ -32,6 +34,14 @@ namespace Winform4System.Forms.SystemManagement
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            this._itemEdit = new DevExpress.Utils.Menu.DXMenuItem("檢視功能卡", this.ItemEdit_Click,
+                Winform4System.Helpers.SvgIconCatalog.View, DevExpress.Utils.Menu.DXMenuItemPriority.Normal);
+            this._itemDelete = new DevExpress.Utils.Menu.DXMenuItem("刪除功能", this.ItemDelete_Click,
+                Winform4System.Helpers.SvgIconCatalog.Delete, DevExpress.Utils.Menu.DXMenuItemPriority.Normal);
+            this._itemEdit.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this._itemDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(24, 24);
+            this._itemEdit.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 12F);
+            this._itemDelete.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 12F);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FunctionManagementView));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.treeFunctions = new DevExpress.XtraTreeList.TreeList();

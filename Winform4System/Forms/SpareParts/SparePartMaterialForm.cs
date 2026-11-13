@@ -123,7 +123,7 @@ namespace Winform4System.Forms.SpareParts
 
             using (var dialog = new OpenFileDialog())
             {
-                dialog.Filter = "Image Files|*.jpg;*.jpeg;*.png";
+                dialog.Filter = "圖片檔案|*.jpg;*.jpeg;*.png";
                 if (dialog.ShowDialog() != DialogResult.OK)
                 {
                     return;

@@ -146,17 +146,12 @@ namespace Winform4System.Forms.Main
             try
             {
                 var navigation = new Winform4System.Business.Services.ModuleNavigationService(new Winform4System.DataAccess.Configuration.ConnectionStringProvider());
-                if (definition.NavigationTarget == "SparePartForm")
+                if (string.IsNullOrWhiteSpace(definition.NavigationTarget)
+                    || FunctionCatalog.Find(definition.NavigationTarget)?.IsModule == true)
                 {
-                    navigation.DemandFunction(definition.Code, definition.Code);
-                    using (var form = new SparePartForm(_session, definition.Code)) form.ShowDialog(this);
-                    LoadDashboardCards();
-                    return;
-                }
-                if (definition.NavigationTarget == "SystemSettingsForm")
-                {
-                    navigation.DemandFunction(definition.Code, definition.Code);
-                    using (var form = new SystemSettingsForm(definition.Code)) form.ShowDialog(this);
+                    if (navigation.GetFunctions(definition.Code).Count == 0)
+                        throw new UnauthorizedAccessException("您沒有開啟此功能群組的權限，或群組已停用。");
+                    using (var form = new Winform4System.Forms.Common.ConfiguredModuleForm(definition.Code, _session)) form.ShowDialog(this);
                     LoadDashboardCards();
                     return;
                 }

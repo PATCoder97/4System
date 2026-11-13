@@ -130,7 +130,7 @@ namespace Winform4System.Forms.SystemManagement
             this.layoutControl.Location = new System.Drawing.Point(0, 49);
             this.layoutControl.Name = "layoutControl";
             this.layoutControl.Root = this.Root;
-            this.layoutControl.Size = new System.Drawing.Size(620, 231);
+            this.layoutControl.Size = new System.Drawing.Size(620, 123);
             //
             // spinMaximumFailedAttempts
             //
@@ -180,7 +180,7 @@ namespace Winform4System.Forms.SystemManagement
             this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.Root.GroupBordersVisible = false;
             this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { this.layoutMaximumFailedAttempts, this.layoutLockoutMinutes, this.layoutExplanation, this.emptySpace });
-            this.Root.Size = new System.Drawing.Size(620, 231);
+            this.Root.Size = new System.Drawing.Size(620, 123);
             //
             // layout items
             //
@@ -200,17 +200,17 @@ namespace Winform4System.Forms.SystemManagement
             this.layoutLockoutMinutes.AppearanceItemCaption.Options.UseFont = true;
             this.layoutExplanation.Control = this.lblExplanation;
             this.layoutExplanation.Location = new System.Drawing.Point(0, 72);
-            this.layoutExplanation.Size = new System.Drawing.Size(600, 50);
+            this.layoutExplanation.Size = new System.Drawing.Size(600, 24);
             this.layoutExplanation.TextVisible = false;
             this.emptySpace.AllowHotTrack = false;
-            this.emptySpace.Location = new System.Drawing.Point(0, 122);
-            this.emptySpace.Size = new System.Drawing.Size(600, 89);
+            this.emptySpace.Location = new System.Drawing.Point(0, 96);
+            this.emptySpace.Size = new System.Drawing.Size(600, 12);
             //
             // AuthenticationPolicyForm
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(620, 280);
+            this.ClientSize = new System.Drawing.Size(620, 172);
             this.Controls.Add(this.layoutControl);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);

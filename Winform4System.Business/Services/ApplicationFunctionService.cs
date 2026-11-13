@@ -141,6 +141,80 @@ namespace Winform4System.Business.Services
             }
         }
 
+        public static string GetDeletionBlockReason(ApplicationFunction item, bool hasChildren)
+        {
+            if (item == null) return "請先選擇功能。";
+            if (item.FunctionCode == "MAIN" || FunctionCatalog.Targets.Any(x =>
+                x.RequiredPermission.StartsWith(item.FunctionCode + ".", StringComparison.OrdinalIgnoreCase)))
+                return "此功能提供系統必要權限，不能刪除；如不需要顯示，請停用或隱藏。";
+            if (hasChildren) return "此群組仍有子功能，請先移動或刪除所有子功能。";
+            return null;
+        }
+
+        public void Delete(ApplicationFunction item)
+        {
+            CurrentAuthorization.Demand("SYSTEM.FUNCTION.ADMIN");
+            if (item == null || item.FunctionId <= 0) throw new InvalidOperationException("功能識別碼無效。");
+            using (var context = new Winform4SystemDbContext(_connectionString))
+            using (var transaction = context.Database.BeginTransaction(System.Data.IsolationLevel.Serializable))
+            {
+                var existing = context.ApplicationFunctions.SingleOrDefault(x => x.FunctionId == item.FunctionId);
+                if (existing == null) throw new InvalidOperationException("此功能已刪除，請重新載入清單。");
+                if (existing.RowVersion == null || item.RowVersion == null || !existing.RowVersion.SequenceEqual(item.RowVersion)
+                    || existing.FunctionCode != item.FunctionCode)
+                    throw new InvalidOperationException("此功能資料已變更，請重新載入後再刪除。");
+                string reason = GetDeletionBlockReason(existing, context.ApplicationFunctions.Any(x => x.ParentFunctionId == existing.FunctionId));
+                if (reason != null) throw new InvalidOperationException(reason);
+                var permissions = context.Permissions.Where(x => x.FunctionId == existing.FunctionId).ToList();
+                if (permissions.Any(p => FunctionCatalog.Targets.Any(t => t.RequiredPermission == p.PermissionCode)))
+                    throw new InvalidOperationException("此功能包含系統必要權限，不能刪除。");
+                var permissionIds = permissions.Select(x => x.PermissionId).ToList();
+                var grants = context.RolePermissions.Where(x => permissionIds.Contains(x.PermissionId)).ToList();
+                var roleIds = grants.Where(x => x.IsActive).Select(x => x.RoleId).Distinct().ToList();
+                DateTime now = DateTime.UtcNow;
+                var affectedIds = (from member in context.UserGroups
+                    join groupRole in context.GroupRoles on member.GroupId equals groupRole.GroupId
+                    join groupData in context.SecurityGroups on member.GroupId equals groupData.GroupId
+                    join role in context.Roles on groupRole.RoleId equals role.RoleId
+                    where member.IsActive && (!member.ExpiresAt.HasValue || member.ExpiresAt > now)
+                        && groupRole.IsActive && groupData.IsActive && role.IsActive && roleIds.Contains(role.RoleId)
+                    select member.UserId).Distinct().ToList();
+                foreach (var user in context.UserAccounts.Where(x => affectedIds.Contains(x.UserId)))
+                {
+                    user.SecurityStamp = Guid.NewGuid();
+                    user.UpdatedAt = now;
+                }
+                var before = CreateAuditSnapshot(existing);
+                before["functionCode"] = existing.FunctionCode;
+                before["permissionCodes"] = string.Join(",", permissions.Select(x => x.PermissionCode).OrderBy(x => x));
+                before["rolePermissionLinks"] = string.Join(",", grants.Select(x => x.RoleId + ":" + x.PermissionId + ":" + x.IsActive));
+                before["invalidatedUserIds"] = string.Join(",", affectedIds.OrderBy(x => x));
+                context.AuditLogs.Add(new AuditLog { UserId = CurrentAuthorization.UserId, ActionCode = "SYSTEM.FUNCTION.DELETE",
+                    EntityName = "app_Function", EntityId = existing.FunctionId.ToString(),
+                    Description = "刪除功能設定 " + existing.FunctionCode, MachineName = Environment.MachineName,
+                    DataJson = AuditDataJson.Change(before, new Dictionary<string, string>()) });
+                try
+                {
+                    // Mapping EF không khai báo quan hệ này: lưu đúng thứ tự khóa ngoại trong cùng transaction.
+                    context.RolePermissions.RemoveRange(grants);
+                    context.SaveChanges();
+                    context.Permissions.RemoveRange(permissions);
+                    context.SaveChanges();
+                    context.ApplicationFunctions.Remove(existing);
+                    context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateException exception)
+                {
+                    throw new InvalidOperationException("刪除未完成，資料可能已變更或仍有其他關聯；請重新載入後再試。", exception);
+                }
+                catch (System.Data.Common.DbException exception)
+                {
+                    throw new InvalidOperationException("刪除未完成，資料正在由其他使用者處理；請重新載入後再試。", exception);
+                }
+            }
+        }
+
         private static void Validate(ApplicationFunction item, bool isNew = false)
         {
             if (item == null)
@@ -241,8 +315,8 @@ namespace Winform4System.Business.Services
             if (definition == null) return;
             if (definition.IsModule && (!item.ParentFunctionId.HasValue || host != null))
                 throw new InvalidOperationException("模組必須放在主畫面群組下，不能放在其他模組內。");
-            if (!definition.IsModule && (host == null || host.Key != definition.Host))
-                throw new InvalidOperationException("導覽目標與所選模組不相容，請選擇正確的上層群組。");
+            if (!definition.IsModule && host == null && !all.Any(x => x.FunctionId == item.ParentFunctionId && x.ParentFunctionId.HasValue))
+                throw new InvalidOperationException("畫面功能必須放在功能群組或模組內。");
         }
 
         private static string NormalizeOptionalText(string value)

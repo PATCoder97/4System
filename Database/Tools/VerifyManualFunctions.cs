@@ -43,6 +43,8 @@ public static class VerifyManualFunctions
             }
             int groupId = service.Create(Item(prefix, rootId)); created.Add(groupId);
             int leafId = service.Create(Item(prefix + ".LEAF", groupId, "SparePartMaterialView")); created.Add(leafId);
+            int nestedId = service.Create(Item(prefix + ".NESTED", groupId)); created.Add(nestedId);
+            int nestedLeafId = service.Create(Item(prefix + ".NESTED.LEAF", nestedId, "SparePartInspectionView")); created.Add(nestedLeafId);
             using (var db = new Winform4SystemDbContext(provider.Get()))
             {
                 var permission = db.Permissions.Single(x => x.PermissionCode == prefix + ".LEAF.VIEW");
@@ -54,8 +56,31 @@ public static class VerifyManualFunctions
             Rejected(() => service.Create(Item(prefix + ".UNKNOWN", groupId, "UnregisteredScreen")));
             var invalidIcon = Item(prefix + ".ICON", groupId); invalidIcon.IconKey = "../../icon"; Rejected(() => service.Create(invalidIcon));
             var cycle = read(groupId); cycle.ParentFunctionId = leafId; Rejected(() => service.Update(cycle));
-            var wrongHost = read(groupId); wrongHost.ParentFunctionId = systemId; Rejected(() => service.Update(wrongHost));
-            if (read(groupId).ParentFunctionId != rootId) throw new Exception("Rejected move changed data");
+            var move = read(groupId); move.ParentFunctionId = categoryId; service.Update(move);
+            login();
+            var moved = nav.GetFunctions(prefix);
+            if (!new[] { groupId, leafId, nestedId, nestedLeafId }.All(id => moved.Any(x => x.FunctionId == id)))
+                throw new Exception("Moving a group lost descendants");
+            if (read(leafId).ParentFunctionId != groupId || read(nestedLeafId).ParentFunctionId != nestedId)
+                throw new Exception("Moving a group rewrote child parent IDs");
+            if (nav.GetFunctions("ASSET.SPARE_PART").Any(x => created.Contains(x.FunctionId))) throw new Exception("Moved branch remained in old module");
+            var menu = new EfMainMenuService(new EfMainMenuRepository(provider), "VNW0014732");
+            if (!menu.GetMenuItems().Any(x => x.Code == prefix)) throw new Exception("Moved group card missing");
+            var hide = read(groupId); hide.IsVisible = false; service.Update(hide);
+            if (menu.GetMenuItems().Any(x => x.Code == prefix) || nav.GetFunctions(prefix).Count != 0)
+                throw new Exception("Hidden group exposed its descendants");
+            hide = read(groupId); hide.IsVisible = true; service.Update(hide);
+            CurrentAuthorization.SetIdentityAndPermissions("VNW0014732", new[] { prefix + ".LEAF.VIEW", prefix + ".NESTED.LEAF.VIEW" });
+            if (nav.GetFunctions(prefix).Count != 0 || menu.GetMenuItems().Any(x => x.Code == prefix)) throw new Exception("Original screen permission was bypassed");
+            CurrentAuthorization.SetIdentityAndPermissions("VNW0014732", new[] { "ASSET.SPARE_PART.VIEW", prefix + ".LEAF.VIEW", prefix + ".NESTED.LEAF.VIEW" });
+            if (nav.GetFunctions(prefix).Any(x => x.FunctionId == nestedLeafId)) throw new Exception("Manager permission was bypassed after move");
+            if (!nav.GetFunctions(prefix).Any(x => x.FunctionId == leafId)) throw new Exception("Authorized relocated leaf missing");
+            Rejected(() => nav.DemandFunction(prefix, prefix + ".NESTED.LEAF"));
+            login();
+            move = read(groupId); move.ParentFunctionId = systemId; service.Update(move);
+            if (!nav.GetFunctions("SYSTEM.SETTINGS").Any(x => x.FunctionId == nestedLeafId)) throw new Exception("Cross-module move lost registered screen");
+            if (menu.GetMenuItems().Any(x => x.Code == prefix)) throw new Exception("Nested group leaked into dashboard");
+            move = read(groupId); move.ParentFunctionId = rootId; service.Update(move);
             var stale = read(leafId); var edit = read(leafId); edit.DisplayName = "更新名稱"; edit.IconKey = "Equipment"; service.Update(edit);
             Rejected(() => service.Update(stale));
             int moduleId = service.Create(Item(prefix + ".MODULE", categoryId, "SparePartForm")); created.Add(moduleId);
@@ -68,7 +93,7 @@ public static class VerifyManualFunctions
             CurrentAuthorization.SetIdentityAndPermissions("VNW0014732", new[] { prefix + ".MODULE.VIEW", prefix + ".ALIAS.VIEW" });
             Rejected(() => nav.GetFunctions(prefix + ".MODULE"));
             Rejected(() => service.Create(Item(prefix + ".DENIED", rootId)));
-            Console.WriteLine("PASS: manual create/edit, icon, VIEW permission, audit, duplicate/target/icon validation, cycle/host guard, concurrency, module alias and authorization");
+            Console.WriteLine("PASS: subtree moves between category/modules and back; stable child links; relocated cards; hidden/denied/manager guards; manual create/edit, icon, VIEW permission, audit, validation, cycle, concurrency and module alias");
         }
         finally
         {

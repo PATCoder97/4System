@@ -1,3 +1,10 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraLayout;
+
 namespace Winform4System.Forms.SpareParts
 {
     partial class SparePartTransactionForm
@@ -5,6 +12,23 @@ namespace Winform4System.Forms.SpareParts
         /// <summary>
         /// Required designer variable.
         /// </summary>
+        ImageComboBoxEdit cbbRecoveryOption;
+        SearchLookUpEdit sleAssignedUser;
+        GridView gvAssignedUserLookup;
+        DateEdit dePlannedDisposeDate;
+        LookUpEdit cbbRestockStorage;
+        MemoEdit memoRecoveryNote;
+        SimpleButton btnViewGuideDocs;
+
+        LayoutControlItem lcRecoveryOption;
+        LayoutControlItem lcAssignedUser;
+        LayoutControlItem lcPlannedDisposeDate;
+        LayoutControlItem lcRestockStorage;
+        LayoutControlItem lcRecoveryNote;
+        LayoutControlItem lcGuideDocs;
+
+        private DevExpress.XtraGrid.Columns.GridColumn colAssignedUserId, colAssignedUserName, colAssignedUserDepartment;
+
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
@@ -79,9 +103,9 @@ namespace Winform4System.Forms.SpareParts
             ((System.ComponentModel.ISupportInitialize)(this.lcPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcExpDate)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // barManagerTP
-            // 
+            //
             this.barManagerTP.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
             this.barManagerTP.DockControls.Add(this.barDockControlTop);
@@ -95,9 +119,9 @@ namespace Winform4System.Forms.SpareParts
             this.btnConfirm});
             this.barManagerTP.MainMenu = this.bar2;
             this.barManagerTP.MaxItemId = 4;
-            // 
+            //
             // bar2
-            // 
+            //
             this.bar2.BarAppearance.Disabled.Font = new System.Drawing.Font("Microsoft JhengHei UI", 12F);
             this.bar2.BarAppearance.Disabled.Options.UseFont = true;
             this.bar2.BarAppearance.Hovered.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
@@ -126,64 +150,64 @@ namespace Winform4System.Forms.SpareParts
             this.bar2.OptionsBar.MultiLine = true;
             this.bar2.OptionsBar.UseWholeRow = true;
             this.bar2.Text = "主選單";
-            // 
+            //
             // btnEdit
-            // 
+            //
             this.btnEdit.Caption = "編輯";
             this.btnEdit.Id = 0;
             this.btnEdit.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnEdit.ImageOptions.SvgImage")));
             this.btnEdit.ImageOptions.SvgImageSize = new System.Drawing.Size(32, 32);
             this.btnEdit.Name = "btnEdit";
-            // 
+            //
             // btnDelete
-            // 
+            //
             this.btnDelete.Caption = "刪除";
             this.btnDelete.Id = 1;
             this.btnDelete.ImageOptions.SvgImageSize = new System.Drawing.Size(32, 32);
             this.btnDelete.Name = "btnDelete";
-            // 
+            //
             // btnConfirm
-            // 
+            //
             this.btnConfirm.Caption = "確認";
             this.btnConfirm.Id = 2;
             this.btnConfirm.ImageOptions.SvgImageSize = new System.Drawing.Size(32, 32);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnConfirm_ItemClick);
-            // 
+            //
             // barDockControlTop
-            // 
+            //
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
             this.barDockControlTop.Manager = this.barManagerTP;
-            this.barDockControlTop.Size = new System.Drawing.Size(398, 49);
-            // 
+            this.barDockControlTop.Size = new System.Drawing.Size(640, 49);
+            //
             // barDockControlBottom
-            // 
+            //
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.barDockControlBottom.Location = new System.Drawing.Point(0, 285);
             this.barDockControlBottom.Manager = this.barManagerTP;
-            this.barDockControlBottom.Size = new System.Drawing.Size(398, 0);
-            // 
+            this.barDockControlBottom.Size = new System.Drawing.Size(640, 0);
+            //
             // barDockControlLeft
-            // 
+            //
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 49);
             this.barDockControlLeft.Manager = this.barManagerTP;
             this.barDockControlLeft.Size = new System.Drawing.Size(0, 236);
-            // 
+            //
             // barDockControlRight
-            // 
+            //
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(398, 49);
             this.barDockControlRight.Manager = this.barManagerTP;
             this.barDockControlRight.Size = new System.Drawing.Size(0, 236);
-            // 
+            //
             // layoutControl1
-            // 
+            //
             this.layoutControl1.AllowCustomization = false;
             this.layoutControl1.Controls.Add(this.txbQuantity);
             this.layoutControl1.Controls.Add(this.txbDesc);
@@ -198,12 +222,12 @@ namespace Winform4System.Forms.SpareParts
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(433, 0, 650, 400);
             this.layoutControl1.Root = this.Root;
-            this.layoutControl1.Size = new System.Drawing.Size(398, 236);
+            this.layoutControl1.Size = new System.Drawing.Size(640, 236);
             this.layoutControl1.TabIndex = 11;
             this.layoutControl1.Text = "layoutControl1";
-            // 
+            //
             // txbQuantity
-            // 
+            //
             this.txbQuantity.EditValue = "0";
             this.txbQuantity.Location = new System.Drawing.Point(100, 84);
             this.txbQuantity.Name = "txbQuantity";
@@ -218,9 +242,9 @@ namespace Winform4System.Forms.SpareParts
             this.txbQuantity.Size = new System.Drawing.Size(286, 32);
             this.txbQuantity.StyleController = this.layoutControl1;
             this.txbQuantity.TabIndex = 9;
-            // 
+            //
             // txbDesc
-            // 
+            //
             this.txbDesc.Location = new System.Drawing.Point(100, 120);
             this.txbDesc.Name = "txbDesc";
             this.txbDesc.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
@@ -230,9 +254,9 @@ namespace Winform4System.Forms.SpareParts
             this.txbDesc.Size = new System.Drawing.Size(286, 32);
             this.txbDesc.StyleController = this.layoutControl1;
             this.txbDesc.TabIndex = 9;
-            // 
+            //
             // cbbStorageFrom
-            // 
+            //
             this.cbbStorageFrom.Location = new System.Drawing.Point(100, 12);
             this.cbbStorageFrom.Name = "cbbStorageFrom";
             this.cbbStorageFrom.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
@@ -253,9 +277,9 @@ namespace Winform4System.Forms.SpareParts
             this.cbbStorageFrom.StyleController = this.layoutControl1;
             this.cbbStorageFrom.TabIndex = 10;
             this.cbbStorageFrom.EditValueChanged += new System.EventHandler(this.cbbStorageFrom_EditValueChanged);
-            // 
+            //
             // txbStorageFromQuantity
-            // 
+            //
             this.txbStorageFromQuantity.EditValue = "0";
             this.txbStorageFromQuantity.Location = new System.Drawing.Point(288, 12);
             this.txbStorageFromQuantity.Name = "txbStorageFromQuantity";
@@ -270,9 +294,9 @@ namespace Winform4System.Forms.SpareParts
             this.txbStorageFromQuantity.Size = new System.Drawing.Size(98, 32);
             this.txbStorageFromQuantity.StyleController = this.layoutControl1;
             this.txbStorageFromQuantity.TabIndex = 9;
-            // 
+            //
             // cbbStorageTo
-            // 
+            //
             this.cbbStorageTo.Location = new System.Drawing.Point(100, 48);
             this.cbbStorageTo.Name = "cbbStorageTo";
             this.cbbStorageTo.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
@@ -293,9 +317,9 @@ namespace Winform4System.Forms.SpareParts
             this.cbbStorageTo.StyleController = this.layoutControl1;
             this.cbbStorageTo.TabIndex = 10;
             this.cbbStorageTo.EditValueChanged += new System.EventHandler(this.cbbStorageTo_EditValueChanged);
-            // 
+            //
             // txbStorageToQuantity
-            // 
+            //
             this.txbStorageToQuantity.EditValue = "0";
             this.txbStorageToQuantity.Location = new System.Drawing.Point(288, 48);
             this.txbStorageToQuantity.Name = "txbStorageToQuantity";
@@ -310,9 +334,9 @@ namespace Winform4System.Forms.SpareParts
             this.txbStorageToQuantity.Size = new System.Drawing.Size(98, 32);
             this.txbStorageToQuantity.StyleController = this.layoutControl1;
             this.txbStorageToQuantity.TabIndex = 9;
-            // 
+            //
             // txbPrice
-            // 
+            //
             this.txbPrice.EditValue = "0";
             this.txbPrice.Location = new System.Drawing.Point(100, 156);
             this.txbPrice.Name = "txbPrice";
@@ -327,9 +351,9 @@ namespace Winform4System.Forms.SpareParts
             this.txbPrice.Size = new System.Drawing.Size(286, 32);
             this.txbPrice.StyleController = this.layoutControl1;
             this.txbPrice.TabIndex = 9;
-            // 
+            //
             // txbExpDate
-            // 
+            //
             this.txbExpDate.EditValue = null;
             this.txbExpDate.Location = new System.Drawing.Point(100, 192);
             this.txbExpDate.Name = "txbExpDate";
@@ -344,9 +368,9 @@ namespace Winform4System.Forms.SpareParts
             this.txbExpDate.Size = new System.Drawing.Size(286, 32);
             this.txbExpDate.StyleController = this.layoutControl1;
             this.txbExpDate.TabIndex = 14;
-            // 
+            //
             // Root
-            // 
+            //
             this.Root.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.Root.GroupBordersVisible = false;
             this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
@@ -359,11 +383,11 @@ namespace Winform4System.Forms.SpareParts
             this.lcPrice,
             this.lcExpDate});
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(398, 236);
+            this.Root.Size = new System.Drawing.Size(640, 236);
             this.Root.TextVisible = false;
-            // 
+            //
             // lcDesc
-            // 
+            //
             this.lcDesc.AllowHtmlStringInCaption = true;
             this.lcDesc.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcDesc.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
@@ -376,12 +400,12 @@ namespace Winform4System.Forms.SpareParts
             this.lcDesc.CustomizationFormText = "中文名稱";
             this.lcDesc.Location = new System.Drawing.Point(0, 108);
             this.lcDesc.Name = "lcDesc";
-            this.lcDesc.Size = new System.Drawing.Size(378, 36);
+            this.lcDesc.Size = new System.Drawing.Size(620, 36);
             this.lcDesc.Text = "備註";
             this.lcDesc.TextSize = new System.Drawing.Size(76, 24);
-            // 
+            //
             // lcStorageFrom
-            // 
+            //
             this.lcStorageFrom.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcStorageFrom.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
             this.lcStorageFrom.AppearanceItemCaption.Options.UseFont = true;
@@ -395,12 +419,12 @@ namespace Winform4System.Forms.SpareParts
             this.lcStorageFrom.CustomizationFormText = "備品用途";
             this.lcStorageFrom.Location = new System.Drawing.Point(0, 0);
             this.lcStorageFrom.Name = "lcStorageFrom";
-            this.lcStorageFrom.Size = new System.Drawing.Size(233, 36);
+            this.lcStorageFrom.Size = new System.Drawing.Size(440, 36);
             this.lcStorageFrom.Text = "出貨倉庫";
             this.lcStorageFrom.TextSize = new System.Drawing.Size(76, 24);
-            // 
+            //
             // lcStorageTo
-            // 
+            //
             this.lcStorageTo.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcStorageTo.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
             this.lcStorageTo.AppearanceItemCaption.Options.UseFont = true;
@@ -414,12 +438,12 @@ namespace Winform4System.Forms.SpareParts
             this.lcStorageTo.CustomizationFormText = "備品用途";
             this.lcStorageTo.Location = new System.Drawing.Point(0, 36);
             this.lcStorageTo.Name = "lcStorageTo";
-            this.lcStorageTo.Size = new System.Drawing.Size(233, 36);
+            this.lcStorageTo.Size = new System.Drawing.Size(440, 36);
             this.lcStorageTo.Text = "收貨倉庫";
             this.lcStorageTo.TextSize = new System.Drawing.Size(76, 24);
-            // 
+            //
             // lcStorageFromQuantity
-            // 
+            //
             this.lcStorageFromQuantity.AllowHtmlStringInCaption = true;
             this.lcStorageFromQuantity.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcStorageFromQuantity.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
@@ -430,16 +454,16 @@ namespace Winform4System.Forms.SpareParts
             this.lcStorageFromQuantity.Control = this.txbStorageFromQuantity;
             this.lcStorageFromQuantity.ControlAlignment = System.Drawing.ContentAlignment.TopLeft;
             this.lcStorageFromQuantity.CustomizationFormText = "中文名稱";
-            this.lcStorageFromQuantity.Location = new System.Drawing.Point(233, 0);
+            this.lcStorageFromQuantity.Location = new System.Drawing.Point(440, 0);
             this.lcStorageFromQuantity.Name = "lcStorageFromQuantity";
-            this.lcStorageFromQuantity.Size = new System.Drawing.Size(145, 36);
+            this.lcStorageFromQuantity.Size = new System.Drawing.Size(180, 36);
             this.lcStorageFromQuantity.Text = "數量";
             this.lcStorageFromQuantity.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.lcStorageFromQuantity.TextSize = new System.Drawing.Size(38, 24);
             this.lcStorageFromQuantity.TextToControlDistance = 5;
-            // 
+            //
             // lcStorageToQuantity
-            // 
+            //
             this.lcStorageToQuantity.AllowHtmlStringInCaption = true;
             this.lcStorageToQuantity.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcStorageToQuantity.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
@@ -450,16 +474,16 @@ namespace Winform4System.Forms.SpareParts
             this.lcStorageToQuantity.Control = this.txbStorageToQuantity;
             this.lcStorageToQuantity.ControlAlignment = System.Drawing.ContentAlignment.TopLeft;
             this.lcStorageToQuantity.CustomizationFormText = "中文名稱";
-            this.lcStorageToQuantity.Location = new System.Drawing.Point(233, 36);
+            this.lcStorageToQuantity.Location = new System.Drawing.Point(440, 36);
             this.lcStorageToQuantity.Name = "lcStorageToQuantity";
-            this.lcStorageToQuantity.Size = new System.Drawing.Size(145, 36);
+            this.lcStorageToQuantity.Size = new System.Drawing.Size(180, 36);
             this.lcStorageToQuantity.Text = "數量";
             this.lcStorageToQuantity.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.lcStorageToQuantity.TextSize = new System.Drawing.Size(38, 24);
             this.lcStorageToQuantity.TextToControlDistance = 5;
-            // 
+            //
             // lcQuantity
-            // 
+            //
             this.lcQuantity.AllowHtmlStringInCaption = true;
             this.lcQuantity.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcQuantity.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
@@ -471,12 +495,12 @@ namespace Winform4System.Forms.SpareParts
             this.lcQuantity.CustomizationFormText = "中文名稱";
             this.lcQuantity.Location = new System.Drawing.Point(0, 72);
             this.lcQuantity.Name = "lcQuantity";
-            this.lcQuantity.Size = new System.Drawing.Size(378, 36);
+            this.lcQuantity.Size = new System.Drawing.Size(620, 36);
             this.lcQuantity.Text = "事件數量";
             this.lcQuantity.TextSize = new System.Drawing.Size(76, 24);
-            // 
+            //
             // lcPrice
-            // 
+            //
             this.lcPrice.AllowHtmlStringInCaption = true;
             this.lcPrice.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcPrice.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
@@ -489,12 +513,12 @@ namespace Winform4System.Forms.SpareParts
             this.lcPrice.CustomizationFormText = "中文名稱";
             this.lcPrice.Location = new System.Drawing.Point(0, 144);
             this.lcPrice.Name = "lcPrice";
-            this.lcPrice.Size = new System.Drawing.Size(378, 36);
+            this.lcPrice.Size = new System.Drawing.Size(620, 36);
             this.lcPrice.Text = "新單價";
             this.lcPrice.TextSize = new System.Drawing.Size(76, 24);
-            // 
+            //
             // lcExpDate
-            // 
+            //
             this.lcExpDate.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.lcExpDate.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
             this.lcExpDate.AppearanceItemCaption.Options.UseFont = true;
@@ -506,15 +530,15 @@ namespace Winform4System.Forms.SpareParts
             this.lcExpDate.CustomizationFormText = "有效期至";
             this.lcExpDate.Location = new System.Drawing.Point(0, 180);
             this.lcExpDate.Name = "lcExpDate";
-            this.lcExpDate.Size = new System.Drawing.Size(378, 36);
+            this.lcExpDate.Size = new System.Drawing.Size(620, 36);
             this.lcExpDate.Text = "有效期至";
             this.lcExpDate.TextSize = new System.Drawing.Size(76, 24);
-            // 
+            //
             // SparePartTransactionForm
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(398, 285);
+            this.ClientSize = new System.Drawing.Size(640, 285);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -526,6 +550,240 @@ namespace Winform4System.Forms.SpareParts
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "進出庫資料";
             this.Load += new System.EventHandler(this.SparePartTransactionForm_Load);
+
+            cbbRecoveryOption = new ImageComboBoxEdit();
+            cbbRecoveryOption.Properties.Appearance.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            cbbRecoveryOption.Properties.Appearance.ForeColor = Color.Black;
+            cbbRecoveryOption.Properties.Appearance.Options.UseFont = true;
+            cbbRecoveryOption.Properties.Appearance.Options.UseForeColor = true;
+            cbbRecoveryOption.Properties.AppearanceDropDown.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            cbbRecoveryOption.Properties.AppearanceDropDown.Options.UseFont = true;
+            cbbRecoveryOption.Properties.Buttons.Clear();
+            cbbRecoveryOption.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
+            cbbRecoveryOption.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem("沒有舊品拆出", RecoveryOptionNoneValue, -1));
+            cbbRecoveryOption.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem("拆出後送報廢", RecoveryOptionScrapValue, -1));
+            cbbRecoveryOption.Properties.Items.Add(new DevExpress.XtraEditors.Controls.ImageComboBoxItem("拆出後回收入庫", RecoveryOptionRestockValue, -1));
+            cbbRecoveryOption.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            cbbRecoveryOption.EditValue = RecoveryOptionNoneValue;
+            cbbRecoveryOption.Enabled = false;
+            cbbRecoveryOption.EditValueChanged += cbbRecoveryOption_EditValueChanged;
+
+            sleAssignedUser = new SearchLookUpEdit();
+            sleAssignedUser.Properties.Appearance.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            sleAssignedUser.Properties.Appearance.ForeColor = Color.Black;
+            sleAssignedUser.Properties.Appearance.Options.UseFont = true;
+            sleAssignedUser.Properties.Appearance.Options.UseForeColor = true;
+            sleAssignedUser.Properties.AppearanceDropDown.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            sleAssignedUser.Properties.AppearanceDropDown.Options.UseFont = true;
+            sleAssignedUser.Properties.NullText = string.Empty;
+            gvAssignedUserLookup = new GridView();
+            colAssignedUserId = new DevExpress.XtraGrid.Columns.GridColumn { Name = "colAssignedUserId", FieldName = "Id", Caption = "工號", Visible = true, VisibleIndex = 0, Width = 120 };
+            colAssignedUserName = new DevExpress.XtraGrid.Columns.GridColumn { Name = "colAssignedUserName", FieldName = "DisplayName", Caption = "姓名", Visible = true, VisibleIndex = 1, Width = 180 };
+            colAssignedUserDepartment = new DevExpress.XtraGrid.Columns.GridColumn { Name = "colAssignedUserDepartment", FieldName = "IdDepartment", Caption = "單位", Visible = true, VisibleIndex = 2, Width = 140 };
+            gvAssignedUserLookup.Columns.AddRange(new[] { colAssignedUserId, colAssignedUserName, colAssignedUserDepartment });
+            gvAssignedUserLookup.Name = "gvAssignedUserLookup";
+            gvAssignedUserLookup.Appearance.HeaderPanel.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            gvAssignedUserLookup.Appearance.HeaderPanel.Options.UseFont = true;
+            gvAssignedUserLookup.Appearance.HeaderPanel.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            gvAssignedUserLookup.Appearance.HeaderPanel.Options.UseTextOptions = true;
+            gvAssignedUserLookup.Appearance.Row.Font = new Font("Microsoft JhengHei UI", 12F);
+            gvAssignedUserLookup.Appearance.Row.Options.UseFont = true;
+            gvAssignedUserLookup.FocusRectStyle = DrawFocusRectStyle.RowFocus;
+            gvAssignedUserLookup.OptionsBehavior.Editable = false;
+            gvAssignedUserLookup.OptionsSelection.EnableAppearanceFocusedCell = false;
+            gvAssignedUserLookup.OptionsView.ShowAutoFilterRow = true;
+            gvAssignedUserLookup.OptionsView.ShowGroupPanel = false;
+            gvAssignedUserLookup.OptionsView.ColumnAutoWidth = false;
+            sleAssignedUser.Properties.PopupView = gvAssignedUserLookup;
+            sleAssignedUser.Properties.DisplayMember = "DisplayName";
+            sleAssignedUser.Properties.ValueMember = "Id";
+
+            dePlannedDisposeDate = new DateEdit();
+            dePlannedDisposeDate.Properties.Appearance.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            dePlannedDisposeDate.Properties.Appearance.ForeColor = Color.Black;
+            dePlannedDisposeDate.Properties.Appearance.Options.UseFont = true;
+            dePlannedDisposeDate.Properties.Appearance.Options.UseForeColor = true;
+            dePlannedDisposeDate.Properties.Buttons.Clear();
+            dePlannedDisposeDate.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
+            dePlannedDisposeDate.Properties.CalendarTimeEditing = DevExpress.Utils.DefaultBoolean.False;
+            dePlannedDisposeDate.Properties.CalendarView = DevExpress.XtraEditors.Repository.CalendarView.TouchUI;
+            dePlannedDisposeDate.Properties.VistaDisplayMode = DevExpress.Utils.DefaultBoolean.False;
+            dePlannedDisposeDate.Properties.MaskSettings.Set("mask", "yyyy/MM/dd");
+            dePlannedDisposeDate.Properties.UseMaskAsDisplayFormat = true;
+            dePlannedDisposeDate.Properties.CalendarTimeProperties.Buttons.Clear();
+            dePlannedDisposeDate.Properties.CalendarTimeProperties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
+
+            cbbRestockStorage = new LookUpEdit();
+            cbbRestockStorage.Properties.Appearance.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            cbbRestockStorage.Properties.Appearance.ForeColor = Color.Black;
+            cbbRestockStorage.Properties.Appearance.Options.UseFont = true;
+            cbbRestockStorage.Properties.Appearance.Options.UseForeColor = true;
+            cbbRestockStorage.Properties.AppearanceDropDown.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            cbbRestockStorage.Properties.AppearanceDropDown.Options.UseFont = true;
+            cbbRestockStorage.Properties.Buttons.Clear();
+            cbbRestockStorage.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
+            cbbRestockStorage.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[]
+            {
+                new DevExpress.XtraEditors.Controls.LookUpColumnInfo("DisplayName", "倉庫")
+            });
+            cbbRestockStorage.Properties.DisplayMember = "DisplayName";
+            cbbRestockStorage.Properties.ValueMember = "Id";
+            cbbRestockStorage.Properties.NullText = string.Empty;
+            cbbRestockStorage.Properties.ShowHeader = false;
+            cbbRestockStorage.Properties.DropDownRows = 5;
+
+            memoRecoveryNote = new MemoEdit();
+            memoRecoveryNote.Properties.Appearance.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            memoRecoveryNote.Properties.Appearance.ForeColor = Color.Black;
+            memoRecoveryNote.Properties.Appearance.Options.UseFont = true;
+            memoRecoveryNote.Properties.Appearance.Options.UseForeColor = true;
+
+            btnViewGuideDocs = new SimpleButton();
+            btnViewGuideDocs.Appearance.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            btnViewGuideDocs.Appearance.Options.UseFont = true;
+            btnViewGuideDocs.Text = "查看報廢指引";
+            btnViewGuideDocs.Click += btnViewGuideDocs_Click;
+
+            layoutControl1.Controls.Add(cbbRecoveryOption);
+            layoutControl1.Controls.Add(sleAssignedUser);
+            layoutControl1.Controls.Add(dePlannedDisposeDate);
+            layoutControl1.Controls.Add(cbbRestockStorage);
+            layoutControl1.Controls.Add(memoRecoveryNote);
+            layoutControl1.Controls.Add(btnViewGuideDocs);
+
+            lcRecoveryOption = new LayoutControlItem();
+            lcRecoveryOption.Name = "lcRecoveryOption";
+            lcRecoveryOption.Control = cbbRecoveryOption;
+            lcRecoveryOption.Text = "舊品處理";
+            lcRecoveryOption.TextVisible = true;
+            lcRecoveryOption.AllowHtmlStringInCaption = true;
+            lcRecoveryOption.AppearanceItemCaption.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            lcRecoveryOption.AppearanceItemCaption.ForeColor = Color.Black;
+            lcRecoveryOption.AppearanceItemCaption.Options.UseFont = true;
+            lcRecoveryOption.AppearanceItemCaption.Options.UseForeColor = true;
+            lcRecoveryOption.AppearanceItemCaptionDisabled.ForeColor = Color.Black;
+            lcRecoveryOption.AppearanceItemCaptionDisabled.Options.UseForeColor = true;
+            lcRecoveryOption.TextSize = new Size(76, 24);
+            lcRecoveryOption.Location = new Point(0, 216);
+            lcRecoveryOption.Size = new Size(620, 36);
+            lcRecoveryOption.SizeConstraintsType = SizeConstraintsType.Custom;
+            lcRecoveryOption.MinSize = new Size(200, 36);
+            lcRecoveryOption.MaxSize = new Size(0, 36);
+            lcRecoveryOption.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            lcAssignedUser = new LayoutControlItem();
+            lcAssignedUser.Name = "lcAssignedUser";
+            lcAssignedUser.Control = sleAssignedUser;
+            lcAssignedUser.Text = "報廢經辦";
+            lcAssignedUser.TextVisible = true;
+            lcAssignedUser.AllowHtmlStringInCaption = true;
+            lcAssignedUser.AppearanceItemCaption.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            lcAssignedUser.AppearanceItemCaption.ForeColor = Color.Black;
+            lcAssignedUser.AppearanceItemCaption.Options.UseFont = true;
+            lcAssignedUser.AppearanceItemCaption.Options.UseForeColor = true;
+            lcAssignedUser.AppearanceItemCaptionDisabled.ForeColor = Color.Black;
+            lcAssignedUser.AppearanceItemCaptionDisabled.Options.UseForeColor = true;
+            lcAssignedUser.TextSize = new Size(76, 24);
+            lcAssignedUser.Location = new Point(0, 252);
+            lcAssignedUser.Size = new Size(620, 36);
+            lcAssignedUser.SizeConstraintsType = SizeConstraintsType.Custom;
+            lcAssignedUser.MinSize = new Size(200, 36);
+            lcAssignedUser.MaxSize = new Size(0, 36);
+            lcAssignedUser.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            lcPlannedDisposeDate = new LayoutControlItem();
+            lcPlannedDisposeDate.Name = "lcPlannedDisposeDate";
+            lcPlannedDisposeDate.Control = dePlannedDisposeDate;
+            lcPlannedDisposeDate.Text = "預計日期";
+            lcPlannedDisposeDate.TextVisible = true;
+            lcPlannedDisposeDate.AllowHtmlStringInCaption = true;
+            lcPlannedDisposeDate.AppearanceItemCaption.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            lcPlannedDisposeDate.AppearanceItemCaption.ForeColor = Color.Black;
+            lcPlannedDisposeDate.AppearanceItemCaption.Options.UseFont = true;
+            lcPlannedDisposeDate.AppearanceItemCaption.Options.UseForeColor = true;
+            lcPlannedDisposeDate.AppearanceItemCaptionDisabled.ForeColor = Color.Black;
+            lcPlannedDisposeDate.AppearanceItemCaptionDisabled.Options.UseForeColor = true;
+            lcPlannedDisposeDate.TextSize = new Size(76, 24);
+            lcPlannedDisposeDate.Location = new Point(0, 288);
+            lcPlannedDisposeDate.Size = new Size(620, 36);
+            lcPlannedDisposeDate.SizeConstraintsType = SizeConstraintsType.Custom;
+            lcPlannedDisposeDate.MinSize = new Size(200, 36);
+            lcPlannedDisposeDate.MaxSize = new Size(0, 36);
+            lcPlannedDisposeDate.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            lcRestockStorage = new LayoutControlItem();
+            lcRestockStorage.Name = "lcRestockStorage";
+            lcRestockStorage.Control = cbbRestockStorage;
+            lcRestockStorage.Text = "回收倉庫";
+            lcRestockStorage.TextVisible = true;
+            lcRestockStorage.AllowHtmlStringInCaption = true;
+            lcRestockStorage.AppearanceItemCaption.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            lcRestockStorage.AppearanceItemCaption.ForeColor = Color.Black;
+            lcRestockStorage.AppearanceItemCaption.Options.UseFont = true;
+            lcRestockStorage.AppearanceItemCaption.Options.UseForeColor = true;
+            lcRestockStorage.AppearanceItemCaptionDisabled.ForeColor = Color.Black;
+            lcRestockStorage.AppearanceItemCaptionDisabled.Options.UseForeColor = true;
+            lcRestockStorage.TextSize = new Size(76, 24);
+            lcRestockStorage.Location = new Point(0, 324);
+            lcRestockStorage.Size = new Size(620, 36);
+            lcRestockStorage.SizeConstraintsType = SizeConstraintsType.Custom;
+            lcRestockStorage.MinSize = new Size(200, 36);
+            lcRestockStorage.MaxSize = new Size(0, 36);
+            lcRestockStorage.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            lcRecoveryNote = new LayoutControlItem();
+            lcRecoveryNote.Name = "lcRecoveryNote";
+            lcRecoveryNote.Control = memoRecoveryNote;
+            lcRecoveryNote.Text = "回收備註";
+            lcRecoveryNote.TextVisible = true;
+            lcRecoveryNote.AllowHtmlStringInCaption = true;
+            lcRecoveryNote.AppearanceItemCaption.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            lcRecoveryNote.AppearanceItemCaption.ForeColor = Color.Black;
+            lcRecoveryNote.AppearanceItemCaption.Options.UseFont = true;
+            lcRecoveryNote.AppearanceItemCaption.Options.UseForeColor = true;
+            lcRecoveryNote.AppearanceItemCaptionDisabled.ForeColor = Color.Black;
+            lcRecoveryNote.AppearanceItemCaptionDisabled.Options.UseForeColor = true;
+            lcRecoveryNote.TextSize = new Size(76, 24);
+            lcRecoveryNote.Location = new Point(0, 360);
+            lcRecoveryNote.Size = new Size(620, 84);
+            lcRecoveryNote.SizeConstraintsType = SizeConstraintsType.Custom;
+            lcRecoveryNote.MinSize = new Size(200, 84);
+            lcRecoveryNote.MaxSize = new Size(0, 84);
+            lcRecoveryNote.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            lcGuideDocs = new LayoutControlItem();
+            lcGuideDocs.Name = "lcGuideDocs";
+            lcGuideDocs.Control = btnViewGuideDocs;
+            lcGuideDocs.Text = "";
+            lcGuideDocs.TextVisible = false;
+            lcGuideDocs.AllowHtmlStringInCaption = true;
+            lcGuideDocs.AppearanceItemCaption.Font = new Font("Microsoft JhengHei UI", 14.25F);
+            lcGuideDocs.AppearanceItemCaption.ForeColor = Color.Black;
+            lcGuideDocs.AppearanceItemCaption.Options.UseFont = true;
+            lcGuideDocs.AppearanceItemCaption.Options.UseForeColor = true;
+            lcGuideDocs.AppearanceItemCaptionDisabled.ForeColor = Color.Black;
+            lcGuideDocs.AppearanceItemCaptionDisabled.Options.UseForeColor = true;
+            lcGuideDocs.TextSize = new Size(76, 24);
+            lcGuideDocs.Location = new Point(0, 444);
+            lcGuideDocs.Size = new Size(620, 36);
+            lcGuideDocs.SizeConstraintsType = SizeConstraintsType.Custom;
+            lcGuideDocs.MinSize = new Size(200, 36);
+            lcGuideDocs.MaxSize = new Size(0, 36);
+            lcGuideDocs.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] { lcRecoveryOption, lcAssignedUser, lcPlannedDisposeDate, lcRestockStorage, lcRecoveryNote, lcGuideDocs });
+
+            cbbRecoveryOption.Name = "cbbRecoveryOption"; cbbRecoveryOption.TabIndex = 8;
+
+            sleAssignedUser.Name = "sleAssignedUser"; sleAssignedUser.TabIndex = 9;
+
+            dePlannedDisposeDate.Name = "dePlannedDisposeDate"; dePlannedDisposeDate.TabIndex = 10;
+
+            cbbRestockStorage.Name = "cbbRestockStorage"; cbbRestockStorage.TabIndex = 11;
+
+            memoRecoveryNote.Name = "memoRecoveryNote"; memoRecoveryNote.TabIndex = 12;
+
+            btnViewGuideDocs.Name = "btnViewGuideDocs"; btnViewGuideDocs.TabIndex = 13;
+            btnViewGuideDocs.ImageOptions.SvgImage = Winform4System.Helpers.SvgIconCatalog.Attachment;
+            lcStorageFromQuantity.SizeConstraintsType = SizeConstraintsType.Custom;
+            lcStorageFromQuantity.MinSize = new Size(180, 36); lcStorageFromQuantity.MaxSize = new Size(180, 0);
+            lcStorageToQuantity.SizeConstraintsType = SizeConstraintsType.Custom;
+            lcStorageToQuantity.MinSize = new Size(180, 36); lcStorageToQuantity.MaxSize = new Size(180, 0);
+
             ((System.ComponentModel.ISupportInitialize)(this.barManagerTP)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);

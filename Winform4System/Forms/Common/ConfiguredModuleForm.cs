@@ -12,11 +12,16 @@ using Winform4System.Helpers;
 
 namespace Winform4System.Forms.Common
 {
-    public abstract class ConfiguredModuleForm : FluentModuleForm
+    public class ConfiguredModuleForm : FluentModuleForm
     {
         private readonly ModuleNavigationService service = new ModuleNavigationService(new ConnectionStringProvider());
         private readonly string moduleCode;
         private Action openInitial;
+
+        public ConfiguredModuleForm(string code, Winform4System.Core.Models.UserSession session) : this(code, "configuredModule")
+        {
+            SparePartConfiguration.Initialize(session ?? throw new ArgumentNullException(nameof(session)));
+        }
 
         protected ConfiguredModuleForm(string code, string componentName) : base("功能模組", componentName)
         {
@@ -26,40 +31,42 @@ namespace Winform4System.Forms.Common
             if (root != null)
             {
                 Text = root.DisplayName;
-                AddChildren(root, functions, null);
+                var rootGroup = AddConfiguredGroup(root, null);
+                AddChildren(root, functions, rootGroup);
             }
             Shown += (sender, args) => openInitial?.Invoke();
         }
 
         private void AddChildren(ApplicationFunction parent, IReadOnlyList<ApplicationFunction> functions, AccordionControlElement group)
         {
-            AccordionControlElement defaultGroup = group;
             foreach (var function in functions.Where(x => x.ParentFunctionId == parent.FunctionId))
             {
                 if (string.IsNullOrWhiteSpace(function.NavigationTarget))
                 {
-                    var childGroup = AddNavigationGroup(function.DisplayName, parent: group);
-                    childGroup.ImageOptions.SvgImage = SvgIconCatalog.Resolve(function.IconKey, SvgIconCatalog.Department);
+                    var childGroup = AddConfiguredGroup(function, group);
                     AddChildren(function, functions, childGroup);
                     continue;
                 }
                 Func<Control> factory = GetFactory(function.NavigationTarget);
                 if (factory == null) continue;
-                if (defaultGroup == null)
-                {
-                    defaultGroup = AddNavigationGroup(parent.DisplayName);
-                    defaultGroup.ImageOptions.SvgImage = SvgIconCatalog.Resolve(parent.IconKey, SvgIconCatalog.Department);
-                }
                 Func<Control> create = () =>
                 {
                     service.DemandFunction(moduleCode, function.FunctionCode);
                     return factory();
                 };
                 var target = Winform4System.Core.Models.FunctionCatalog.Find(function.NavigationTarget);
-                AddNavigationItem(defaultGroup, function.FunctionCode, function.DisplayName,
+                AddNavigationItem(group, function.FunctionCode, function.DisplayName,
                     SvgIconCatalog.Resolve(function.IconKey, SvgIconCatalog.Resolve(target?.IconKey)), create);
                 if (openInitial == null) openInitial = () => OpenTab(function.FunctionCode, function.DisplayName, create);
             }
+        }
+
+        private AccordionControlElement AddConfiguredGroup(ApplicationFunction function, AccordionControlElement parent)
+        {
+            var group = AddNavigationGroup(function.DisplayName, parent: parent);
+            group.Name = "nav_" + function.FunctionCode;
+            group.ImageOptions.SvgImage = SvgIconCatalog.Resolve(function.IconKey, SvgIconCatalog.Department);
+            return group;
         }
 
         private static Func<Control> GetFactory(string target)

@@ -43,7 +43,7 @@ namespace Winform4System.Forms.Common
                 ScrollBarMode = ScrollBarMode.Touch,
                 ShowFilterControl = ShowFilterControl.Always,
                 ViewType = AccordionControlViewType.HamburgerMenu,
-                Width = 235
+                Width = 240
             };
             var container = new FluentDesignFormContainer
             {
@@ -72,6 +72,32 @@ namespace Winform4System.Forms.Common
             ControlContainer = container;
             FluentDesignFormControl = titleBar;
             NavigationControl = _navigation;
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            float scale = DeviceDpi / 96F;
+            int minimum = (int)Math.Ceiling(240 * scale);
+            int maximum = Math.Min((int)Math.Ceiling(320 * scale), Math.Max(minimum, ClientSize.Width / 3));
+            int preferred = MeasureNavigationWidth(_navigation.Elements, 0, scale);
+            _navigation.Width = Math.Max(minimum, Math.Min(maximum, preferred));
+        }
+
+        private int MeasureNavigationWidth(AccordionControlElementCollection elements, int depth, float scale)
+        {
+            int width = 0;
+            foreach (AccordionControlElement element in elements)
+            {
+                Font font = element.Appearance.Default.Font ?? _navigation.Font;
+                int textWidth = TextRenderer.MeasureText(element.Text, font, Size.Empty,
+                    TextFormatFlags.SingleLine | TextFormatFlags.NoPrefix).Width;
+                // Chừa chỗ cho biểu tượng, mũi tên nhóm, khoảng cách và thụt lề từng cấp.
+                int padding = (int)Math.Ceiling((64 + depth * 20) * scale);
+                width = Math.Max(width, textWidth + padding);
+                width = Math.Max(width, MeasureNavigationWidth(element.Elements, depth + 1, scale));
+            }
+            return width;
         }
 
         protected AccordionControlElement AddNavigationGroup(string caption, string hint = null, AccordionControlElement parent = null)

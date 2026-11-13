@@ -8,6 +8,7 @@ namespace Winform4System.Forms.SystemManagement
         public AuditLogDetailForm(AuditLogListItem item)
         {
             InitializeComponent();
+            Load += (sender, args) => Winform4System.Helpers.DialogLayoutHelper.FitToWorkingArea(this);
             if (item == null) return;
             txbCreatedAt.Text = item.CreatedAtLocal.ToString("yyyy/MM/dd HH:mm:ss.fff");
             txbUser.Text = string.IsNullOrWhiteSpace(item.UserDisplayName) ? item.UserId : item.UserId + " - " + item.UserDisplayName;

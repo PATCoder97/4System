@@ -10,6 +10,7 @@ namespace Winform4System.Core.Models
         { Key = key; Caption = caption; Host = host; RequiredPermission = permission; IconKey = icon; ManagerOnly = managerOnly; }
         public string Key { get; }
         public string Caption { get; }
+        // Module gốc xác định quyền và ngữ cảnh nghiệp vụ, không cố định vị trí trong cây chức năng.
         public string Host { get; }
         public string RequiredPermission { get; }
         public string IconKey { get; }

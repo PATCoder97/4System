@@ -22,7 +22,7 @@ namespace Winform4System.Business.Services
         public IReadOnlyList<MenuItemDefinition> GetMenuItems()
         {
             return _repository.GetAuthorizedMenuItems(_userId)
-                .Where(item => FunctionCatalog.Find(item.NavigationTarget) == null || CurrentAuthorization.HasPermission(FunctionCatalog.Find(item.NavigationTarget).RequiredPermission))
+                .Where(CanOpen)
                 .Select(item => new MenuItemDefinition(
                     item.Code,
                     item.GroupName,
@@ -31,6 +31,21 @@ namespace Winform4System.Business.Services
                     ParseDevelopmentStatus(item.DevelopmentStatus),
                     item.IsWide, item.NavigationTarget, item.IconKey))
                 .ToList();
+        }
+
+        private static bool CanOpen(MainMenuItemRecord item)
+        {
+            if (string.IsNullOrWhiteSpace(item.NavigationTarget))
+            {
+                try
+                {
+                    return new ModuleNavigationService(new Winform4System.DataAccess.Configuration.ConnectionStringProvider())
+                        .GetFunctions(item.Code).Count > 1;
+                }
+                catch (UnauthorizedAccessException) { return false; }
+            }
+            var target = FunctionCatalog.Find(item.NavigationTarget);
+            return target == null || CurrentAuthorization.HasPermission(target.RequiredPermission);
         }
 
         private static MenuDevelopmentStatus ParseDevelopmentStatus(string value)

@@ -16,13 +16,23 @@ Chạy `006_manual_function_configuration.sql` để thêm `IconKey` và đưa c
 
 ## Thêm chức năng thủ công
 
-Trong 功能卡管理, tài khoản có `SYSTEM.FUNCTION.ADMIN` dùng nút **新增功能**. Chọn nhóm cha, nhập mã kỹ thuật duy nhất và tên zh-Hant, chọn màn hình đích hoặc để trống để tạo nhóm. Danh sách màn hình được lọc theo module đã chọn. Mã được chuẩn hóa chữ hoa và không thay đổi sau khi tạo.
+Trong 功能卡管理, tài khoản có `SYSTEM.FUNCTION.ADMIN` dùng nút **新增功能**. Chọn nhóm cha, nhập mã kỹ thuật duy nhất và tên zh-Hant, chọn màn hình đích hoặc để trống để tạo nhóm. Mã được chuẩn hóa chữ hoa và không thay đổi sau khi tạo.
 
 Có thể chọn icon có xem trước từ catalog SVG dùng chung, thứ tự, trạng thái phát triển, hiển thị và kích hoạt. Icon được lưu bằng khóa catalog; không lưu đường dẫn tùy ý hay nạp class từ tên do người dùng nhập. Mỗi màn hình mới tự tạo permission `<FunctionCode>.VIEW` và gán cho role `SECURITY_ADMIN`. Các role khác cần được cấp quyền bằng ma trận quyền; đăng nhập lại để cập nhật phiên.
 
-Có thể thêm một card module mới trỏ tới `SparePartForm` hoặc `SystemSettingsForm`, rồi thêm nhóm/chức năng con thuộc đúng loại module đó. Chọn lại một màn hình có sẵn chỉ tạo thêm lối truy cập; quyền xem và quyền nghiệp vụ gốc của màn hình vẫn bắt buộc. Màn hình nghiệp vụ mới vẫn phải được lập trình và đăng ký trong catalog. Tên hiển thị, icon và thứ tự có hiệu lực khi mở lại module.
+Có thể thêm một card module mới trỏ tới `SparePartForm` hoặc `SystemSettingsForm`. Di chuyển nhóm sẽ giữ nguyên liên kết các con; nhóm đưa ra ngay dưới danh mục chính sẽ có card riêng nếu còn màn hình con được phép truy cập. Chọn lại một màn hình có sẵn chỉ tạo thêm lối truy cập; quyền xem của mục menu, quyền module gốc và quyền nghiệp vụ gốc của màn hình vẫn bắt buộc. Màn hình nghiệp vụ mới vẫn phải được lập trình và đăng ký trong catalog. Tên hiển thị, icon và thứ tự có hiệu lực khi mở lại module.
 
-Backend kiểm tra mã trùng, mã bất biến, vòng lặp nhóm cha, màn hình đặt sai module và RowVersion. Tạo/sửa và cấp permission nằm trong một transaction EF6, có audit. Không tự cấp quyền màn hình gốc cho người dùng chỉ vì họ được cấp một mục menu mới.
+Backend kiểm tra mã trùng, mã bất biến, vòng lặp nhóm cha, vị trí nhóm/màn hình và RowVersion. Tạo/sửa và cấp permission nằm trong một transaction EF6, có audit. Không tự cấp quyền màn hình gốc cho người dùng chỉ vì họ được cấp một mục menu mới.
+
+## Xóa chức năng
+
+Nhấp chuột phải → **檢視功能卡** để mở chế độ xem có **編輯／刪除／關閉**, hoặc chọn **刪除功能** để vào thẳng chế độ xóa. Nút **確認刪除** yêu cầu xác nhận, mặc định chọn không. Hủy không ghi dữ liệu. Quyền `SYSTEM.FUNCTION.ADMIN` được kiểm tra ở UI và Business.
+
+Chặn xóa nhóm còn bất kỳ con nào (kể cả con ẩn/tắt), `MAIN` và các chức năng cung cấp quyền cố định mà catalog sử dụng. Các mục cốt lõi chỉ nên ẩn/tắt. Những mục khác như placeholder `ASSET.MACHINE_WAREHOUSE` có thể xóa khi không có con. Không tự xóa cả nhánh.
+
+Service đọc lại bản ghi và RowVersion, rồi xóa liên kết role–permission, permission và chức năng theo thứ tự khóa ngoại trong một transaction EF6 mức Serializable. Audit `SYSTEM.FUNCTION.DELETE` giữ cấu hình trước xóa, mã permission, liên kết role và danh sách người dùng bị ảnh hưởng. Lỗi ở bất kỳ bước nào rollback toàn bộ. Dữ liệu nghiệp vụ, role, nhóm và tài khoản không bị xóa.
+
+Đổi SecurityStamp của các tài khoản đang nhận các quyền bị xóa để cơ chế kiểm tra phiên yêu cầu đăng nhập lại; không thay đổi tài khoản không liên quan. Các tab đã mở vẫn kiểm tra quyền nghiệp vụ khi thao tác. Kiểm chứng bằng `Database/Tools/VerifyFunctionDeletion.cs` trên Test với fixture riêng, bao gồm lỗi giả lập ở bước xóa cuối để kiểm tra rollback; không dùng chức năng/tài khoản thật làm dữ liệu xóa.
 
 - Prod: `10.198.182.123:5432/winform4system_prod`, user `w4s_prod`.
 - Test: `10.198.182.123:5432/winform4system_test`, user `w4s_test`.

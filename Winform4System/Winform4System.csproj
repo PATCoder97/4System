@@ -35,18 +35,50 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework6.Npgsql"><HintPath>..\packages\EntityFramework6.Npgsql.6.4.3\lib\net461\EntityFramework6.Npgsql.dll</HintPath><Private>True</Private></Reference>
-    <Reference Include="Npgsql"><HintPath>..\packages\Npgsql.4.1.14\lib\net461\Npgsql.dll</HintPath><Private>True</Private></Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces"><HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath><Private>True</Private></Reference>
-    <Reference Include="System.Buffers"><HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath><Private>True</Private></Reference>
-    <Reference Include="System.Memory"><HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath><Private>True</Private></Reference>
-    <Reference Include="System.Numerics.Vectors"><HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath><Private>True</Private></Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe"><HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath><Private>True</Private></Reference>
-    <Reference Include="System.Text.Encodings.Web"><HintPath>..\packages\System.Text.Encodings.Web.4.6.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath><Private>True</Private></Reference>
-    <Reference Include="System.Text.Json"><HintPath>..\packages\System.Text.Json.4.6.0\lib\net461\System.Text.Json.dll</HintPath><Private>True</Private></Reference>
-    <Reference Include="System.Threading.Tasks.Extensions"><HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath><Private>True</Private></Reference>
-    <Reference Include="System.ValueTuple"><HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath><Private>True</Private></Reference>
-
+    <Reference Include="EntityFramework6.Npgsql">
+      <HintPath>..\packages\EntityFramework6.Npgsql.6.4.3\lib\net461\EntityFramework6.Npgsql.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\packages\Npgsql.4.1.14\lib\net461\Npgsql.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Buffers">
+      <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Memory">
+      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics.Vectors">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web">
+      <HintPath>..\packages\System.Text.Encodings.Web.4.6.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Text.Json">
+      <HintPath>..\packages\System.Text.Json.4.6.0\lib\net461\System.Text.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.3\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ValueTuple">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DevExpress.BonusSkins.v22.1" />
     <Reference Include="DevExpress.Data.Desktop.v22.1" />
     <Reference Include="DevExpress.Data.v22.1" />
@@ -66,7 +98,7 @@
       <HintPath>..\packages\EntityFramework.6.5.2\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-<Reference Include="EPPlus">
+    <Reference Include="EPPlus">
       <HintPath>..\packages\EPPlus.7.0.4\lib\net462\EPPlus.dll</HintPath>
       <Private>True</Private>
     </Reference>
@@ -125,7 +157,9 @@
     <Compile Include="Forms\Main\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Common\ConfiguredModuleForm.cs" />
+    <Compile Include="Forms\Common\ConfiguredModuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\Common\FluentModuleForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -204,14 +238,30 @@
     <Compile Include="Forms\SystemManagement\SecurityGroupEditForm.Designer.cs">
       <DependentUpon>SecurityGroupEditForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\SystemManagement\RolePermissionManagementView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SystemManagement\RolePermissionManagementView.Designer.cs"><DependentUpon>RolePermissionManagementView.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SystemManagement\RolePermissionEditForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SystemManagement\RolePermissionEditForm.Designer.cs"><DependentUpon>RolePermissionEditForm.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SystemManagement\AuditLogView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SystemManagement\AuditLogView.Designer.cs"><DependentUpon>AuditLogView.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SystemManagement\AuditLogDetailForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SystemManagement\AuditLogDetailForm.Designer.cs"><DependentUpon>AuditLogDetailForm.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SystemManagement\RolePermissionManagementView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\RolePermissionManagementView.Designer.cs">
+      <DependentUpon>RolePermissionManagementView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\RolePermissionEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\RolePermissionEditForm.Designer.cs">
+      <DependentUpon>RolePermissionEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\AuditLogView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\AuditLogView.Designer.cs">
+      <DependentUpon>AuditLogView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\AuditLogDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\AuditLogDetailForm.Designer.cs">
+      <DependentUpon>AuditLogDetailForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SystemManagement\FunctionManagementView.Designer.cs">
       <DependentUpon>FunctionManagementView.cs</DependentUpon>
     </Compile>
@@ -224,12 +274,24 @@
     <Compile Include="Forms\SystemManagement\SystemSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\SystemManagement\SystemSettingManagementView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SystemManagement\SystemSettingManagementView.Designer.cs"><DependentUpon>SystemSettingManagementView.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SystemManagement\SystemSettingEditForm.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="Forms\SystemManagement\SystemSettingEditForm.Designer.cs"><DependentUpon>SystemSettingEditForm.cs</DependentUpon></Compile>
-    <Compile Include="Forms\SystemManagement\SystemHealthView.cs"><SubType>UserControl</SubType></Compile>
-    <Compile Include="Forms\SystemManagement\SystemHealthView.Designer.cs"><DependentUpon>SystemHealthView.cs</DependentUpon></Compile>
+    <Compile Include="Forms\SystemManagement\SystemSettingManagementView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\SystemSettingManagementView.Designer.cs">
+      <DependentUpon>SystemSettingManagementView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\SystemSettingEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\SystemSettingEditForm.Designer.cs">
+      <DependentUpon>SystemSettingEditForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\SystemHealthView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SystemManagement\SystemHealthView.Designer.cs">
+      <DependentUpon>SystemHealthView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Forms\SpareParts\SparePartRecoveryConstants.cs" />
     <Compile Include="Forms\SpareParts\SparePartForm.cs">
@@ -352,6 +414,7 @@
     <Compile Include="Helpers\GridViewStateManager.cs" />
     <Compile Include="Forms\SpareParts\SparePartConfiguration.cs" />
     <Compile Include="Helpers\SvgIconCatalog.cs" />
+    <Compile Include="Helpers\DialogLayoutHelper.cs" />
     <Compile Include="Forms\SpareParts\SparePartPermissionUi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\Main\MainForm.resx">
@@ -430,7 +493,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="appSettings.local.config"><CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory></Content>
+    <Content Include="appSettings.local.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="appSettings.example.config" />
   </ItemGroup>
   <ItemGroup Condition="Exists('connectionStrings.local.config')">

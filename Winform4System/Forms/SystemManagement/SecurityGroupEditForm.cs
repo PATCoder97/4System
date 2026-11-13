@@ -15,6 +15,7 @@ namespace Winform4System.Forms.SystemManagement
         {
             _source = source;
             InitializeComponent();
+            Load += (sender, args) => Winform4System.Helpers.DialogLayoutHelper.FitToWorkingArea(this);
             checkedRoles.DataSource = detail.Roles.ToList(); checkedRoles.DisplayMember = "RoleName"; checkedRoles.ValueMember = "RoleId";
             for (int i = 0; i < detail.Roles.Count; i++) checkedRoles.SetItemChecked(i, detail.Roles[i].IsAssigned);
             gridMembers.DataSource = detail.Members.ToList();
