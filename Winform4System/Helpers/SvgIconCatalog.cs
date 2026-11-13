@@ -65,6 +65,12 @@ namespace Winform4System.Helpers
         public static readonly SvgImage Step5 = Load("step-5.svg");
         public static readonly SvgImage Step6 = Load("step-6.svg");
 
+        public static SvgImage Resolve(string key, SvgImage fallback = null)
+        {
+            if (string.IsNullOrWhiteSpace(key) || !Winform4System.Core.Models.FunctionCatalog.Icons.ContainsKey(key)) return fallback ?? View;
+            return typeof(SvgIconCatalog).GetField(key, BindingFlags.Public | BindingFlags.Static)?.GetValue(null) as SvgImage ?? fallback ?? View;
+        }
+
         private static string ResolveIconsPath()
         {
             foreach (string root in GetCandidateRoots())

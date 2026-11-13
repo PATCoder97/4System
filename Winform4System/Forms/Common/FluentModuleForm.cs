@@ -74,7 +74,7 @@ namespace Winform4System.Forms.Common
             NavigationControl = _navigation;
         }
 
-        protected AccordionControlElement AddNavigationGroup(string caption, string hint = null)
+        protected AccordionControlElement AddNavigationGroup(string caption, string hint = null, AccordionControlElement parent = null)
         {
             var group = new AccordionControlElement
             {
@@ -84,7 +84,8 @@ namespace Winform4System.Forms.Common
                 Expanded = true
             };
             group.Appearance.Default.Font = new Font("Microsoft JhengHei UI", 14.25F);
-            _navigation.Elements.Add(group);
+            if (parent == null) _navigation.Elements.Add(group);
+            else parent.Elements.Add(group);
             return group;
         }
 

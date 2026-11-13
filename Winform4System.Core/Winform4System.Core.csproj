@@ -31,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\MenuItemDefinition.cs" />
+    <Compile Include="Models\FunctionCatalog.cs" />
     <Compile Include="Models\UserSession.cs" />
     <Compile Include="Security\CurrentAuthorization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

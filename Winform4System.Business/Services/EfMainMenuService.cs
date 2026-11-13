@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Winform4System.Core.Models;
+using Winform4System.Core.Security;
 using Winform4System.DataAccess.Models;
 using Winform4System.DataAccess.Repositories;
 
@@ -21,13 +22,14 @@ namespace Winform4System.Business.Services
         public IReadOnlyList<MenuItemDefinition> GetMenuItems()
         {
             return _repository.GetAuthorizedMenuItems(_userId)
+                .Where(item => FunctionCatalog.Find(item.NavigationTarget) == null || CurrentAuthorization.HasPermission(FunctionCatalog.Find(item.NavigationTarget).RequiredPermission))
                 .Select(item => new MenuItemDefinition(
                     item.Code,
                     item.GroupName,
                     item.Title,
                     item.Description ?? string.Empty,
                     ParseDevelopmentStatus(item.DevelopmentStatus),
-                    item.IsWide))
+                    item.IsWide, item.NavigationTarget, item.IconKey))
                 .ToList();
         }
 

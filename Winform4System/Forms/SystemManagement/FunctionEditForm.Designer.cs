@@ -8,7 +8,10 @@ namespace Winform4System.Forms.SystemManagement
         private DevExpress.XtraEditors.TextEdit txbCode;
         private DevExpress.XtraEditors.TextEdit txbDisplayName;
         private DevExpress.XtraEditors.LookUpEdit cbbParent;
-        private DevExpress.XtraEditors.TextEdit txbNavigationTarget;
+        private DevExpress.XtraEditors.LookUpEdit txbNavigationTarget;
+        private DevExpress.XtraEditors.ImageComboBoxEdit cbbIcon;
+        private DevExpress.Utils.SvgImageCollection iconImages;
+        private DevExpress.XtraLayout.LayoutControlItem layoutIcon;
         private DevExpress.XtraEditors.SpinEdit speSortOrder;
         private DevExpress.XtraEditors.ComboBoxEdit cbbDevelopmentStatus;
         private DevExpress.XtraEditors.MemoEdit memoDescription;
@@ -46,7 +49,10 @@ namespace Winform4System.Forms.SystemManagement
             this.txbCode = new DevExpress.XtraEditors.TextEdit();
             this.txbDisplayName = new DevExpress.XtraEditors.TextEdit();
             this.cbbParent = new DevExpress.XtraEditors.LookUpEdit();
-            this.txbNavigationTarget = new DevExpress.XtraEditors.TextEdit();
+            this.txbNavigationTarget = new DevExpress.XtraEditors.LookUpEdit();
+            this.cbbIcon = new DevExpress.XtraEditors.ImageComboBoxEdit();
+            this.iconImages = new DevExpress.Utils.SvgImageCollection(this.components);
+            this.layoutIcon = new DevExpress.XtraLayout.LayoutControlItem();
             this.speSortOrder = new DevExpress.XtraEditors.SpinEdit();
             this.cbbDevelopmentStatus = new DevExpress.XtraEditors.ComboBoxEdit();
             this.memoDescription = new DevExpress.XtraEditors.MemoEdit();
@@ -75,6 +81,9 @@ namespace Winform4System.Forms.SystemManagement
             this.emptySpace = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cbbIcon.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconImages)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutIcon)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txbCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txbDisplayName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbbParent.Properties)).BeginInit();
@@ -106,6 +115,7 @@ namespace Winform4System.Forms.SystemManagement
             this.layoutControl1.Controls.Add(this.txbDisplayName);
             this.layoutControl1.Controls.Add(this.cbbParent);
             this.layoutControl1.Controls.Add(this.txbNavigationTarget);
+            this.layoutControl1.Controls.Add(this.cbbIcon);
             this.layoutControl1.Controls.Add(this.speSortOrder);
             this.layoutControl1.Controls.Add(this.cbbDevelopmentStatus);
             this.layoutControl1.Controls.Add(this.memoDescription);
@@ -117,7 +127,7 @@ namespace Winform4System.Forms.SystemManagement
             this.layoutControl1.Location = new System.Drawing.Point(0, 49);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.Root;
-            this.layoutControl1.Size = new System.Drawing.Size(720, 486);
+            this.layoutControl1.Size = new System.Drawing.Size(720, 522);
             this.layoutControl1.TabIndex = 0;
             // 
             // txbCode
@@ -157,10 +167,12 @@ namespace Winform4System.Forms.SystemManagement
             this.cbbParent.Properties.Appearance.Options.UseForeColor = true;
             this.cbbParent.Properties.AppearanceDropDown.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.cbbParent.Properties.AppearanceDropDown.Options.UseFont = true;
-            this.cbbParent.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.cbbParent.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Clear),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbbParent.Properties.Columns.AddRange(new DevExpress.XtraEditors.Controls.LookUpColumnInfo[] {
             new DevExpress.XtraEditors.Controls.LookUpColumnInfo("DisplayName", "上層功能")});
+            this.cbbParent.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cbbParent_ButtonClick);
+            this.cbbParent.Properties.ShowHeader = false;
             this.cbbParent.Properties.NullText = "（頂層群組）";
             this.cbbParent.Size = new System.Drawing.Size(608, 32);
             this.cbbParent.StyleController = this.layoutControl1;
@@ -174,10 +186,31 @@ namespace Winform4System.Forms.SystemManagement
             this.txbNavigationTarget.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
             this.txbNavigationTarget.Properties.Appearance.Options.UseFont = true;
             this.txbNavigationTarget.Properties.Appearance.Options.UseForeColor = true;
-            this.txbNavigationTarget.Properties.MaxLength = 300;
+            this.txbNavigationTarget.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            this.txbNavigationTarget.Properties.NullText = "群組（不開啟畫面）";
+            this.txbNavigationTarget.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.txbNavigationTarget.Properties.ShowHeader = false;
+            this.txbNavigationTarget.Properties.AppearanceDropDown.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
+            this.txbNavigationTarget.Properties.AppearanceDropDown.Options.UseFont = true;
             this.txbNavigationTarget.Size = new System.Drawing.Size(608, 32);
             this.txbNavigationTarget.StyleController = this.layoutControl1;
             this.txbNavigationTarget.TabIndex = 3;
+            this.cbbIcon.Name = "cbbIcon";
+            this.cbbIcon.StyleController = this.layoutControl1;
+            this.cbbIcon.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
+            this.cbbIcon.Properties.Appearance.Options.UseFont = true;
+            this.cbbIcon.Properties.AppearanceDropDown.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
+            this.cbbIcon.Properties.AppearanceDropDown.Options.UseFont = true;
+            this.cbbIcon.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
+            this.cbbIcon.Properties.SmallImages = this.iconImages;
+            this.cbbIcon.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.layoutIcon.Control = this.cbbIcon;
+            this.layoutIcon.Name = "layoutIcon";
+            this.layoutIcon.Text = "功能圖示";
+            this.layoutIcon.AppearanceItemCaption.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
+            this.layoutIcon.AppearanceItemCaption.Options.UseFont = true;
+            this.layoutIcon.Location = new System.Drawing.Point(0, 144);
+            this.layoutIcon.Size = new System.Drawing.Size(700, 36);
             // 
             // speSortOrder
             // 
@@ -186,7 +219,7 @@ namespace Winform4System.Forms.SystemManagement
             0,
             0,
             0});
-            this.speSortOrder.Location = new System.Drawing.Point(100, 156);
+            this.speSortOrder.Location = new System.Drawing.Point(100, 192);
             this.speSortOrder.Name = "speSortOrder";
             this.speSortOrder.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.speSortOrder.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
@@ -207,7 +240,7 @@ namespace Winform4System.Forms.SystemManagement
             // 
             // cbbDevelopmentStatus
             // 
-            this.cbbDevelopmentStatus.Location = new System.Drawing.Point(100, 192);
+            this.cbbDevelopmentStatus.Location = new System.Drawing.Point(100, 228);
             this.cbbDevelopmentStatus.Name = "cbbDevelopmentStatus";
             this.cbbDevelopmentStatus.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.cbbDevelopmentStatus.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
@@ -228,7 +261,7 @@ namespace Winform4System.Forms.SystemManagement
             // 
             // memoDescription
             // 
-            this.memoDescription.Location = new System.Drawing.Point(100, 228);
+            this.memoDescription.Location = new System.Drawing.Point(100, 264);
             this.memoDescription.Name = "memoDescription";
             this.memoDescription.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.memoDescription.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
@@ -241,7 +274,7 @@ namespace Winform4System.Forms.SystemManagement
             // 
             // chkWide
             // 
-            this.chkWide.Location = new System.Drawing.Point(12, 344);
+            this.chkWide.Location = new System.Drawing.Point(12, 380);
             this.chkWide.Name = "chkWide";
             this.chkWide.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.chkWide.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
@@ -254,20 +287,20 @@ namespace Winform4System.Forms.SystemManagement
             // 
             // chkVisible
             // 
-            this.chkVisible.Location = new System.Drawing.Point(12, 380);
+            this.chkVisible.Location = new System.Drawing.Point(12, 416);
             this.chkVisible.Name = "chkVisible";
             this.chkVisible.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.chkVisible.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
             this.chkVisible.Properties.Appearance.Options.UseFont = true;
             this.chkVisible.Properties.Appearance.Options.UseForeColor = true;
-            this.chkVisible.Properties.Caption = "在主畫面顯示";
+            this.chkVisible.Properties.Caption = "顯示於主畫面或模組選單";
             this.chkVisible.Size = new System.Drawing.Size(696, 32);
             this.chkVisible.StyleController = this.layoutControl1;
             this.chkVisible.TabIndex = 8;
             // 
             // chkActive
             // 
-            this.chkActive.Location = new System.Drawing.Point(12, 416);
+            this.chkActive.Location = new System.Drawing.Point(12, 452);
             this.chkActive.Name = "chkActive";
             this.chkActive.Properties.Appearance.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.chkActive.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
@@ -361,7 +394,7 @@ namespace Winform4System.Forms.SystemManagement
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 535);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 571);
             this.barDockControlBottom.Manager = this.barManagerTP;
             this.barDockControlBottom.Size = new System.Drawing.Size(720, 0);
             // 
@@ -371,7 +404,7 @@ namespace Winform4System.Forms.SystemManagement
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 49);
             this.barDockControlLeft.Manager = this.barManagerTP;
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 486);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 522);
             // 
             // barDockControlRight
             // 
@@ -379,7 +412,7 @@ namespace Winform4System.Forms.SystemManagement
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(720, 49);
             this.barDockControlRight.Manager = this.barManagerTP;
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 486);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 522);
             // 
             // Root
             // 
@@ -390,6 +423,7 @@ namespace Winform4System.Forms.SystemManagement
             this.layoutDisplayName,
             this.layoutParent,
             this.layoutNavigationTarget,
+            this.layoutIcon,
             this.layoutSortOrder,
             this.layoutDevelopmentStatus,
             this.layoutDescription,
@@ -398,7 +432,7 @@ namespace Winform4System.Forms.SystemManagement
             this.layoutActive,
             this.emptySpace});
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(720, 486);
+            this.Root.Size = new System.Drawing.Size(720, 522);
             this.Root.TextVisible = false;
             // 
             // layoutCode
@@ -460,7 +494,7 @@ namespace Winform4System.Forms.SystemManagement
             this.layoutSortOrder.AppearanceItemCaption.Options.UseFont = true;
             this.layoutSortOrder.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutSortOrder.Control = this.speSortOrder;
-            this.layoutSortOrder.Location = new System.Drawing.Point(0, 144);
+            this.layoutSortOrder.Location = new System.Drawing.Point(0, 180);
             this.layoutSortOrder.Name = "layoutSortOrder";
             this.layoutSortOrder.Size = new System.Drawing.Size(700, 36);
             this.layoutSortOrder.Text = "排序";
@@ -473,7 +507,7 @@ namespace Winform4System.Forms.SystemManagement
             this.layoutDevelopmentStatus.AppearanceItemCaption.Options.UseFont = true;
             this.layoutDevelopmentStatus.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutDevelopmentStatus.Control = this.cbbDevelopmentStatus;
-            this.layoutDevelopmentStatus.Location = new System.Drawing.Point(0, 180);
+            this.layoutDevelopmentStatus.Location = new System.Drawing.Point(0, 216);
             this.layoutDevelopmentStatus.Name = "layoutDevelopmentStatus";
             this.layoutDevelopmentStatus.Size = new System.Drawing.Size(700, 36);
             this.layoutDevelopmentStatus.Text = "開發狀態";
@@ -486,7 +520,7 @@ namespace Winform4System.Forms.SystemManagement
             this.layoutDescription.AppearanceItemCaption.Options.UseFont = true;
             this.layoutDescription.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutDescription.Control = this.memoDescription;
-            this.layoutDescription.Location = new System.Drawing.Point(0, 216);
+            this.layoutDescription.Location = new System.Drawing.Point(0, 252);
             this.layoutDescription.MaxSize = new System.Drawing.Size(0, 116);
             this.layoutDescription.MinSize = new System.Drawing.Size(149, 116);
             this.layoutDescription.Name = "layoutDescription";
@@ -498,7 +532,7 @@ namespace Winform4System.Forms.SystemManagement
             // layoutWide
             // 
             this.layoutWide.Control = this.chkWide;
-            this.layoutWide.Location = new System.Drawing.Point(0, 332);
+            this.layoutWide.Location = new System.Drawing.Point(0, 368);
             this.layoutWide.Name = "layoutWide";
             this.layoutWide.Size = new System.Drawing.Size(700, 36);
             this.layoutWide.TextSize = new System.Drawing.Size(0, 0);
@@ -507,7 +541,7 @@ namespace Winform4System.Forms.SystemManagement
             // layoutVisible
             // 
             this.layoutVisible.Control = this.chkVisible;
-            this.layoutVisible.Location = new System.Drawing.Point(0, 368);
+            this.layoutVisible.Location = new System.Drawing.Point(0, 404);
             this.layoutVisible.Name = "layoutVisible";
             this.layoutVisible.Size = new System.Drawing.Size(700, 36);
             this.layoutVisible.TextSize = new System.Drawing.Size(0, 0);
@@ -516,7 +550,7 @@ namespace Winform4System.Forms.SystemManagement
             // layoutActive
             // 
             this.layoutActive.Control = this.chkActive;
-            this.layoutActive.Location = new System.Drawing.Point(0, 404);
+            this.layoutActive.Location = new System.Drawing.Point(0, 440);
             this.layoutActive.Name = "layoutActive";
             this.layoutActive.Size = new System.Drawing.Size(700, 36);
             this.layoutActive.TextSize = new System.Drawing.Size(0, 0);
@@ -525,7 +559,7 @@ namespace Winform4System.Forms.SystemManagement
             // emptySpace
             // 
             this.emptySpace.AllowHotTrack = false;
-            this.emptySpace.Location = new System.Drawing.Point(0, 440);
+            this.emptySpace.Location = new System.Drawing.Point(0, 476);
             this.emptySpace.Name = "emptySpace";
             this.emptySpace.Size = new System.Drawing.Size(700, 26);
             this.emptySpace.TextSize = new System.Drawing.Size(0, 0);
@@ -534,7 +568,7 @@ namespace Winform4System.Forms.SystemManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(720, 535);
+            this.ClientSize = new System.Drawing.Size(720, 571);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -549,6 +583,9 @@ namespace Winform4System.Forms.SystemManagement
             this.Text = "編輯功能卡";
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cbbIcon.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iconImages)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutIcon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txbCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txbDisplayName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbbParent.Properties)).EndInit();

@@ -9,6 +9,8 @@ namespace Winform4System.Forms.SystemManagement
         private DevExpress.XtraBars.BarManager barManagerTP;
         private DevExpress.XtraBars.Bar barTools;
         private DevExpress.XtraBars.BarButtonItem btnReload;
+        private DevExpress.XtraBars.BarButtonItem btnAdd;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn colIconCaption;
         private DevExpress.XtraTreeList.TreeList treeFunctions;
         private DevExpress.XtraTreeList.Columns.TreeListColumn colDisplayName;
         private DevExpress.XtraTreeList.Columns.TreeListColumn colFunctionCode;
@@ -45,6 +47,8 @@ namespace Winform4System.Forms.SystemManagement
             this.barManagerTP = new DevExpress.XtraBars.BarManager(this.components);
             this.barTools = new DevExpress.XtraBars.Bar();
             this.btnReload = new DevExpress.XtraBars.BarButtonItem();
+            this.btnAdd = new DevExpress.XtraBars.BarButtonItem();
+            this.colIconCaption = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -84,6 +88,7 @@ namespace Winform4System.Forms.SystemManagement
             this.treeFunctions.Appearance.Row.Options.UseForeColor = true;
             this.treeFunctions.Columns.AddRange(new DevExpress.XtraTreeList.Columns.TreeListColumn[] {
             this.colDisplayName,
+            this.colIconCaption,
             this.colFunctionCode,
             this.colDescription,
             this.colNavigationTarget,
@@ -197,9 +202,9 @@ namespace Winform4System.Forms.SystemManagement
             this.barManagerTP.DockControls.Add(this.barDockControlRight);
             this.barManagerTP.Form = this;
             this.barManagerTP.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.btnReload});
+            this.btnReload, this.btnAdd});
             this.barManagerTP.MainMenu = this.barTools;
-            this.barManagerTP.MaxItemId = 1;
+            this.barManagerTP.MaxItemId = 2;
             // 
             // barTools
             // 
@@ -223,6 +228,7 @@ namespace Winform4System.Forms.SystemManagement
             this.barTools.DockRow = 0;
             this.barTools.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             this.barTools.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnAdd, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph),
             new DevExpress.XtraBars.LinkPersistInfo(DevExpress.XtraBars.BarLinkUserDefines.PaintStyle, this.btnReload, DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph)});
             this.barTools.OptionsBar.AllowQuickCustomization = false;
             this.barTools.OptionsBar.DrawDragBorder = false;
@@ -230,13 +236,26 @@ namespace Winform4System.Forms.SystemManagement
             this.barTools.OptionsBar.UseWholeRow = true;
             this.barTools.Text = "主選單";
             // 
+            this.btnAdd.Caption = "新增功能";
+            this.btnAdd.Id = 1;
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.ImageOptions.SvgImage = Winform4System.Helpers.SvgIconCatalog.Add;
+            this.btnAdd.ImageOptions.SvgImageSize = new System.Drawing.Size(32, 32);
+            this.btnAdd.PaintStyle = DevExpress.XtraBars.BarItemPaintStyle.CaptionGlyph;
+            this.btnAdd.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnAdd_ItemClick);
+            this.colIconCaption.Caption = "圖示";
+            this.colIconCaption.FieldName = "IconCaption";
+            this.colIconCaption.Name = "colIconCaption";
+            this.colIconCaption.Visible = true;
+            this.colIconCaption.VisibleIndex = 9;
+            this.colIconCaption.Width = 95;
             // btnReload
             // 
             this.btnReload.Caption = "重新整理";
             this.btnReload.Id = 0;
             this.btnReload.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnReload.ImageOptions.SvgImage")));
             this.btnReload.ImageOptions.SvgImageSize = new System.Drawing.Size(32, 32);
-            this.btnReload.ItemAppearance.Hovered.ForeColor = System.Drawing.Color.Blue;
+            this.btnReload.ItemAppearance.Hovered.ForeColor = System.Drawing.Color.Black;
             this.btnReload.ItemAppearance.Hovered.Options.UseForeColor = true;
             this.btnReload.ItemAppearance.Normal.Font = new System.Drawing.Font("Microsoft JhengHei UI", 14.25F);
             this.btnReload.ItemAppearance.Normal.Options.UseFont = true;

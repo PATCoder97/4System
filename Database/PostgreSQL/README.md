@@ -10,6 +10,20 @@ Database đã khởi tạo chạy thêm `003_spare_part_card_order.sql` để ch
 
 Chạy `004_pending_file_deletion.sql` trên cả database mới và database đã khởi tạo để thêm hàng đợi xóa file của API 0.1.2. Cập nhật schema trước khi chạy phiên bản ứng dụng mới.
 
+Chạy `005_spare_part_navigation.sql` để đăng ký 8 chức năng con và nhóm 機邊庫【經理室】 dưới `ASSET.SPARE_PART`. Menu module đọc tên, thứ tự, trạng thái hiển thị/kích hoạt từ các bản ghi này; màn hình chính chỉ hiển thị card cấp module. Mỗi chức năng con có quyền `.VIEW` riêng trong ma trận phân quyền. Migration kế thừa phạm vi từ quyền module hiện có, chỉ cấp nhóm 經理室 cho role có APPROVE/ADMIN. Các quyền thao tác nghiệp vụ CREATE/UPDATE/DELETE/APPROVE/EXPORT hiện có vẫn được kiểm tra. Sau khi sửa cấu hình, mở lại module; sau khi sửa quyền role, đăng nhập lại để cập nhật phiên.
+
+Chạy `006_manual_function_configuration.sql` để thêm `IconKey` và đưa các mục quản trị hệ thống về các nhóm bên trong module 系統管理. Sau migration, cả 機邊庫 và 系統管理 đọc menu từ DB. Không chạy lại các seed SQL Server cũ.
+
+## Thêm chức năng thủ công
+
+Trong 功能卡管理, tài khoản có `SYSTEM.FUNCTION.ADMIN` dùng nút **新增功能**. Chọn nhóm cha, nhập mã kỹ thuật duy nhất và tên zh-Hant, chọn màn hình đích hoặc để trống để tạo nhóm. Danh sách màn hình được lọc theo module đã chọn. Mã được chuẩn hóa chữ hoa và không thay đổi sau khi tạo.
+
+Có thể chọn icon có xem trước từ catalog SVG dùng chung, thứ tự, trạng thái phát triển, hiển thị và kích hoạt. Icon được lưu bằng khóa catalog; không lưu đường dẫn tùy ý hay nạp class từ tên do người dùng nhập. Mỗi màn hình mới tự tạo permission `<FunctionCode>.VIEW` và gán cho role `SECURITY_ADMIN`. Các role khác cần được cấp quyền bằng ma trận quyền; đăng nhập lại để cập nhật phiên.
+
+Có thể thêm một card module mới trỏ tới `SparePartForm` hoặc `SystemSettingsForm`, rồi thêm nhóm/chức năng con thuộc đúng loại module đó. Chọn lại một màn hình có sẵn chỉ tạo thêm lối truy cập; quyền xem và quyền nghiệp vụ gốc của màn hình vẫn bắt buộc. Màn hình nghiệp vụ mới vẫn phải được lập trình và đăng ký trong catalog. Tên hiển thị, icon và thứ tự có hiệu lực khi mở lại module.
+
+Backend kiểm tra mã trùng, mã bất biến, vòng lặp nhóm cha, màn hình đặt sai module và RowVersion. Tạo/sửa và cấp permission nằm trong một transaction EF6, có audit. Không tự cấp quyền màn hình gốc cho người dùng chỉ vì họ được cấp một mục menu mới.
+
 - Prod: `10.198.182.123:5432/winform4system_prod`, user `w4s_prod`.
 - Test: `10.198.182.123:5432/winform4system_test`, user `w4s_test`.
 - `RowVersion` là `bytea` 8 byte được cập nhật bằng trigger và sequence; EF6 vẫn phát hiện cập nhật xung đột.
@@ -54,5 +68,9 @@ Máy WORKGROUP không cần join domain để đăng nhập: ứng dụng xác t
 `Database/Tools/VerifyPostgres.cs` là công cụ kiểm tra tích hợp dùng cấu hình Test: đọc seed, thêm/sửa/xóa bộ phận tạm, kiểm tra xung đột RowVersion, default audit và rollback, đọc view Spare, upload/download/delete binary và DELETE lặp lại. Tự xóa file thử sau khi kiểm tra. Chỉ chạy trên Test.
 
 `Database/Tools/VerifyFileDeletion.cs` kiểm tra rollback yêu cầu xóa, xóa hướng dẫn qua service, xử lý hàng đợi, chặn đường dẫn ngoài kho và lên lịch thử lại khi lỗi. Chỉ chạy trên Test, tự dọn bản ghi/file thử.
+
+`Database/Tools/VerifyModuleNavigation.cs` kiểm tra đủ 8 chức năng con, không tạo card con trên Main, thứ tự menu, quyền xem và trạng thái ẩn/tắt của mục hoặc nhóm cha. Chỉ chạy trên Test, tự dọn dữ liệu thử.
+
+`Database/Tools/VerifyManualFunctions.cs` kiểm tra thêm/sửa nhóm và mục, icon, tạo permission/audit, mã trùng, mã icon/màn hình không hợp lệ, vòng lặp, chuyển sai module, RowVersion, card module mới và quyền nghiệp vụ gốc. Chỉ chạy trên Test, tự dọn dữ liệu thử và quyền/audit do phép thử tạo.
 
 `ExportPostgresSchema.cs` xuất metadata EDMX của hai context để đối chiếu mapping; không tự áp dụng DDL.

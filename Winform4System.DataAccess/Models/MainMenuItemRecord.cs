@@ -2,6 +2,8 @@ namespace Winform4System.DataAccess.Models
 {
     public sealed class MainMenuItemRecord
     {
+        public string NavigationTarget { get; set; }
+        public string IconKey { get; set; }
         public string Code { get; set; }
         public string GroupName { get; set; }
         public string Title { get; set; }

@@ -15,8 +15,10 @@ namespace Winform4System.Core.Models
             string title,
             string description,
             MenuDevelopmentStatus developmentStatus,
-            bool isWide = true)
+            bool isWide = true, string navigationTarget = null, string iconKey = null)
         {
+            NavigationTarget = navigationTarget;
+            IconKey = iconKey;
             Code = code;
             Group = group;
             Title = title;
@@ -25,6 +27,8 @@ namespace Winform4System.Core.Models
             IsWide = isWide;
         }
 
+        public string NavigationTarget { get; }
+        public string IconKey { get; }
         public string Code { get; }
         public string Group { get; }
         public string Title { get; }

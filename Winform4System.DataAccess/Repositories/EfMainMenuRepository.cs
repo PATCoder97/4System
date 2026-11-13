@@ -55,6 +55,7 @@ namespace Winform4System.DataAccess.Repositories
                      select permission.FunctionId)
                     .Distinct();
 
+                var allFunctions = context.ApplicationFunctions.AsNoTracking().ToList();
                 return
                     (from functionData in context.ApplicationFunctions.AsNoTracking()
                      join parent in context.ApplicationFunctions.AsNoTracking()
@@ -68,6 +69,8 @@ namespace Winform4System.DataAccess.Repositories
                      select new MainMenuItemRecord
                      {
                          Code = functionData.FunctionCode,
+                         NavigationTarget = functionData.NavigationTarget,
+                         IconKey = functionData.IconKey,
                          GroupName = parent.DisplayName,
                          Title = functionData.DisplayName,
                          Description = functionData.Description,
@@ -76,8 +79,22 @@ namespace Winform4System.DataAccess.Repositories
                          GroupSortOrder = parent.SortOrder,
                          SortOrder = functionData.SortOrder
                      })
+                    .ToList().Where(x => (Winform4System.Core.Models.FunctionCatalog.Find(x.NavigationTarget)?.IsModule == true
+                        || x.NavigationTarget == "MachineWarehouseForm") && HasVisibleAncestors(x.Code, allFunctions))
                     .ToList();
             }
+        }
+        private static bool HasVisibleAncestors(string code, System.Collections.Generic.IList<Winform4System.DataAccess.Entities.ApplicationFunction> all)
+        {
+            var current = all.SingleOrDefault(x => x.FunctionCode == code);
+            var seen = new System.Collections.Generic.HashSet<int>();
+            while (current != null)
+            {
+                if (!current.IsActive || !current.IsVisible || !seen.Add(current.FunctionId)) return false;
+                if (!current.ParentFunctionId.HasValue) return true;
+                current = all.SingleOrDefault(x => x.FunctionId == current.ParentFunctionId.Value);
+            }
+            return false;
         }
     }
 }

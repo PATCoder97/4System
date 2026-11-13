@@ -125,6 +125,7 @@
     <Compile Include="Forms\Main\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Common\ConfiguredModuleForm.cs" />
     <Compile Include="Forms\Common\FluentModuleForm.cs">
       <SubType>Form</SubType>
     </Compile>

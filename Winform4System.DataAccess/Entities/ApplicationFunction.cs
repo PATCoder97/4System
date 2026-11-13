@@ -23,6 +23,9 @@ namespace Winform4System.DataAccess.Entities
         [StringLength(300)]
         public string NavigationTarget { get; set; }
 
+        [StringLength(64)]
+        public string IconKey { get; set; }
+
         public int SortOrder { get; set; }
         public bool IsVisible { get; set; }
         public bool IsActive { get; set; }

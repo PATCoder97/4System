@@ -143,38 +143,27 @@ namespace Winform4System.Forms.Main
                 return;
 
             _logger.Info(nameof(MainForm), $"Menu selected: {definition.Code} - {definition.Title}");
-            if (string.Equals(definition.Code, "ASSET.SPARE_PART", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                if (!CurrentAuthorization.HasPermission("ASSET.SPARE_PART.VIEW"))
+                var navigation = new Winform4System.Business.Services.ModuleNavigationService(new Winform4System.DataAccess.Configuration.ConnectionStringProvider());
+                if (definition.NavigationTarget == "SparePartForm")
                 {
-                    XtraMessageBox.Show(
-                        "您沒有檢視此功能的權限。",
-                        ApplicationMetadata.DisplayName,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
+                    navigation.DemandFunction(definition.Code, definition.Code);
+                    using (var form = new SparePartForm(_session, definition.Code)) form.ShowDialog(this);
+                    LoadDashboardCards();
                     return;
                 }
-
-                using (var form = new SparePartForm(_session))
-                    form.ShowDialog(this);
-                return;
+                if (definition.NavigationTarget == "SystemSettingsForm")
+                {
+                    navigation.DemandFunction(definition.Code, definition.Code);
+                    using (var form = new SystemSettingsForm(definition.Code)) form.ShowDialog(this);
+                    LoadDashboardCards();
+                    return;
+                }
             }
-
-            if (string.Equals(definition.Code, "SYSTEM.SETTINGS", StringComparison.OrdinalIgnoreCase))
+            catch (UnauthorizedAccessException ex)
             {
-                if (!CurrentAuthorization.HasPermission("SYSTEM.SETTINGS.VIEW"))
-                {
-                    XtraMessageBox.Show(
-                        "您沒有檢視系統管理的權限。",
-                        ApplicationMetadata.DisplayName,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                    return;
-                }
-
-                using (var form = new SystemSettingsForm())
-                    form.ShowDialog(this);
-
+                XtraMessageBox.Show(ex.Message, ApplicationMetadata.DisplayName, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 LoadDashboardCards();
                 return;
             }

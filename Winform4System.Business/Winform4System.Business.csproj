@@ -41,6 +41,7 @@
     <Compile Include="Services\DepartmentManagementService.cs" />
     <Compile Include="Services\JobTitleManagementService.cs" />
     <Compile Include="Services\ApplicationFunctionService.cs" />
+    <Compile Include="Services\ModuleNavigationService.cs" />
     <Compile Include="Services\EmployeeManagementService.cs" />
     <Compile Include="Services\EmployeePermissionService.cs" />
     <Compile Include="Services\SecurityGroupManagementService.cs" />
