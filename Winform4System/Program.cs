@@ -72,6 +72,8 @@ namespace Winform4System
                     IMainMenuService menuService = new EfMainMenuService(
                         new EfMainMenuRepository(new ConnectionStringProvider()),
                         session.UserId);
+                    PendingFileDeletionService.Start();
+
                     using (var mainForm = new MainForm(
                         menuService,
                         logger,

@@ -37,13 +37,34 @@ namespace Winform4System.Business.Services
 
         private static string FileUrl(string cachePath)
         {
+            string relative = RelativePath(cachePath);
+            return "api/files/winform4system/" + EnvironmentName + "/"
+                + string.Join("/", relative.Split('/').Select(Uri.EscapeDataString));
+        }
+
+        internal static string RelativePath(string cachePath)
+        {
             string root = Path.GetFullPath(CacheRoot).TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
             string path = Path.GetFullPath(cachePath);
             if (!path.StartsWith(root, StringComparison.OrdinalIgnoreCase))
                 throw new InvalidOperationException("檔案路徑超出儲存範圍。");
-            string relative = path.Substring(root.Length).Replace('\\', '/');
-            return "api/files/winform4system/" + EnvironmentName + "/"
-                + string.Join("/", relative.Split('/').Select(Uri.EscapeDataString));
+            return path.Substring(root.Length).Replace('\\', '/');
+        }
+
+        public static void Delete(string cachePath)
+        {
+            DeleteAsync(FileUrl(cachePath)).GetAwaiter().GetResult();
+            if (File.Exists(cachePath)) File.Delete(cachePath);
+        }
+
+        private static async Task DeleteAsync(string url)
+        {
+            using (var request = new HttpRequestMessage(HttpMethod.Delete, url))
+            using (var response = await Client.Value.SendAsync(request).ConfigureAwait(false))
+            {
+                // File đã mất cũng được xem là hoàn tất để thử lại an toàn.
+                if (response.StatusCode != HttpStatusCode.NotFound) EnsureSuccess(response);
+            }
         }
 
         public static void Upload(string sourcePath, string cachePath)

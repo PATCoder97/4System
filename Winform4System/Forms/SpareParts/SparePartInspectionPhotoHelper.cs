@@ -45,12 +45,9 @@ namespace Winform4System.Forms.SpareParts
 
         public static void DeletePhotoFile(int batchMaterialId, SparePartInspectionAttachment attachment)
         {
-            // API 0.1.1 無刪除端點；刪除資料庫關聯後保留伺服器檔案。
-            string path = attachment == null ? string.Empty : Path.Combine(EnsureInspectionPhotoFolder(batchMaterialId), attachment.EncryptionName ?? string.Empty);
-            if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
-            {
-                File.Delete(path);
-            }
+            if (attachment == null || string.IsNullOrWhiteSpace(attachment.EncryptionName)) return;
+            string path = Path.Combine(EnsureInspectionPhotoFolder(batchMaterialId), attachment.EncryptionName);
+            Winform4System.Business.Services.ShareDataStorage.Delete(path);
         }
 
         public static void OpenPhotoFile(int batchMaterialId, SparePartInspectionAttachment attachment)

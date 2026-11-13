@@ -30,6 +30,7 @@
     <Compile Include="Configuration\ConnectionStringProvider.cs" />
     <Compile Include="Configuration\PostgresConfiguration.cs" />
     <Compile Include="Entities\AuditLog.cs" />
+    <Compile Include="Entities\PendingFileDeletion.cs" />
     <Compile Include="Entities\ApplicationFunction.cs" />
     <Compile Include="Entities\Department.cs" />
     <Compile Include="Entities\EmployeeProfile.cs" />

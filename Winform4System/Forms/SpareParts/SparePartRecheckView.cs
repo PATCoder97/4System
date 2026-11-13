@@ -724,7 +724,6 @@ namespace Winform4System.Forms.SpareParts
                 {
                     try
                     {
-                        SparePartInspectionPhotoHelper.DeletePhotoFile(batchMaterialId, oldAttachment);
                         SparePartInspectionAttachmentService.Instance.RemoveById(oldAttachment.Id);
                     }
                     catch

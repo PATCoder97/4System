@@ -40,9 +40,9 @@ namespace Winform4System.DataAccess
 
         public override int SaveChanges()
         {
-            bool hasAdded = ChangeTracker.Entries().Any(entry => entry.State == EntityState.Added);
-            bool hasModified = ChangeTracker.Entries().Any(entry => entry.State == EntityState.Modified);
-            bool hasDeleted = ChangeTracker.Entries().Any(entry => entry.State == EntityState.Deleted);
+            bool hasAdded = ChangeTracker.Entries().Where(entry => !(entry.Entity is Winform4System.DataAccess.Entities.PendingFileDeletion)).Any(entry => entry.State == EntityState.Added);
+            bool hasModified = ChangeTracker.Entries().Where(entry => !(entry.Entity is Winform4System.DataAccess.Entities.PendingFileDeletion)).Any(entry => entry.State == EntityState.Modified);
+            bool hasDeleted = ChangeTracker.Entries().Where(entry => !(entry.Entity is Winform4System.DataAccess.Entities.PendingFileDeletion)).Any(entry => entry.State == EntityState.Deleted);
 
             if (hasAdded)
                 CurrentAuthorization.Demand("ASSET.SPARE_PART.CREATE");
@@ -53,6 +53,8 @@ namespace Winform4System.DataAccess
 
             return base.SaveChanges();
         }
+
+        public DbSet<Winform4System.DataAccess.Entities.PendingFileDeletion> PendingFileDeletions { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

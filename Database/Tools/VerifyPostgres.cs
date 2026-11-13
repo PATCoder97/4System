@@ -63,9 +63,14 @@ public static class VerifyPostgres
                 ShareDataStorage.Upload(source, target);
                 ShareDataStorage.Download(target);
                 if (!bytes.SequenceEqual(File.ReadAllBytes(target))) throw new Exception("Binary roundtrip mismatch");
-                Console.WriteLine("API binary roundtrip: OK; file: " + Path.GetFileName(target));
+                ShareDataStorage.Delete(target);
+                ShareDataStorage.Delete(target); // DELETE 404 có thể thử lại an toàn.
+                bool missing = false;
+                try { ShareDataStorage.Download(target); } catch (FileNotFoundException) { missing = true; }
+                if (!missing || File.Exists(target)) throw new Exception("Deleted file still exists");
+                Console.WriteLine("API upload/download/delete and repeated delete: PASS");
             }
-            finally { File.Delete(source); if (File.Exists(target)) File.Delete(target); }
+            finally { File.Delete(source); ShareDataStorage.Delete(target); }
             Console.WriteLine("EF6 insert, update, conflict rejection, audit defaults and API: PASS");
         }
         finally

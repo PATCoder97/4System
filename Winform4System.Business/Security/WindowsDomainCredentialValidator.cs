@@ -1,7 +1,6 @@
 using System;
-using System.DirectoryServices.AccountManagement;
-using System.Net.NetworkInformation;
-using System.Runtime.InteropServices;
+using System.DirectoryServices.Protocols;
+using System.Net;
 
 namespace Winform4System.Business.Security
 {
@@ -14,41 +13,40 @@ namespace Winform4System.Business.Security
             if (string.IsNullOrWhiteSpace(accountName) || string.IsNullOrEmpty(password))
                 return DomainCredentialValidationResult.Invalid;
 
-            if (!IsMachineJoinedToCorporateDomain())
-                return DomainCredentialValidationResult.Unavailable;
-
             try
             {
-                using (var context = new PrincipalContext(ContextType.Domain, DomainName))
+                var credentials = new NetworkCredential(NormalizeUserName(accountName), password, DomainName);
+                using (var connection = new LdapConnection(
+                    new LdapDirectoryIdentifier(DomainName), credentials, AuthType.Negotiate))
                 {
-                    return context.ValidateCredentials(
-                        NormalizeUserName(accountName),
-                        password,
-                        ContextOptions.Negotiate)
-                        ? DomainCredentialValidationResult.Valid
-                        : DomainCredentialValidationResult.Invalid;
+                    connection.Timeout = TimeSpan.FromSeconds(10);
+                    connection.SessionOptions.ProtocolVersion = 3;
+                    connection.SessionOptions.Signing = true;
+                    connection.SessionOptions.Sealing = true;
+                    // Dùng tài khoản được nhập, không phụ thuộc tài khoản Windows hoặc trạng thái join domain.
+                    connection.Bind();
+                    return DomainCredentialValidationResult.Valid;
                 }
             }
-            catch (PrincipalServerDownException)
+            catch (LdapException exception)
             {
-                return DomainCredentialValidationResult.Unavailable;
-            }
-            catch (COMException)
-            {
-                return DomainCredentialValidationResult.Unavailable;
+                return ClassifyLdapFailure(exception.ErrorCode);
             }
         }
 
-        private static bool IsMachineJoinedToCorporateDomain()
+        internal static DomainCredentialValidationResult ClassifyLdapFailure(int errorCode)
         {
-            try
+            // Chỉ lỗi kết nối/timeout mới cho phép tầng đăng nhập thử mật khẩu cache.
+            switch (errorCode)
             {
-                string machineDomain = IPGlobalProperties.GetIPGlobalProperties().DomainName;
-                return string.Equals(machineDomain, DomainName, StringComparison.OrdinalIgnoreCase);
-            }
-            catch (NetworkInformationException)
-            {
-                return false;
+                case 51: // LDAP_BUSY
+                case 52: // LDAP_UNAVAILABLE
+                case 81: // LDAP_SERVER_DOWN
+                case 85: // LDAP_TIMEOUT
+                case 91: // LDAP_CONNECT_ERROR
+                    return DomainCredentialValidationResult.Unavailable;
+                default:
+                    return DomainCredentialValidationResult.Invalid;
             }
         }
 

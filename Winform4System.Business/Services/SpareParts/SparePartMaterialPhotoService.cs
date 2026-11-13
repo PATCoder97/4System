@@ -160,13 +160,16 @@ namespace Winform4System.Business.Services.SpareParts
         {
             try
             {
+                Winform4System.Core.Security.CurrentAuthorization.Demand("ASSET.SPARE_PART.DELETE");
                 using (var _context = new SparePartDbContext())
                 {
                     var item = _context.MaterialPhotos.FirstOrDefault(r => r.Id == id);
                     if (item == null) return false;
 
                     item.IsActive = false;
+                    PendingFileDeletionService.Enqueue(_context, PendingFileDeletionService.SpareFilePath("MaterialPhotos", item.EncryptionName, item.MaterialId));
                     int affectedRecords = _context.SaveChanges();
+                    PendingFileDeletionService.ProcessInBackground();
                     return affectedRecords > 0;
                 }
             }

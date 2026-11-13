@@ -62,13 +62,13 @@ Use `dbo.vw_auth_UserEffectivePermission` to inspect where a user receives a per
 
 ## Bootstrap tài khoản đăng nhập
 
-Ứng dụng chỉ xác thực `UserId` thuộc domain `vn.fpg.com`, giống `7system`, và không lưu mật khẩu dạng rõ trong database. Trên máy đã join đúng domain này, mật khẩu được xác thực bằng domain controller; sau mỗi lần thành công, ứng dụng cập nhật PBKDF2 hash của mật khẩu vừa dùng. Khi máy không join `vn.fpg.com` hoặc domain controller tạm thời không khả dụng, ứng dụng so sánh mật khẩu với hash của lần xác thực domain thành công gần nhất.
+Ứng dụng chỉ xác thực `UserId` thuộc domain `vn.fpg.com` và không lưu mật khẩu dạng rõ trong database. Cả máy đã join domain và máy WORKGROUP đều xác thực trực tiếp với domain controller qua LDAP Negotiate có signing/sealing khi kết nối được mạng công ty hoặc VPN. Sau mỗi lần thành công, ứng dụng cập nhật PBKDF2 hash của mật khẩu vừa dùng. Chỉ khi dịch vụ domain bận, không khả dụng hoặc lỗi kết nối/timeout, ứng dụng mới so sánh mật khẩu với hash của lần xác thực domain thành công gần nhất; mật khẩu bị domain từ chối không được thử cache.
 
 ```powershell
 .\Database\Tools\New-DomainUser.ps1 -UserId VNW0014732 -SystemAdministrator
 ```
 
-Bỏ `-SystemAdministrator` để tạo tài khoản thuộc nhóm `STANDARD_USERS`. Tài khoản mới phải đăng nhập thành công ít nhất một lần trên máy thuộc `vn.fpg.com` trước khi có thể dùng mật khẩu dự phòng trên máy ngoài domain.
+Bỏ `-SystemAdministrator` để tạo tài khoản thuộc nhóm `STANDARD_USERS`. Tài khoản mới phải đăng nhập thành công ít nhất một lần khi kết nối được domain controller trước khi có thể dùng mật khẩu dự phòng lúc domain không khả dụng.
 
 ## Local connection string
 

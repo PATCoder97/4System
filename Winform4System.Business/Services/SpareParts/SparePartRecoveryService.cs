@@ -216,7 +216,10 @@ namespace Winform4System.Business.Services.SpareParts
                     }
 
                     guide.IsActive = false;
-                    return context.SaveChanges() > 0;
+                    PendingFileDeletionService.Enqueue(context, PendingFileDeletionService.SpareFilePath("RecoveryGuides", guide.EncryptionName));
+                    bool saved = context.SaveChanges() > 0;
+                    PendingFileDeletionService.ProcessInBackground();
+                    return saved;
                 }
             }
             catch (Exception ex)
@@ -257,6 +260,7 @@ namespace Winform4System.Business.Services.SpareParts
         {
             try
             {
+                CurrentAuthorization.Demand("ASSET.SPARE_PART.DELETE");
                 using (var context = new SparePartDbContext())
                 {
                     var evidence = context.RecoveryEvidence.FirstOrDefault(item => item.Id == id);
@@ -266,7 +270,10 @@ namespace Winform4System.Business.Services.SpareParts
                     }
 
                     evidence.IsActive = false;
-                    return context.SaveChanges() > 0;
+                    PendingFileDeletionService.Enqueue(context, PendingFileDeletionService.SpareFilePath("RecoveryEvidence", evidence.EncryptionName, evidence.RecoveryTicketId));
+                    bool saved = context.SaveChanges() > 0;
+                    PendingFileDeletionService.ProcessInBackground();
+                    return saved;
                 }
             }
             catch (Exception ex)

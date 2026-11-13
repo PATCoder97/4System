@@ -32,6 +32,8 @@ namespace Winform4System.DataAccess
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<SystemSetting> SystemSettings { get; set; }
 
+        public DbSet<Winform4System.DataAccess.Entities.PendingFileDeletion> PendingFileDeletions { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserGroup>().HasKey(item => new { item.UserId, item.GroupId });

@@ -44,6 +44,10 @@ namespace Winform4System.Business.Services
                         databaseExists ? context.Database.Connection.DataSource + " / " + context.Database.Connection.Database : "無法連線至主要資料庫。", checkedAt));
                     if (!databaseExists) return result;
 
+                    int pendingFileDeletes = context.PendingFileDeletions.Count();
+                    result.Add(Item("檔案服務", "待刪除檔案", pendingFileDeletes == 0 ? HealthState.Healthy : HealthState.Warning,
+                        pendingFileDeletes == 0 ? "沒有待處理的檔案刪除要求。" : $"尚有 {pendingFileDeletes} 個檔案等待刪除，系統將自動重試。", checkedAt));
+
                     List<SystemSetting> settings = context.SystemSettings.AsNoTracking().Where(x => !x.IsSensitive).ToList();
                     AddMetadata(result, settings, applicationVersion, checkedAt);
                     AddConfigurationValidation(result, settings, checkedAt);

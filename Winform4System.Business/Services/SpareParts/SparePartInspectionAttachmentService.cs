@@ -174,9 +174,17 @@ namespace Winform4System.Business.Services.SpareParts
                 using (var _context = new SparePartDbContext())
                 {
                     var itemsRemove = _context.InspectionAttachments.FirstOrDefault(r => r.Id == id);
+                    if (itemsRemove == null) return false;
+                    const string prefix = "SPAREPART_CHECK_";
+                    int itemId;
+                    if (itemsRemove.Thread == null || !itemsRemove.Thread.StartsWith(prefix, StringComparison.Ordinal)
+                        || !int.TryParse(itemsRemove.Thread.Substring(prefix.Length), out itemId) || itemId <= 0)
+                        throw new InvalidOperationException("盤點附件路徑不正確。");
+                    PendingFileDeletionService.Enqueue(_context, PendingFileDeletionService.SpareFilePath("InspectionCheckPhotos", itemsRemove.EncryptionName, itemId));
                     _context.InspectionAttachments.Remove(itemsRemove);
 
                     int affectedRecords = _context.SaveChanges();
+                    PendingFileDeletionService.ProcessInBackground();
                     return affectedRecords > 0;
                 }
             }
