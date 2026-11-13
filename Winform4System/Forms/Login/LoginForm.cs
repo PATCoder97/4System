@@ -145,8 +145,8 @@ namespace Winform4System.Forms.Login
             txtUserId.Focus();
 
 #if DEBUG
-            txtUserId.Text = "VNW0014732";
-            txtPassword.Text = "Ab123456";
+            txtUserId.Text = System.Configuration.ConfigurationManager.AppSettings["DebugLoginUserId"] ?? string.Empty;
+            txtPassword.Text = System.Configuration.ConfigurationManager.AppSettings["DebugLoginPassword"] ?? string.Empty;
 #endif
         }
 

@@ -31,8 +31,7 @@ namespace Winform4System.Forms.Common
             if (root != null)
             {
                 Text = root.DisplayName;
-                var rootGroup = AddConfiguredGroup(root, null);
-                AddChildren(root, functions, rootGroup);
+                AddChildren(root, functions, null);
             }
             Shown += (sender, args) => openInitial?.Invoke();
         }

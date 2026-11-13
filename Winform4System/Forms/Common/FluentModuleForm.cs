@@ -122,9 +122,6 @@ namespace Winform4System.Forms.Common
             SvgImage icon,
             Func<Control> contentFactory)
         {
-            if (parent == null)
-                throw new ArgumentNullException(nameof(parent));
-
             var item = new AccordionControlElement
             {
                 Name = "nav_" + key,
@@ -139,7 +136,8 @@ namespace Winform4System.Forms.Common
             item.Appearance.Pressed.ForeColor = DevExpress.LookAndFeel.DXSkinColors.ForeColors.Critical;
             item.ImageOptions.SvgImage = icon;
             item.Click += NavigationItem_Click;
-            parent.Elements.Add(item);
+            if (parent == null) _navigation.Elements.Add(item);
+            else parent.Elements.Add(item);
         }
 
         protected void OpenTab(string key, string caption, Func<Control> contentFactory)

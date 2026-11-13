@@ -24,6 +24,8 @@ Có thể thêm một card module mới trỏ tới `SparePartForm` hoặc `Syst
 
 Backend kiểm tra mã trùng, mã bất biến, vòng lặp nhóm cha, vị trí nhóm/màn hình và RowVersion. Tạo/sửa và cấp permission nằm trong một transaction EF6, có audit. Không tự cấp quyền màn hình gốc cho người dùng chỉ vì họ được cấp một mục menu mới.
 
+Card ngoài cùng là điểm mở module; menu bên trong bắt đầu từ các mục con trực tiếp của card, không lặp tên card thành một nhóm xổ. Các nhóm con do người quản trị cấu hình vẫn giữ đủ cấp cha–con và có thể thu/mở riêng.
+
 ## Xóa chức năng
 
 Nhấp chuột phải → **檢視功能卡** để mở chế độ xem có **編輯／刪除／關閉**, hoặc chọn **刪除功能** để vào thẳng chế độ xóa. Nút **確認刪除** yêu cầu xác nhận, mặc định chọn không. Hủy không ghi dữ liệu. Quyền `SYSTEM.FUNCTION.ADMIN` được kiểm tra ở UI và Business.
