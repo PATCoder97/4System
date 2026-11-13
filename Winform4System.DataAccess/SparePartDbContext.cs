@@ -6,6 +6,7 @@ using Winform4System.Core.Security;
 
 namespace Winform4System.DataAccess
 {
+    [DbConfigurationType(typeof(Winform4System.DataAccess.Configuration.PostgresConfiguration))]
     public sealed class SparePartDbContext : DbContext
     {
         static SparePartDbContext()
@@ -14,7 +15,7 @@ namespace Winform4System.DataAccess
         }
 
         public SparePartDbContext()
-            : base(new ConnectionStringProvider().Get())
+            : base(new Npgsql.NpgsqlConnection(new ConnectionStringProvider().Get()), true)
         {
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
@@ -78,6 +79,8 @@ namespace Winform4System.DataAccess
                 .HasForeignKey(item => item.ReplacementMaterialId)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.HasDefaultSchema("public");
+            modelBuilder.Properties<string>().Where(p => p.Name.EndsWith("UserId") || p.Name == "EmployeeCode").Configure(p => p.HasColumnType("varchar").HasMaxLength(10));
             base.OnModelCreating(modelBuilder);
         }
     }

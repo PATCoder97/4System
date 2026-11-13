@@ -17,7 +17,7 @@
     <Optimize>true</Optimize><DebugType>pdbonly</DebugType><OutputPath>bin\Release\</OutputPath><DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
+    <Reference Include="System.Configuration" /><Reference Include="System.Net.Http" /><Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
@@ -35,6 +35,7 @@
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\AuthenticationPolicyService.cs" />
     <Compile Include="Services\SystemSettingService.cs" />
+    <Compile Include="Services\ShareDataStorage.cs" />
     <Compile Include="Services\SystemHealthService.cs" />
     <Compile Include="Services\DepartmentManagementService.cs" />
     <Compile Include="Services\JobTitleManagementService.cs" />

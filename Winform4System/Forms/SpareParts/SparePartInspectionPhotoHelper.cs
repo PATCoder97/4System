@@ -40,12 +40,13 @@ namespace Winform4System.Forms.SpareParts
                 return string.Empty;
             }
 
-            return Path.Combine(EnsureInspectionPhotoFolder(batchMaterialId), attachment.EncryptionName);
+            return Winform4System.Business.Services.ShareDataStorage.Download(Path.Combine(EnsureInspectionPhotoFolder(batchMaterialId), attachment.EncryptionName));
         }
 
         public static void DeletePhotoFile(int batchMaterialId, SparePartInspectionAttachment attachment)
         {
-            string path = GetPhotoPath(batchMaterialId, attachment);
+            // API 0.1.1 無刪除端點；刪除資料庫關聯後保留伺服器檔案。
+            string path = attachment == null ? string.Empty : Path.Combine(EnsureInspectionPhotoFolder(batchMaterialId), attachment.EncryptionName ?? string.Empty);
             if (!string.IsNullOrWhiteSpace(path) && File.Exists(path))
             {
                 File.Delete(path);

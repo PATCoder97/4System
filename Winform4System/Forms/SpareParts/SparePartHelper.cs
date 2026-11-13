@@ -67,7 +67,7 @@ namespace Winform4System.Forms.SpareParts
 
         public static string GetMaterialPhotoPath(SparePartMaterialPhoto photo)
         {
-            return Path.Combine(EnsureMaterialPhotoFolder(photo.MaterialId), photo.EncryptionName);
+            return Winform4System.Business.Services.ShareDataStorage.Download(Path.Combine(EnsureMaterialPhotoFolder(photo.MaterialId), photo.EncryptionName));
         }
 
         public static string CopyToTemp(string sourcePath, string actualName)

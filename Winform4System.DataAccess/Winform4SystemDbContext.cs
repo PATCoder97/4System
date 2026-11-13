@@ -3,6 +3,7 @@ using Winform4System.DataAccess.Entities;
 
 namespace Winform4System.DataAccess
 {
+    [DbConfigurationType(typeof(Winform4System.DataAccess.Configuration.PostgresConfiguration))]
     public sealed class Winform4SystemDbContext : DbContext
     {
         static Winform4SystemDbContext()
@@ -11,7 +12,7 @@ namespace Winform4System.DataAccess
         }
 
         public Winform4SystemDbContext(string connectionString)
-            : base(connectionString)
+            : base(new Npgsql.NpgsqlConnection(connectionString), true)
         {
             Configuration.LazyLoadingEnabled = false;
             Configuration.ProxyCreationEnabled = false;
@@ -36,6 +37,9 @@ namespace Winform4System.DataAccess
             modelBuilder.Entity<UserGroup>().HasKey(item => new { item.UserId, item.GroupId });
             modelBuilder.Entity<GroupRole>().HasKey(item => new { item.GroupId, item.RoleId });
             modelBuilder.Entity<RolePermission>().HasKey(item => new { item.RoleId, item.PermissionId });
+            modelBuilder.Properties<byte[]>().Where(p => p.Name == "RowVersion").Configure(p => p.HasColumnType("bytea"));
+            modelBuilder.HasDefaultSchema("public");
+            modelBuilder.Properties<string>().Where(p => p.Name.EndsWith("UserId") || p.Name == "EmployeeCode").Configure(p => p.HasColumnType("varchar").HasMaxLength(10));
             base.OnModelCreating(modelBuilder);
         }
     }

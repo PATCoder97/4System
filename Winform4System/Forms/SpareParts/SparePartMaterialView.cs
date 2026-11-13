@@ -516,7 +516,7 @@ namespace Winform4System.Forms.SpareParts
             });
             var report = new XtraReport();
             string reportFormatpath = Path.Combine(SparePartConfiguration.FolderReportFormat, stampName);
-            report.LoadLayout(reportFormatpath);
+            report.LoadLayout(Winform4System.Business.Services.ShareDataStorage.Download(reportFormatpath));
             report.ShowPrintMarginsWarning = false;
 
             // Gán danh sách làm nguồn dữ liệu

@@ -28,6 +28,15 @@ namespace Winform4System.Business.Services
                 string.IsNullOrWhiteSpace(applicationVersion) ? "無法取得" : applicationVersion, checkedAt));
             try
             {
+                ShareDataStorage.CheckHealthAsync().GetAwaiter().GetResult();
+                result.Add(Item("連線", "檔案服務", HealthState.Healthy, "檔案 API 連線正常。", checkedAt));
+            }
+            catch (Exception ex)
+            {
+                result.Add(Item("連線", "檔案服務", HealthState.Error, ex.GetBaseException().Message, checkedAt));
+            }
+            try
+            {
                 using (var context = new Winform4SystemDbContext(_connectionString))
                 {
                     bool databaseExists = context.Database.Exists();

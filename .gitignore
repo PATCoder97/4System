@@ -11,3 +11,5 @@ Winform4System/connectionStrings.local.config
 /Installer/Staging/
 /Installer/*-cache/
 /Installer/*.log
+
+Winform4System/appSettings.local.config

@@ -47,10 +47,7 @@ namespace Winform4System.Forms.SpareParts
                 Status = 0
             };
 
-            string configuredPath = ConfigurationManager.AppSettings["SparePartDataPath"];
-            string dataRoot = string.IsNullOrWhiteSpace(configuredPath)
-                ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), SoftNameTW, "Data")
-                : configuredPath;
+            string dataRoot = Winform4System.Business.Services.ShareDataStorage.CacheRoot;
             SparePartFolder = Path.Combine(dataRoot, "SpareParts");
             FolderReportFormat = Path.Combine(dataRoot, "00", "ReportFormat");
         }

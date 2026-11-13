@@ -1,3 +1,10 @@
+# PostgreSQL và API file
+
+Ứng dụng hiện dùng PostgreSQL 17 + EF6/Npgsql. Hướng dẫn hiện hành: [PostgreSQL/README.md](PostgreSQL/README.md). Nội dung SQL Server bên dưới chỉ để tham khảo lịch sử.
+
+---
+
+
 # Database foundation
 
 Run scripts in numeric order against a new SQL Server database:

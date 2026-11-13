@@ -66,12 +66,12 @@ namespace Winform4System.Forms.SpareParts
 
         public static string GetGuidePath(SparePartRecoveryGuide guide)
         {
-            return Path.Combine(EnsureGuideFolder(), guide.EncryptionName);
+            return Winform4System.Business.Services.ShareDataStorage.Download(Path.Combine(EnsureGuideFolder(), guide.EncryptionName));
         }
 
         public static string GetEvidencePath(SparePartRecoveryEvidence evidence)
         {
-            return Path.Combine(EnsureEvidenceFolder(evidence.RecoveryTicketId), evidence.EncryptionName);
+            return Winform4System.Business.Services.ShareDataStorage.Download(Path.Combine(EnsureEvidenceFolder(evidence.RecoveryTicketId), evidence.EncryptionName));
         }
 
         public static void OpenGuideFiles(IEnumerable<SparePartRecoveryGuide> guides)

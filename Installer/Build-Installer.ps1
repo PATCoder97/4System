@@ -166,6 +166,11 @@ if (-not (Test-Path -LiteralPath $installerProject))
 }
 
 $localConnectionConfig = Join-Path $applicationProjectRoot 'connectionStrings.local.config'
+$localAppSettings = Join-Path $applicationProjectRoot 'appSettings.local.config'
+if (-not (Test-Path -LiteralPath $localAppSettings))
+{
+    throw 'Thiếu appSettings.local.config. Hãy tạo từ appSettings.example.config và cấu hình môi trường/API trước khi đóng gói.'
+}
 if (-not (Test-Path -LiteralPath $localConnectionConfig))
 {
     throw 'Thiếu Winform4System\connectionStrings.local.config. Hãy tạo file này từ connectionStrings.example.config trước khi đóng gói.'
@@ -214,6 +219,11 @@ foreach ($cultureName in @('de', 'es', 'ja'))
 }
 
 $stagedConnectionConfig = Join-Path $stagingDirectory 'connectionStrings.local.config'
+$stagedAppSettings = Join-Path $stagingDirectory 'appSettings.local.config'
+if (-not (Test-Path -LiteralPath $stagedAppSettings))
+{
+    throw 'Output Release thiếu appSettings.local.config; không thể chọn môi trường và truy cập API file.'
+}
 if (-not (Test-Path -LiteralPath $stagedConnectionConfig))
 {
     throw 'Output Release không có connectionStrings.local.config; dừng để tránh tạo bộ cài không thể kết nối dữ liệu.'

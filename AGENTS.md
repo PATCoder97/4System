@@ -42,7 +42,7 @@
 
 ## Truy cập dữ liệu
 
-- Tất cả truy cập SQL Server trong code ứng dụng phải sử dụng Entity Framework 6 và LINQ thông qua `DbContext`/entity của `Winform4System.DataAccess`.
+- Tất cả truy cập PostgreSQL trong code ứng dụng phải sử dụng Entity Framework 6 và LINQ với provider Npgsql thông qua `DbContext`/entity của `Winform4System.DataAccess`.
 - Ưu tiên quy trình Database First: database là nguồn cấu trúc chính; khi schema thay đổi phải cập nhật model/mapping EF tương ứng.
 - Không viết câu SQL thuần trong code C# và không sử dụng `SqlCommand`, `ExecuteSqlCommand`, `SqlQuery` hoặc API tương đương để bỏ qua EF.
 - Mọi thao tác đọc, thêm, sửa, xóa và transaction phải thực hiện qua EF6 repository/service. Không để UI truy cập `DbContext` trực tiếp.
